@@ -11,8 +11,8 @@ const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600'
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Fine Finance',
-		template: 'Fine Finance - %s',
+		default: 'Financia',
+		template: 'Financia - %s',
 	},
 	description: 'Finance Control',
 };

@@ -4,6 +4,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import authConfig from './auth.config';
 import { getUserById } from './data/user';
 import { getAccountByUserId } from './data/account';
+import { db } from './lib/db';
 
 export const {
 	handlers: { GET, POST },
@@ -17,26 +18,15 @@ export const {
 	},
 	events: {
 		async linkAccount({ user }) {
-			//
+			await db.user.update({
+				where: { id: user.id },
+				data: { emailVerified: new Date() },
+			});
 		},
 	},
 	callbacks: {
 		async signIn({ user, account }) {
-			if (account?.provider !== 'credentials') return true;
-
-			// const existingUser = await getUserById(user.id!);
-
-			// if (!existingUser?.emailVerified) return false;
-
-			// if (existingUser.isTwoFactorEnabled) {
-			// 	const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
-
-			// 	if (!twoFactorConfirmation) {
-			// 		return false;
-			// 	}
-
-			// 	await db.twoFactorConfirmation.delete({ where: { id: twoFactorConfirmation.id } });
-			// }
+			if (account?.provider !== 'google') return false;
 
 			return true;
 		},
@@ -61,17 +51,14 @@ export const {
 
 			if (!existingUser) return token;
 
-			// const existingAccount = await getAccountByUserId(existingUser.id);
-
-			// token.isOAuth = !!existingAccount;
 			token.name = existingUser.name;
 			token.email = existingUser.email;
-			// token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
 			return token;
 		},
 	},
-	adapter: PrismaAdapter({}),
+	adapter: PrismaAdapter(db),
 	session: { strategy: 'jwt' },
+	secret: process.env.AUTH_SECRET,
 	...authConfig,
 });

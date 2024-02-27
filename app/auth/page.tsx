@@ -1,16 +1,16 @@
 import { Metadata } from 'next';
-import { LoginForm } from '../_components/LoginForm';
+import { SignIn } from './_components/SignIn';
 
 export const metadata: Metadata = {
-	title: 'Login',
+	title: 'Sign In',
 };
 
-const LoginPage = () => {
+const AuthPage = () => {
 	return (
 		<main className='flex-1 flex justify-center items-center'>
-			<LoginForm />
+			<SignIn />
 		</main>
 	);
 };
 
-export default LoginPage;
+export default AuthPage;

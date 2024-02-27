@@ -1,15 +1,13 @@
-'use client';
+import { currentUser } from '@/lib/auth';
+import Link from 'next/link';
 
-import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { signOut } from 'next-auth/react';
-
-const LandingPage = () => {
-	const user = useCurrentUser();
+const LandingPage = async () => {
+	const user = await currentUser();
 
 	return (
 		<div>
 			{JSON.stringify(user)}
-			<button onClick={() => signOut()}>Sign Out</button>
+			<Link href='/auth'>Auth</Link>
 		</div>
 	);
 };
