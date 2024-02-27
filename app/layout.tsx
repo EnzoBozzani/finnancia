@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={cn('bg-black flex flex-col', montserrat.className)}>{children}</body>
+			<body className={cn('bg-neutral-200 flex flex-col', montserrat.className)}>{children}</body>
 		</html>
 	);
 }

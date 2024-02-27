@@ -13,14 +13,14 @@ export const FormGroup = ({ label, id, className }: FormGroupProps) => {
 		<div className={cn('space-y-3', className)}>
 			<Label
 				htmlFor={id}
-				className='text-xl'
+				className='text-lg'
 			>
 				{label}
 			</Label>
 			<Input
 				id={id}
 				name={id}
-				className='focus:border-sky-600'
+				className='focus:border-green-400'
 			/>
 		</div>
 	);
