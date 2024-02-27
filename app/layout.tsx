@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
-import './globals.css';
+import { SessionProvider } from 'next-auth/react';
+
 import { cn } from '@/lib/utils';
+import { auth } from '@/auth';
+
+import './globals.css';
 
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] });
 
@@ -13,14 +17,18 @@ export const metadata: Metadata = {
 	description: 'Finance Control',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const session = await auth();
+
 	return (
-		<html lang='en'>
-			<body className={cn('bg-neutral-200 flex flex-col', montserrat.className)}>{children}</body>
-		</html>
+		<SessionProvider session={session}>
+			<html lang='en'>
+				<body className={cn('bg-neutral-200 flex flex-col', montserrat.className)}>{children}</body>
+			</html>
+		</SessionProvider>
 	);
 }

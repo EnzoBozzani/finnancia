@@ -20,14 +20,13 @@ export const RegisterForm = () => {
 
 	const onSubmit = async (ev: FormEvent) => {
 		ev.preventDefault();
+		setMessage(null);
 
 		if (nameRef.current?.value === '' || emailRef.current?.value === '' || passwordRef.current?.value === '') {
 			setMessageType('error');
 			setMessage('All fields are required!');
 			return;
 		}
-
-		setMessage(null);
 
 		const res = await AuthService.register({
 			name: nameRef.current?.value,

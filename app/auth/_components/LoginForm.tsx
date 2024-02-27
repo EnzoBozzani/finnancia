@@ -8,6 +8,7 @@ import { FormMessage } from '@/components/FormMessage';
 import { Button } from '@/components/ui/button';
 
 import { Social } from './Social';
+import { AuthService } from '@/services/AuthService';
 
 export const LoginForm = () => {
 	const emailRef = useRef<HTMLInputElement>(null);
@@ -18,7 +19,23 @@ export const LoginForm = () => {
 
 	const onSubmit = async (ev: FormEvent) => {
 		ev.preventDefault();
-		//implementar submit
+		setMessage(null);
+
+		if (emailRef.current?.value === '' || passwordRef.current?.value === '') {
+			setMessageType('error');
+			setMessage('All fields are required!');
+			return;
+		}
+
+		const res = await AuthService.login({
+			email: emailRef.current?.value,
+			password: passwordRef.current?.value,
+		});
+
+		if (res.error) {
+			setMessageType('error');
+			setMessage(res.error);
+		}
 	};
 
 	return (
@@ -54,6 +71,8 @@ export const LoginForm = () => {
 				<FormMessage
 					message={message}
 					type={messageType}
+					className='w-[90%] sm:w-[370px]'
+					setMessage={setMessage}
 				/>
 			</form>
 			<Social />
