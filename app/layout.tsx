@@ -15,6 +15,12 @@ export const metadata: Metadata = {
 		template: 'Financia - %s',
 	},
 	description: 'Finance Control',
+	icons: [
+		{
+			url: '/logo.jpg',
+			href: '/logo.jpg',
+		},
+	],
 };
 
 export default async function RootLayout({
@@ -27,7 +33,7 @@ export default async function RootLayout({
 	return (
 		<SessionProvider session={session}>
 			<html lang='en'>
-				<body className={cn('bg-neutral-200 flex flex-col', montserrat.className)}>{children}</body>
+				<body className={cn('bg-neutral-100 flex flex-col', montserrat.className)}>{children}</body>
 			</html>
 		</SessionProvider>
 	);

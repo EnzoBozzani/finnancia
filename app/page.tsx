@@ -1,15 +1,7 @@
-import { currentUser } from '@/lib/auth';
-import Link from 'next/link';
+import { HeroSection } from './_components/HeroSection';
 
 const LandingPage = async () => {
-	const user = await currentUser();
-
-	return (
-		<div>
-			{JSON.stringify(user)}
-			<Link href='/auth'>Auth</Link>
-		</div>
-	);
+	return <HeroSection />;
 };
 
 export default LandingPage;

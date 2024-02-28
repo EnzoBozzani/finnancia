@@ -1,12 +1,11 @@
-'use client';
-
+import { Logo } from '@/components/Logo';
 import { Social } from './Social';
 
 export const SignIn = () => {
 	return (
-		<section className='w-[95%] sm:w-[500px] py-12 bg-white rounded-xl shadow-lg'>
-			<h1 className='text-2xl text-center'>LOGO</h1>
-			<p className='text-sm text-neutral-500 text-center'>Sign in to continue to Financia</p>
+		<section className='w-[95%] sm:w-[500px] pb-12 pt-4 bg-white rounded-xl shadow-lg'>
+			<Logo className='mx-auto w-fit' />
+			<p className='text-sm text-neutral-500 text-center my-6'>Sign in to continue to Financia</p>
 			<Social />
 		</section>
 	);
