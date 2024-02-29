@@ -14,13 +14,14 @@ export const Logo = ({ className }: LogoProps) => {
 			className={cn('flex items-center justify-center', className)}
 		>
 			<Image
-				width={90}
-				height={90}
+				width={70}
+				height={70}
 				src={'/logo.png'}
 				alt='Logo'
+				className='w-[70px] sm:w-[90px] h-auto'
 			/>
 			<div className='-ms-2 '>
-				<p className='text-2xl font-semibold'>Financia</p>
+				<p className='text-lg sm:text-2xl font-semibold'>Finnancia</p>
 				<p className='text-xs text-neutral-500'>Manage your Money</p>
 			</div>
 		</Link>
