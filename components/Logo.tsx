@@ -5,16 +5,17 @@ import { cn } from '@/lib/utils';
 
 interface LogoProps {
 	className: string;
+	hide?: boolean;
 }
 
-export const Logo = ({ className }: LogoProps) => {
+export const Logo = ({ className, hide }: LogoProps) => {
 	return (
 		<Link
 			href={'/'}
 			className={cn('flex items-center justify-center gap-x-1', className)}
 		>
 			<BiSolidPyramid className='w-12 h-12 text-green-700' />
-			<div className='hidden md:block'>
+			<div className={hide ? 'hidden md:block' : ''}>
 				<p className='text-lg sm:text-2xl font-semibold'>Finnancia</p>
 				<p className='text-xs text-neutral-500'>Controle seu dinheiro</p>
 			</div>

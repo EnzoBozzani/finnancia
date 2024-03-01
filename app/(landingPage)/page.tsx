@@ -21,7 +21,10 @@ const LandingPage = async () => {
 		<>
 			<header className='bg-green-100 w-full'>
 				<div className='mx-auto max-w-screen-xl px-4 md:px-12 py-4 flex items-center justify-between'>
-					<Logo className='w-fit' />
+					<Logo
+						hide
+						className='w-fit'
+					/>
 					<Button asChild>
 						<Link href={'/auth'}>Entrar</Link>
 					</Button>
@@ -30,6 +33,31 @@ const LandingPage = async () => {
 			<HeroSection />
 			<FeaturesSection />
 			<FAQSection />
+			<footer className='bg-neutral-100 w-full border-t border-neutral-200'>
+				<div className='mx-auto max-w-screen-xl px-4 md:px-12 py-6 flex flex-col lg:flex-row items-center justify-between gap-y-8'>
+					<Logo className='w-fit' />
+					<div className='flex flex-col lg:flex-row items-center gap-4'>
+						<Link
+							href={'/terms-of-service'}
+							className='text-neutral-400 text-lg underline hover:text-neutral-500'
+						>
+							Termos de serviço
+						</Link>
+						<Link
+							href={'/privacy-policy'}
+							className='text-neutral-400 text-lg underline hover:text-neutral-500'
+						>
+							Política de privacidade
+						</Link>
+					</div>
+					<Button
+						size={'lg'}
+						asChild
+					>
+						<Link href={'/auth'}>Comece sem pagar nada</Link>
+					</Button>
+				</div>
+			</footer>
 		</>
 	);
 };
