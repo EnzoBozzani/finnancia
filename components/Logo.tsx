@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { BiSolidPyramid } from 'react-icons/bi';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
@@ -11,18 +11,12 @@ export const Logo = ({ className }: LogoProps) => {
 	return (
 		<Link
 			href={'/'}
-			className={cn('flex items-center justify-center', className)}
+			className={cn('flex items-center justify-center gap-x-1', className)}
 		>
-			<Image
-				width={70}
-				height={70}
-				src={'/logo.png'}
-				alt='Logo'
-				className='w-[70px] sm:w-[90px] h-auto'
-			/>
-			<div className='-ms-2 '>
+			<BiSolidPyramid className='w-12 h-12 text-green-700' />
+			<div className='hidden md:block'>
 				<p className='text-lg sm:text-2xl font-semibold'>Finnancia</p>
-				<p className='text-xs text-neutral-500'>Manage your Money</p>
+				<p className='text-xs text-neutral-500'>Controle seu dinheiro</p>
 			</div>
 		</Link>
 	);

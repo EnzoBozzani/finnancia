@@ -19,7 +19,7 @@ export const Social = () => {
 				}}
 			>
 				<FcGoogle className='w-7 h-7 mr-4' />
-				Continue with Google
+				Continuar com Google
 			</Button>
 		</div>
 	);
