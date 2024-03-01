@@ -20,7 +20,7 @@ export const FeaturesSection = () => {
 					</FeatureArticle.Icon>
 					<FeatureArticle.Title>Controle Centralizado</FeatureArticle.Title>
 					<FeatureArticle.Text>
-						Adicione despesas mensais recorrentes uma vez, e o Financia automaticamente as distribuirá em
+						Adicione despesas mensais recorrentes uma vez, e o Finnancia automaticamente as distribuirá em
 						todas as suas planilhas, proporcionando uma visão centralizada de seus compromissos financeiros.
 					</FeatureArticle.Text>
 				</FeatureArticle>
@@ -50,7 +50,7 @@ export const FeaturesSection = () => {
 					</FeatureArticle.Icon>
 					<FeatureArticle.Title>Facilitador Financeiro</FeatureArticle.Title>
 					<FeatureArticle.Text>
-						O Financia simplifica o controle financeiro como nunca antes, fornecendo aos usuários uma
+						O Finnancia simplifica o controle financeiro como nunca antes, fornecendo aos usuários uma
 						ferramenta poderosa para gerenciar suas finanças de maneira inteligente e eficaz, promovendo uma
 						tomada de decisões financeiras mais informada.
 					</FeatureArticle.Text>

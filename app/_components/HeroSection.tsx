@@ -15,14 +15,14 @@ export const HeroSection = () => {
 			<div className='mx-auto max-w-screen-xl'>
 				<article className='w-full grid grid-cols-1 lg:grid-cols-2'>
 					<div className='px-4 md:px-12 py-12 flex items-center justify-center'>
-						<div className='space-y-8 text-center sm:text-start'>
-							<h1 className='text-3xl md:text-5xl font-semibold'>
+						<div className='space-y-8'>
+							<h1 className='text-3xl md:text-5xl font-semibold text-center lg:text-start'>
 								Controle seus gastos com <span className='text-green-700'>Finnancia</span>
 							</h1>
-							<p className='text-sm md:text-base'>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, deleniti eius nemo
-								blanditiis ad incidunt quia distinctio earum, fugit unde in. Adipisci voluptatum
-								voluptatem ab, quisquam libero corrupti ut quidem?
+							<p className='text-sm md:text-base text-center lg:text-justify'>
+								Centralize despesas, registre gastos detalhados e navegue intuitivamente entre
+								planilhas. Financia simplifica o controle financeiro, tornando a gestão mensal fácil e
+								eficiente. Experimente agora!
 							</p>
 							<Button
 								size={'lg'}
