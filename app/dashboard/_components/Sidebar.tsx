@@ -1,25 +1,12 @@
 'use client';
 
-import { useRef } from 'react';
-
-import { FormGroup } from '@/components/FormGroup';
-import { Button } from '@/components/ui/button';
-import {
-	Sheet,
-	SheetClose,
-	SheetContent,
-	SheetDescription,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { AddExpenseModal } from '@/components/AddExpenseModal';
+import { CiSettings } from 'react-icons/ci';
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();
-
-	const titleRef = useRef<HTMLInputElement | null>(null);
-	const amountRef = useRef<HTMLInputElement | null>(null);
 
 	return (
 		<Sheet>
@@ -42,39 +29,26 @@ export const Sidebar = () => {
 					/>
 				</svg>
 			</SheetTrigger>
-			<SheetContent side={'left'}>
-				<SheetHeader>
+			<SheetContent
+				side={'left'}
+				className='p-0'
+			>
+				<SheetHeader className='p-4'>
 					<SheetTitle>Olá, {currentUser?.name}!</SheetTitle>
 					<SheetDescription>
 						Faça o gerenciamento de suas finanças aqui. Navegue entre planilhas, adicione despesas mensais e
 						altere seus dados.
 					</SheetDescription>
 				</SheetHeader>
-				<div className='space-y-12 mt-12'>
-					<div>TODO: Form selecionar mês</div>
-					<div>
-						<form
-							onSubmit={() => {}}
-							className='space-y-3'
-						>
-							<h3 className='text-center text-xl font-semibold'>Adicionar despesa</h3>
-							<FormGroup
-								id='title'
-								inputRef={titleRef}
-								label='Título'
-							/>
-							<FormGroup
-								id='amount'
-								inputRef={amountRef}
-								label='Quantia'
-							/>
-							TODO: INput de dia do mês (limitar apenas ao mês da planilha)
-							<div className='flex items-center justify-center'>
-								<SheetClose asChild>
-									<Button type='submit'>Adicionar</Button>
-								</SheetClose>
-							</div>
-						</form>
+				<div className='mt-12'>
+					<div className='my-12'>TODO: Form selecionar mês</div>
+					<AddExpenseModal />
+					<div
+						role='button'
+						className='p-3 flex items-center hover:bg-neutral-200'
+					>
+						<CiSettings className='w-8 h-8 mr-2' />
+						Configurações
 					</div>
 				</div>
 			</SheetContent>
