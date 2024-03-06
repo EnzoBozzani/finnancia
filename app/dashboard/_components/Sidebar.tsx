@@ -9,13 +9,29 @@ import { useSidebar } from '@/hooks/useSidebar';
 import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
 import Link from 'next/link';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useEffect, useState } from 'react';
+import { sheetsService } from '@/services/sheetsService';
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();
+
 	const isOpen = useSidebar((state) => state.isOpen);
 	const onOpen = useSidebar((state) => state.onOpen);
 	const onClose = useSidebar((state) => state.onClose);
 	const onOpenModal = useAddExpenseModal((state) => state.onOpen);
+
+	const [sheets, setsheets] = useState<{ name: string }[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		const fetchsheets = async () => {
+			const res = await sheetsService.getUserSheets();
+			setsheets(res);
+
+			setIsLoading(false);
+		};
+		fetchsheets();
+	}, []);
 
 	return (
 		<>
@@ -57,13 +73,32 @@ export const Sidebar = () => {
 					<div className='mt-12'>
 						<div className='my-12 flex justify-center items-center'>
 							<Select>
-								<SelectTrigger className='w-[200px] active:border-green-500 focus:border-green-500'>
+								<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>
 									<SelectValue placeholder='Selecionar planilha' />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectItem value=''>Light</SelectItem>
-									<SelectItem value='dark'>Dark</SelectItem>
-									<SelectItem value='system'>System</SelectItem>
+									{isLoading ? (
+										<>
+											<SelectItem
+												disabled
+												value='disabled'
+											>
+												Carregando...
+											</SelectItem>
+										</>
+									) : (
+										<>
+											{sheets.map((sheet, index: number) => (
+												<SelectItem
+													key={`${sheet.name}-${index}`}
+													value={sheet.name}
+													className='cursor-pointer text-lg'
+												>
+													{sheet.name}
+												</SelectItem>
+											))}
+										</>
+									)}
 								</SelectContent>
 							</Select>
 						</div>
