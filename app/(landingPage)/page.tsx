@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 
-import { HeroSection } from '../_components/HeroSection';
-import { FeaturesSection } from '../_components/FeaturesSection';
-import { FAQSection } from '../_components/FAQSection';
+import { HeroSection } from './_components/HeroSection';
+import { FeaturesSection } from './_components/FeaturesSection';
+import { FAQSection } from './_components/FAQSection';
 
 export const metadata: Metadata = {
 	title: 'Controle seu dinheiro',
