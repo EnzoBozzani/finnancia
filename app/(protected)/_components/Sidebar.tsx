@@ -2,25 +2,27 @@
 
 import { CiSettings } from 'react-icons/ci';
 import { PlusIcon } from '@radix-ui/react-icons';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useSidebar } from '@/hooks/useSidebar';
 import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
-import Link from 'next/link';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useEffect, useState } from 'react';
 import { sheetsService } from '@/services/sheetsService';
+import { useRouter } from 'next/navigation';
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();
+	const router = useRouter();
 
 	const isOpen = useSidebar((state) => state.isOpen);
 	const onOpen = useSidebar((state) => state.onOpen);
 	const onClose = useSidebar((state) => state.onClose);
 	const onOpenModal = useAddExpenseModal((state) => state.onOpen);
 
-	const [sheets, setsheets] = useState<{ name: string }[]>([]);
+	const [sheets, setsheets] = useState<{ name: string; id: string }[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -72,7 +74,7 @@ export const Sidebar = () => {
 					</SheetHeader>
 					<div className='mt-12'>
 						<div className='my-12 flex justify-center items-center'>
-							<Select>
+							<Select onValueChange={(value) => router.push(`/dashboard/${value}`)}>
 								<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>
 									<SelectValue placeholder='Selecionar planilha' />
 								</SelectTrigger>
@@ -91,7 +93,7 @@ export const Sidebar = () => {
 											{sheets.map((sheet, index: number) => (
 												<SelectItem
 													key={`${sheet.name}-${index}`}
-													value={sheet.name}
+													value={sheet.id}
 													className='cursor-pointer text-lg'
 												>
 													{sheet.name}
