@@ -14,6 +14,20 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			},
 		});
 
+		const sheet = await db.sheet.findUnique({
+			where: { id: params.id },
+			select: {
+				totalAmount: true,
+			},
+		});
+
+		await db.sheet.update({
+			where: { id: params.id },
+			data: {
+				totalAmount: sheet?.totalAmount + body.amount,
+			},
+		});
+
 		return NextResponse.json(
 			{
 				success: 'Expense created!',

@@ -24,10 +24,11 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 		<Table className='md:text-xl'>
 			<TableCaption>{sheetData.name}</TableCaption>
 			<TableHeader>
-				<TableRow>
-					<TableHead>Título</TableHead>
-					<TableHead>Quantia</TableHead>
-					<TableHead>Data</TableHead>
+				<TableRow className='bg-neutral-200'>
+					<TableHead className='text-center'>Título</TableHead>
+					<TableHead className='text-center'>Quantia</TableHead>
+					<TableHead className='text-center'>Data</TableHead>
+					<TableHead>Deletar</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -46,9 +47,10 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 					<>
 						{sheetData.expenses.map((expense) => (
 							<TableRow key={expense.id}>
-								<TableCell>{expense.title}</TableCell>
-								<TableCell>{expense.amount}</TableCell>
-								<TableCell>{expense.date.toDateString()}</TableCell>
+								<TableCell className='text-center'>{expense.title}</TableCell>
+								<TableCell className='text-center'>{expense.amount}</TableCell>
+								<TableCell className='text-center'>{expense.date}</TableCell>
+								<TableCell></TableCell>
 							</TableRow>
 						))}
 					</>
