@@ -1,19 +1,17 @@
-'use client';
-
-import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { signOut } from 'next-auth/react';
+import { currentUser } from '@/lib/auth';
 import { ExpensesSheet } from './_components/ExpensesSheet';
+import { sheetsService } from '@/services/sheetsService';
 
-const DashboardPage = ({ params }: { params: { sheetId: string } }) => {
-	const user = useCurrentUser();
+const DashboardPage = async ({ params }: { params: { sheetId: string } }) => {
+	const user = await currentUser();
 
-	//fazer o fetch da sheet
+	const sheetData = await sheetsService.getSheetById(params.sheetId);
+
+	console.log(sheetData);
 
 	return (
 		<div>
-			{JSON.stringify(user)}
-			<button onClick={() => signOut()}>Sign Out</button>
-			{/* <ExpensesSheet sheetData={} /> */}
+			<ExpensesSheet sheetData={sheetData} />
 		</div>
 	);
 };

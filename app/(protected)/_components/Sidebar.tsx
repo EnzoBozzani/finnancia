@@ -5,13 +5,14 @@ import { PlusIcon } from '@radix-ui/react-icons';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useSidebar } from '@/hooks/useSidebar';
 import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { sheetsService } from '@/services/sheetsService';
 import { useRouter } from 'next/navigation';
+import { SignOutButton } from './SignOutButton';
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();
@@ -74,7 +75,12 @@ export const Sidebar = () => {
 					</SheetHeader>
 					<div className='mt-12'>
 						<div className='my-12 flex justify-center items-center'>
-							<Select onValueChange={(value) => router.push(`/dashboard/${value}`)}>
+							<Select
+								onValueChange={(value) => {
+									onClose();
+									router.push(`/dashboard/${value}`);
+								}}
+							>
 								<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>
 									<SelectValue placeholder='Selecionar planilha' />
 								</SelectTrigger>
@@ -125,6 +131,9 @@ export const Sidebar = () => {
 							</div>
 						</Link>
 					</div>
+					<SheetFooter>
+						<SignOutButton />
+					</SheetFooter>
 				</SheetContent>
 			</Sheet>
 		</>

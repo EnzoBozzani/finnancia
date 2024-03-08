@@ -18,7 +18,7 @@ interface ExpensesSheetProps {
 export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 	return (
 		<Table>
-			<TableCaption>A list of your recent invoices.</TableCaption>
+			<TableCaption>{sheetData.name}</TableCaption>
 			<TableHeader>
 				<TableRow>
 					<TableHead className='w-[100px]'>Invoice</TableHead>

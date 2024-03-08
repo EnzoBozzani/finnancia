@@ -5,6 +5,15 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
 	const user = await currentUser();
 
+	if (!user) {
+		return NextResponse.json(
+			{
+				error: 'Unauthorized!',
+			},
+			{ status: 401 }
+		);
+	}
+
 	try {
 		const sheets = await db.sheet.findMany({
 			where: {
