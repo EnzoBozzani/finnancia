@@ -6,8 +6,6 @@ import { db } from '@/lib/db';
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
 	const user = await currentUser();
 
-	console.log(user);
-
 	if (!user) {
 		return NextResponse.json(
 			{
@@ -19,7 +17,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 	try {
 		const sheet = await db.sheet.findUnique({
-			where: { id: params.id, userId: user.id },
+			where: { id: params.id, userId: 'clt4tr5pu000014gibj74jdxr' },
 			include: {
 				expenses: true,
 			},

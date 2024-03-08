@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 
 import authConfig from './auth.config';
 import { DEFAULT_LOGIN_REDIRECT, apiAuthPrefix, apiRoutePrefix, authRoutes, publicRoutes } from '@/routes';
+import { NextResponse } from 'next/server';
 
 const { auth } = NextAuth(authConfig);
 
@@ -15,6 +16,14 @@ export default auth((req) => {
 	const isApiRoute = nextUrl.pathname.startsWith(apiRoutePrefix);
 
 	if (isApiRoute) {
+		if (!isLoggedIn) {
+			return NextResponse.json(
+				{
+					error: 'Unauthorized!',
+				},
+				{ status: 401 }
+			);
+		}
 		return;
 	}
 
