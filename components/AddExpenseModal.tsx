@@ -1,9 +1,12 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, FormEvent } from 'react';
 import { PlusIcon } from '@radix-ui/react-icons';
+import { useParams } from 'next/navigation';
 
 import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
+import { expensesService } from '@/services/expensesService';
+import { months } from '@/constants/months';
 
 import { FormGroup } from './FormGroup';
 import { FormMessage } from './FormMessage';
@@ -13,6 +16,7 @@ import { Dialog, DialogContent } from './ui/dialog';
 
 export const AddExpenseModal = () => {
 	const currentDate = new Date();
+	const params = useParams<{ sheetId: string }>();
 
 	const titleRef = useRef<HTMLInputElement | null>(null);
 	const amountRef = useRef<HTMLInputElement | null>(null);
@@ -28,7 +32,31 @@ export const AddExpenseModal = () => {
 		}
 	}, [date]);
 
-	const onSubmit = () => {};
+	const onSubmit = async (ev: FormEvent<HTMLFormElement>) => {
+		ev.preventDefault();
+		setMessage(null);
+		if (!titleRef.current || !amountRef.current || !date) return;
+
+		if (titleRef.current.value === '' || amountRef.current.value === '') {
+			setMessage('Todos os campos são obrigatórios!');
+		}
+
+		const res = await expensesService.createExpense({
+			title: titleRef.current?.value,
+			amount: +amountRef.current.value,
+			date: `${date.getDay()}/${months[date.getMonth()]}/${date.getFullYear()}`,
+			sheetId: params.sheetId,
+		});
+
+		if (res.success) {
+			setMessage('Funcionou');
+			return;
+		}
+
+		if (res.error) {
+			setMessage(res.error);
+		}
+	};
 
 	return (
 		<>
@@ -65,11 +93,13 @@ export const AddExpenseModal = () => {
 							setMessage={setMessage}
 							type='error'
 						/>
-						<div className='flex items-center justify-center'>
+						<div className=' flex items-center justify-center'>
 							<Button
 								size={'lg'}
 								type='submit'
+								className='text-lg'
 							>
+								<PlusIcon className='h-6 w-6 mr-2' />
 								Adicionar
 							</Button>
 						</div>

@@ -46,7 +46,7 @@ model Expense {
 	id  String @id @default(cuid())
 	title String
 	amount Float
-	date DateTime @default(now())
+	date String
 	sheetId String
 
   sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
