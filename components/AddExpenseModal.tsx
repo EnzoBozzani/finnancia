@@ -16,6 +16,7 @@ import { Dialog, DialogContent } from './ui/dialog';
 
 export const AddExpenseModal = () => {
 	const currentDate = new Date();
+
 	const params = useParams<{ sheetId: string }>();
 
 	const titleRef = useRef<HTMLInputElement | null>(null);
@@ -35,22 +36,30 @@ export const AddExpenseModal = () => {
 	const onSubmit = async (ev: FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		setMessage(null);
-		if (!titleRef.current || !amountRef.current || !date) return;
+		if (!titleRef.current || !amountRef.current) return;
 
-		if (titleRef.current.value === '' || amountRef.current.value === '') {
+		if (titleRef.current.value === '' || amountRef.current.value === '' || !date) {
 			setMessage('Todos os campos são obrigatórios!');
+			return;
 		}
+
+		if (date.getMonth() !== currentDate.getMonth()) {
+			setMessage('Data inválida!');
+			return;
+		}
+
+		const amountFormatted = amountRef.current.value.replace('R$ ', '').replaceAll('.', '').replace(',', '.');
 
 		const res = await expensesService.createExpense({
 			title: titleRef.current?.value,
-			amount: +amountRef.current.value,
-			date: `${date.getDay()}/${months[date.getMonth()]}/${date.getFullYear()}`,
+			amount: +amountFormatted,
+			date: `${date.getDate()}/${months[date.getMonth()]}/${date.getFullYear()}`,
 			sheetId: params.sheetId,
 		});
 
 		if (res.success) {
 			setMessage('Funcionou');
-			return;
+			window.location.reload();
 		}
 
 		if (res.error) {
@@ -79,6 +88,7 @@ export const AddExpenseModal = () => {
 							id='amount'
 							inputRef={amountRef}
 							label='Quantia'
+							mask='R$ #.##0,00'
 						/>
 						<Calendar
 							disableNavigation

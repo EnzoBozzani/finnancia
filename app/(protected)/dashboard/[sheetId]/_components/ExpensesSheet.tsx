@@ -11,6 +11,8 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
+import { AddExpenseRow } from './AddExpenseRow';
+
 interface SheetWithExpenses extends Sheet {
 	expenses: Expense[];
 }
@@ -20,15 +22,20 @@ interface ExpensesSheetProps {
 }
 
 export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
+	const BRCurrency = new Intl.NumberFormat('pt-BR', {
+		style: 'currency',
+		currency: 'BRL',
+	});
+
 	return (
 		<Table className='md:text-xl'>
 			<TableCaption>{sheetData.name}</TableCaption>
 			<TableHeader>
-				<TableRow className='bg-neutral-200'>
+				<TableRow className='bg-neutral-200 hover:bg-neutral-200'>
 					<TableHead className='text-center'>Título</TableHead>
 					<TableHead className='text-center'>Quantia</TableHead>
 					<TableHead className='text-center'>Data</TableHead>
-					<TableHead>Deletar</TableHead>
+					<TableHead className='text-center'>Deletar</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
@@ -48,18 +55,19 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 						{sheetData.expenses.map((expense) => (
 							<TableRow key={expense.id}>
 								<TableCell className='text-center'>{expense.title}</TableCell>
-								<TableCell className='text-center'>{expense.amount}</TableCell>
+								<TableCell className='text-center'>{BRCurrency.format(expense.amount)}</TableCell>
 								<TableCell className='text-center'>{expense.date}</TableCell>
 								<TableCell></TableCell>
 							</TableRow>
 						))}
 					</>
 				)}
+				<AddExpenseRow />
 			</TableBody>
 			<TableFooter>
 				<TableRow>
-					<TableCell colSpan={2}>Total</TableCell>
-					<TableCell className='text-right'>{sheetData.totalAmount}</TableCell>
+					<TableCell colSpan={3}>Total</TableCell>
+					<TableCell className='text-right'>{BRCurrency.format(sheetData.totalAmount)}</TableCell>
 				</TableRow>
 			</TableFooter>
 		</Table>

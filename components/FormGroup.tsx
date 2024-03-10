@@ -10,9 +10,10 @@ interface FormGroupProps {
 	placeholder?: string;
 	type?: 'email' | 'password';
 	inputRef: Ref<HTMLInputElement> | null;
+	mask?: string;
 }
 
-export const FormGroup = ({ label, id, className, placeholder, type, inputRef }: FormGroupProps) => {
+export const FormGroup = ({ label, id, className, placeholder, type, inputRef, mask }: FormGroupProps) => {
 	return (
 		<div className={cn('space-y-3', className)}>
 			<div>
@@ -32,6 +33,8 @@ export const FormGroup = ({ label, id, className, placeholder, type, inputRef }:
 				type={type || 'text'}
 				ref={inputRef}
 				min={type === 'password' ? 6 : 4}
+				data-mask={mask}
+				maxLength={id === 'amount' ? 25 : 50}
 			/>
 		</div>
 	);

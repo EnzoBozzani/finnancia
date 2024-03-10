@@ -3,10 +3,9 @@
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MdOutlineManageSearch, MdCalendarMonth } from 'react-icons/md';
-import { CiCreditCard1 } from 'react-icons/ci';
 
 import { Button } from '@/components/ui/button';
+
 import { IconsWithText } from './IconsWithText';
 
 export const HeroSection = () => {
@@ -24,18 +23,21 @@ export const HeroSection = () => {
 								planilhas. Financia simplifica o controle financeiro, tornando a gestão mensal fácil e
 								eficiente. Experimente agora!
 							</p>
-							<Button
-								size={'lg'}
-								asChild
-							>
-								<Link
-									href={'/auth'}
-									className='flex items-center justify-center py-6'
+							<div className='flex items-center justify-center lg:block'>
+								<Button
+									size={'lg'}
+									asChild
+									className=''
 								>
-									Comece a usar
-									<ArrowRightIcon className='ms-2 bg-green-700 p-1 rounded w-8 h-8' />
-								</Link>
-							</Button>
+									<Link
+										href={'/auth'}
+										className='flex items-center justify-center py-6'
+									>
+										Comece a usar
+										<ArrowRightIcon className='ms-2 bg-green-700 p-1 rounded w-8 h-8' />
+									</Link>
+								</Button>
+							</div>
 						</div>
 					</div>
 					<div className='flex items-center justify-center'>
