@@ -12,18 +12,8 @@ export const FormMessage = ({ type, message, className, setMessage }: FormMessag
 	if (message === null) return null;
 
 	return (
-		<div
-			className={cn(
-				'border-2  p-4 rounded-lg flex items-center justify-between',
-				type === 'success' ? 'border-green-700 bg-green-300' : 'border-red-700 bg-red-300',
-				className
-			)}
-		>
+		<p className={cn('text-center py-2', type === 'success' ? 'text-green-400' : 'text-red-400', className)}>
 			{message}
-			<Cross1Icon
-				className='w-5 h-5 cursor-pointer'
-				onClick={() => setMessage(null)}
-			/>
-		</div>
+		</p>
 	);
 };
