@@ -38,8 +38,7 @@ export const Sidebar = () => {
 
 	return (
 		<>
-			<div
-				role='button'
+			<button
 				onClick={onOpen}
 				className='p-2'
 			>
@@ -57,7 +56,7 @@ export const Sidebar = () => {
 						d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5'
 					/>
 				</svg>
-			</div>
+			</button>
 			<Sheet
 				open={isOpen}
 				onOpenChange={onClose}

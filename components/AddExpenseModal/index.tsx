@@ -48,7 +48,9 @@ export const AddExpenseModal = () => {
 
 		const amountFormatted = amount.replace('R$ ', '').replaceAll('.', '').replace(',', '.');
 
-		console.log(amountFormatted);
+		const dateFormatted = `${date.getDate().toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${
+			months[date.getMonth()]
+		}/${date.getFullYear()}`;
 
 		if (isNaN(Number(amountFormatted)) || amountFormatted === '') {
 			setMessage('Quantia inválida!');
@@ -58,7 +60,7 @@ export const AddExpenseModal = () => {
 		const res = await expensesService.createExpense({
 			title,
 			amount: +amountFormatted,
-			date: `${date.getDate()}/${months[date.getMonth()]}/${date.getFullYear()}`,
+			date: dateFormatted,
 			sheetId: params.sheetId,
 		});
 
@@ -102,7 +104,6 @@ export const AddExpenseModal = () => {
 						/>
 						<FormMessage
 							message={message}
-							setMessage={setMessage}
 							type='error'
 							className='mx-auto'
 						/>
