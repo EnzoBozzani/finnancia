@@ -39,9 +39,6 @@ export const UserButton = ({ user }: UserButtonProps) => {
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem>
-						<Link href={'/profile'}>Perfil</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem>
 						<Link href={'/billing'}>Assinatura</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useFormStatus } from 'react-dom';
-import { PlusIcon } from '@radix-ui/react-icons';
+import { MdEdit } from 'react-icons/md';
 import { VscLoading } from 'react-icons/vsc';
 
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,7 @@ export const SubmitButton = () => {
 					</>
 				) : (
 					<>
-						<PlusIcon className='h-6 w-6 mr-2' />
+						<MdEdit className='w-6 h-6 mr-2' />
 						Editar
 					</>
 				)}

@@ -8,16 +8,17 @@ interface LogoProps {
 	hide?: boolean;
 	hideFully?: boolean;
 	isNotLink?: boolean;
+	logoColor?: string;
 }
 
-export const Logo = ({ className, hide, hideFully, isNotLink }: LogoProps) => {
+export const Logo = ({ className, hide, hideFully, isNotLink, logoColor }: LogoProps) => {
 	if (!isNotLink) {
 		return (
 			<Link
 				href={'/'}
 				className={cn('flex items-center justify-center gap-x-1', className)}
 			>
-				<BiSolidPyramid className='w-12 h-12 text-green-700' />
+				<BiSolidPyramid className={cn('w-12 h-12', logoColor || 'text-green-700')} />
 				{hideFully || (
 					<div className={hide ? 'hidden md:block' : ''}>
 						<p className='text-lg sm:text-2xl font-semibold'>Finnancia</p>
@@ -30,7 +31,7 @@ export const Logo = ({ className, hide, hideFully, isNotLink }: LogoProps) => {
 
 	return (
 		<div className={cn('flex items-center justify-center gap-x-1', className)}>
-			<BiSolidPyramid className='w-12 h-12 text-green-700' />
+			<BiSolidPyramid className={cn('w-12 h-12', logoColor || 'text-green-700')} />
 			{hideFully || (
 				<div className={hide ? 'hidden md:block' : ''}>
 					<p className='text-lg sm:text-2xl font-semibold'>Finnancia</p>

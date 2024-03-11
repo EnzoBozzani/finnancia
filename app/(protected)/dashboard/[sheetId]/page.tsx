@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 import { ExpensesSheet } from '@/components/ExpensesSheet';
 import { AddExpenseButton } from './_components/AddExpenseButton';
 
-const DashboardPage = async ({ params }: { params: { sheetId: string } }) => {
+const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 	const user = await currentUser();
 
 	const sheetData = await db.sheet.findUnique({
@@ -28,4 +28,4 @@ const DashboardPage = async ({ params }: { params: { sheetId: string } }) => {
 	);
 };
 
-export default DashboardPage;
+export default SheetPage;
