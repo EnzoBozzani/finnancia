@@ -6,6 +6,7 @@ import { currentUser } from '@/lib/auth';
 
 import { Sidebar } from './_components/Sidebar';
 import { UserButton } from './_components/UserButton';
+import { EditExpenseModal } from '@/components/EditExpenseModal';
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 	const user = await currentUser();
@@ -27,6 +28,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 					<UserButton user={user} />
 				</header>
 				<AddExpenseModal />
+				<EditExpenseModal />
 				{children}
 			</div>
 			<Script src='https://jsuites.net/v4/jsuites.js'></Script>

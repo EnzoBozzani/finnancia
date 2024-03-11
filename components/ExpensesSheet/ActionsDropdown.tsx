@@ -15,12 +15,15 @@ import {
 	DropdownMenuItem,
 } from '../ui/dropdown-menu';
 import { expensesService } from '@/services/expensesService';
+import { useEditExpenseModal } from '@/hooks/useEditExpenseModal';
 
 interface ActionsDropdownProps {
 	expense: Expense;
 }
 
 export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
+	const onOpen = useEditExpenseModal((state) => state.onOpen);
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className='rounded-full hover:bg-neutral-200'>
@@ -31,7 +34,7 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup
 					onClick={() => {
-						//lógica para abrir modal de editar
+						onOpen(expense);
 					}}
 				>
 					<DropdownMenuItem className='py-3 text-lg cursor-pointer flex items-center justify-center'>
