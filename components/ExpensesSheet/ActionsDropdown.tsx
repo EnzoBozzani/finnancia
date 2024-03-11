@@ -14,6 +14,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuItem,
 } from '../ui/dropdown-menu';
+import { expensesService } from '@/services/expensesService';
 
 interface ActionsDropdownProps {
 	expense: Expense;
@@ -22,11 +23,11 @@ interface ActionsDropdownProps {
 export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className='rounded-full hover:bg-neutral-200 px-2'>
-				<RiMoreFill className='text-neutral-600 w-12 h-12' />
+			<DropdownMenuTrigger className='rounded-full hover:bg-neutral-200'>
+				<RiMoreFill className='text-neutral-800 w-12 h-12' />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='-mt-4'>
-				<DropdownMenuLabel className='text-center'>{expense.title}</DropdownMenuLabel>
+				<DropdownMenuLabel className='text-center'>Ações</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup
 					onClick={() => {
@@ -37,10 +38,11 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 						<MdEdit className='w-6 h-6' />
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						onClick={() => {
+						onClick={async () => {
 							const confirmation = confirm(`Quer mesmo deletar "${expense.title}"?`);
 							if (confirmation) {
-								//lógica de deletar
+								await expensesService.deleteSheet(expense.id);
+								location.reload();
 							}
 						}}
 						className='py-3 text-lg cursor-pointer flex items-center justify-center'

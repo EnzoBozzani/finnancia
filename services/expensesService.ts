@@ -18,4 +18,16 @@ export const expensesService = {
 
 		return res.json();
 	},
+
+	async deleteSheet(expenseId: string) {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses/${expenseId}`, {
+			method: 'DELETE',
+			headers: {
+				Accept: 'application/json',
+				'Conten-Type': 'application/json',
+			},
+		});
+
+		return res.json();
+	},
 };

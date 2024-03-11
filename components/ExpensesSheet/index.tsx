@@ -25,9 +25,11 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 	return (
 		<div className='max-w-screen-xl rounded-xl border border-neutral-200 w-[90%] mx-auto mb-12'>
 			<Table className='md:text-xl'>
-				<TableCaption className='pb-4 text-xl'>{sheetData.name}</TableCaption>
+				<TableCaption className='mt-0 py-4 text-xl text-white bg-green-700 rounded-b-xl'>
+					{sheetData.name}
+				</TableCaption>
 				<TableHeader className='rounded-t-xl'>
-					<TableRow className='bg-neutral-800 hover:bg-neutral-800 rounded-t-xl'>
+					<TableRow className='bg-green-700 hover:bg-green-700 rounded-t-xl'>
 						<TableHead className='text-center rounded-tl-xl text-white '>Título</TableHead>
 						<TableHead className='text-center text-white '>Quantia</TableHead>
 						<TableHead className='text-center text-white '>Data</TableHead>
@@ -40,7 +42,7 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 							<TableRow>
 								<TableCell
 									className='text-center font-semibold py-6'
-									colSpan={3}
+									colSpan={4}
 								>
 									Nenhuma despesa encontrada nessa planilha
 								</TableCell>
@@ -59,7 +61,7 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 					)}
 				</TableBody>
 				<TableFooter>
-					<TableRow>
+					<TableRow className='bg-green-700 hover:bg-green-700 text-white'>
 						<TableCell colSpan={3}>Total</TableCell>
 						<TableCell className='text-right'>
 							{sheetData.totalAmount.toLocaleString('pt-BR', {
