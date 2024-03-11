@@ -11,7 +11,6 @@ import {
 	TableRow,
 } from '@/components/ui/table';
 
-import { AddExpenseRow } from './AddExpenseRow';
 import { Row } from './Row';
 
 interface SheetWithExpenses extends Sheet {
@@ -58,7 +57,6 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 							))}
 						</>
 					)}
-					<AddExpenseRow />
 				</TableBody>
 				<TableFooter>
 					<TableRow>

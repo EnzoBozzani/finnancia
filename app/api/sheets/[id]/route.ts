@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 	try {
 		const sheet = await db.sheet.findUnique({
-			where: { id: params.id, userId: 'clt4tr5pu000014gibj74jdxr' },
+			where: { id: params.id, userId: user.id },
 			include: {
 				expenses: true,
 			},

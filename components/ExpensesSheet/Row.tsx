@@ -2,6 +2,7 @@ import { RiMoreFill } from 'react-icons/ri';
 
 import { TableRow, TableCell } from '../ui/table';
 import { Expense } from '@prisma/client';
+import { ActionsDropdown } from './ActionsDropdown';
 
 interface RowProps {
 	expense: Expense;
@@ -23,9 +24,7 @@ export const Row = ({ expense, i }: RowProps) => {
 			</TableCell>
 			<TableCell className='text-center'>{expense.date}</TableCell>
 			<TableCell className='flex items-center justify-center'>
-				<button className='rounded-full hover:bg-neutral-200 px-2'>
-					<RiMoreFill className='text-neutral-600 w-12 h-12' />
-				</button>
+				<ActionsDropdown expense={expense} />
 			</TableCell>
 		</TableRow>
 	);

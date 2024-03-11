@@ -2,6 +2,7 @@ import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 
 import { ExpensesSheet } from '@/components/ExpensesSheet';
+import { AddExpenseButton } from './_components/AddExpenseButton';
 
 const DashboardPage = async ({ params }: { params: { sheetId: string } }) => {
 	const user = await currentUser();
@@ -22,6 +23,7 @@ const DashboardPage = async ({ params }: { params: { sheetId: string } }) => {
 		<div>
 			<h1 className='text-center mt-6 sm:mt-0 mb-12 text-3xl'>{sheetData.name}</h1>
 			<ExpensesSheet sheetData={sheetData} />
+			<AddExpenseButton />
 		</div>
 	);
 };
