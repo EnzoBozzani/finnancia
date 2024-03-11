@@ -8,7 +8,7 @@ export const AddExpenseRow = () => {
 	const onOpen = useAddExpenseModal((state) => state.onOpen);
 
 	return (
-		<TableRow className='bg-green-200 hover:bg-green-300 cursor-pointer'>
+		<TableRow className='bg-green-600 hover:bg-green-700 text-white cursor-pointer'>
 			<TableCell
 				onClick={() => onOpen()}
 				colSpan={4}

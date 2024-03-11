@@ -5,11 +5,15 @@ import { Expense } from '@prisma/client';
 
 interface RowProps {
 	expense: Expense;
+	i: number;
 }
 
-export const Row = ({ expense }: RowProps) => {
+export const Row = ({ expense, i }: RowProps) => {
 	return (
-		<TableRow key={expense.id}>
+		<TableRow
+			key={expense.id}
+			className={i % 2 === 0 ? 'bg-white hover:bg-white' : 'bg-neutral-100 hover:bg-neutral-100'}
+		>
 			<TableCell className='text-center'>{expense.title}</TableCell>
 			<TableCell className='text-center'>
 				{expense.amount.toLocaleString('pt-BR', {

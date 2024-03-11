@@ -1,21 +1,30 @@
 import Script from 'next/script';
 
 import { AddExpenseModal } from '@/components/AddExpenseModal';
+import { Logo } from '@/components/Logo';
+import { currentUser } from '@/lib/auth';
 
 import { Sidebar } from './_components/Sidebar';
-import { Logo } from '@/components/Logo';
+import { UserButton } from './_components/UserButton';
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
+	const user = await currentUser();
+
+	if (!user) return;
+
 	return (
 		<>
 			<div className='flex-1'>
-				<header className='w-full flex items-center justify-between'>
-					<Sidebar />
-					<Logo
-						hideFully
-						className='w-fit me-4'
-						isNotLink
-					/>
+				<header className='mx-auto max-w-screen-xl w-full flex items-center justify-between'>
+					<div className='flex items-center gap-x-4'>
+						<Sidebar />
+						<Logo
+							hideFully
+							className='w-fit'
+							isNotLink
+						/>
+					</div>
+					<UserButton user={user} />
 				</header>
 				<AddExpenseModal />
 				{children}
