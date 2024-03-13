@@ -1,6 +1,8 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { NextRequest, NextResponse } from 'next/server';
+import { months } from '@/constants/months';
 
 export async function GET(req: NextRequest) {
 	const user = await currentUser();
@@ -37,45 +39,33 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+	const { month, year } = await req.json();
+
 	const user = await currentUser();
 
 	if (!user) {
 		return NextResponse.json({ error: 'Unauthorized!' }, { status: 401 });
 	}
 
-	const months = [
-		'Janeiro',
-		'Fevereiro',
-		'Março',
-		'Abril',
-		'Maio',
-		'Junho',
-		'Julho',
-		'Agosto',
-		'Setembro',
-		'Outubro',
-		'Novembro',
-		'Dezembro',
-	];
-
-	const now = new Date();
-
 	try {
-		await db.sheet.create({
+		const newSheet = await db.sheet.create({
 			data: {
-				name: `${months[now.getMonth()]}/${now.getFullYear()}`,
+				name: `${months[month - 1]}/${year}`,
 				totalAmount: 0,
 				userId: user.id!,
+				order: year,
 			},
 		});
 
 		return NextResponse.json(
 			{
 				success: 'Succesfully created!',
+				sheetId: newSheet.id,
 			},
 			{ status: 204 }
 		);
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{
 				error: 'Something went wrong!',

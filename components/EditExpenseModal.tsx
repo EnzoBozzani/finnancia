@@ -3,26 +3,28 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 
-import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
 import { expensesService } from '@/services/expensesService';
 import { months } from '@/constants/months';
+import { useEditExpenseModal } from '@/hooks/useEditExpenseModal';
 
-import { FormGroup } from '../FormGroup';
-import { FormMessage } from '../FormMessage';
-import { Calendar } from '../ui/calendar';
-import { Dialog, DialogContent } from '../ui/dialog';
+import { FormGroup } from './FormGroup';
+import { FormMessage } from './FormMessage';
+import { Calendar } from './ui/calendar';
+import { Dialog, DialogContent } from './ui/dialog';
 import { SubmitButton } from './SubmitButton';
 
-export const AddExpenseModal = () => {
-	const currentDate = new Date();
-
+export const EditExpenseModal = () => {
 	const params = useParams<{ sheetId: string }>();
+
+	const isOpen = useEditExpenseModal((state) => state.isOpen);
+	const onClose = useEditExpenseModal((state) => state.onClose);
+	const expense = useEditExpenseModal((state) => state.expense);
+
+	//COMO CONVERTER A DATA DO EXPENSE PARA UMA DATA FORMATO Date?
+	const currentDate = new Date();
 
 	const [date, setDate] = useState<Date | undefined>(currentDate);
 	const [message, setMessage] = useState<string | null>(null);
-
-	const isOpen = useAddExpenseModal((state) => state.isOpen);
-	const onClose = useAddExpenseModal((state) => state.onClose);
 
 	useEffect(() => {
 		if (date?.getMonth() !== currentDate.getMonth()) {
@@ -30,6 +32,7 @@ export const AddExpenseModal = () => {
 		}
 	}, [date]);
 
+	//MUDAR TODA ESSA LÓGICA
 	const onSubmit = async (formData: FormData) => {
 		setMessage(null);
 
@@ -57,22 +60,23 @@ export const AddExpenseModal = () => {
 			return;
 		}
 
-		const res = await expensesService.createExpense({
-			title,
-			amount: +amountFormatted,
-			date: dateFormatted,
-			sheetId: params.sheetId,
-		});
+		// const res = await expensesService.createExpense({
+		// 	title,
+		// 	amount: +amountFormatted,
+		// 	date: dateFormatted,
+		// 	sheetId: params.sheetId,
+		// });
 
-		if (res.success) {
-			window.location.reload();
-		}
+		// if (res.success) {
+		// 	window.location.reload();
+		// }
 
-		if (res.error) {
-			setMessage(res.error);
-		}
+		// if (res.error) {
+		// 	setMessage(res.error);
+		// }
 	};
 
+	//FORMATAÇÃO DOS INPUTS
 	return (
 		<>
 			<Dialog
@@ -84,15 +88,17 @@ export const AddExpenseModal = () => {
 						action={onSubmit}
 						className='space-y-3'
 					>
-						<h3 className='text-center text-xl font-semibold'>Adicionar despesa</h3>
+						<h3 className='text-center text-xl font-semibold'>Editar despesa</h3>
 						<FormGroup
 							id='title'
 							label='Título'
+							initialValue={expense?.title}
 						/>
 						<FormGroup
 							id='amount'
 							label='Quantia'
 							mask='R$ #.##0,00'
+							initialValue={expense?.amount.toString()}
 						/>
 						<Calendar
 							disableNavigation
@@ -107,7 +113,7 @@ export const AddExpenseModal = () => {
 							type='error'
 							className='mx-auto'
 						/>
-						<SubmitButton />
+						<SubmitButton type='edit' />
 					</form>
 				</DialogContent>
 			</Dialog>

@@ -1,7 +1,9 @@
+import { redirect } from 'next/navigation';
+
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-
 import { ExpensesSheet } from '@/components/ExpensesSheet';
+
 import { AddExpenseButton } from './_components/AddExpenseButton';
 
 const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
@@ -15,8 +17,7 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 	});
 
 	if (!sheetData) {
-		//alguma lógica para criar a sheet caso o usuário não tenha planilha ainda
-		return;
+		redirect('/dashboard');
 	}
 
 	return (

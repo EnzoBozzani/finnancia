@@ -1,7 +1,6 @@
-import { RiMoreFill } from 'react-icons/ri';
+import { Expense } from '@prisma/client';
 
 import { TableRow, TableCell } from '../ui/table';
-import { Expense } from '@prisma/client';
 import { ActionsDropdown } from './ActionsDropdown';
 
 interface RowProps {

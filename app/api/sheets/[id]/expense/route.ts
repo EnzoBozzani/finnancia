@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
 	const body = await req.json();
 
+	const order = body.date.slice(0, 2);
+
 	try {
 		await db.expense.create({
 			data: {
@@ -11,6 +13,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 				title: body.title,
 				sheetId: params.id,
 				date: body.date,
+				order,
 			},
 		});
 

@@ -14,6 +14,7 @@ import { useSidebar } from '@/hooks/useSidebar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { sheetsService } from '@/services/sheetsService';
 import { Loader } from '@/components/Loader';
+import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();
@@ -22,6 +23,8 @@ export const Sidebar = () => {
 	const isOpen = useSidebar((state) => state.isOpen);
 	const onOpen = useSidebar((state) => state.onOpen);
 	const onClose = useSidebar((state) => state.onClose);
+
+	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
 	const [sheets, setSheets] = useState<{ name: string; id: string }[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -95,28 +98,15 @@ export const Sidebar = () => {
 											<SelectValue placeholder='Selecionar planilha' />
 										</SelectTrigger>
 										<SelectContent>
-											{isLoading ? (
-												<>
-													<SelectItem
-														disabled
-														value='disabled'
-													>
-														Carregando...
-													</SelectItem>
-												</>
-											) : (
-												<>
-													{sheets.map((sheet, index: number) => (
-														<SelectItem
-															key={`${sheet.name}-${index}`}
-															value={sheet.id}
-															className='cursor-pointer text-lg'
-														>
-															{sheet.name}
-														</SelectItem>
-													))}
-												</>
-											)}
+											{sheets.map((sheet, index: number) => (
+												<SelectItem
+													key={`${sheet.name}-${index}`}
+													value={sheet.id}
+													className='cursor-pointer text-lg'
+												>
+													{sheet.name}
+												</SelectItem>
+											))}
 										</SelectContent>
 									</Select>
 								</div>
@@ -133,7 +123,7 @@ export const Sidebar = () => {
 									className='p-3 flex items-center hover:bg-neutral-200'
 									onClick={() => {
 										onClose();
-										//onOpenSheetModal
+										onOpenSheetModal();
 									}}
 								>
 									<PlusIcon className='w-8 h-8 mr-2' />

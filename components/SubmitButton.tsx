@@ -3,10 +3,11 @@
 import { useFormStatus } from 'react-dom';
 import { MdEdit } from 'react-icons/md';
 import { VscLoading } from 'react-icons/vsc';
+import { PlusIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
 
-export const SubmitButton = () => {
+export const SubmitButton = ({ type }: { type: 'edit' | 'add' }) => {
 	const { pending } = useFormStatus();
 
 	return (
@@ -19,12 +20,21 @@ export const SubmitButton = () => {
 			>
 				{pending ? (
 					<>
-						<VscLoading className='animate-spin mr-2' /> Editando
+						<VscLoading className='animate-spin mr-2' /> {type === 'edit' ? 'Editando' : 'Adicionando'}
 					</>
 				) : (
 					<>
-						<MdEdit className='w-6 h-6 mr-2' />
-						Editar
+						{type === 'edit' ? (
+							<>
+								<MdEdit className='w-6 h-6 mr-2' />
+								Editar
+							</>
+						) : (
+							<>
+								<PlusIcon className='h-6 w-6 mr-2' />
+								Adicionar
+							</>
+						)}
 					</>
 				)}
 			</Button>

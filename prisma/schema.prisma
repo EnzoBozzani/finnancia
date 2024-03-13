@@ -48,6 +48,7 @@ model Expense {
 	amount Float
 	date String
 	sheetId String
+  order Int
 
   sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
 }
@@ -57,6 +58,7 @@ model Sheet {
 	name String
 	userId String
 	totalAmount Float
+  order Int
 
   expenses Expense[]
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
