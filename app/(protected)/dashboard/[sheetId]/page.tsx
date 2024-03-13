@@ -12,7 +12,11 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 	const sheetData = await db.sheet.findUnique({
 		where: { id: params.sheetId, userId: user?.id },
 		include: {
-			expenses: true,
+			expenses: {
+				orderBy: {
+					order: 'asc',
+				},
+			},
 		},
 	});
 

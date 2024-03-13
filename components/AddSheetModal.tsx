@@ -9,10 +9,12 @@ import { sheetsService } from '@/services/sheetsService';
 import { FormMessage } from './FormMessage';
 import { FormGroup } from './FormGroup';
 import { SubmitButton } from './SubmitButton';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export const AddSheetModal = () => {
 	const currentDate = new Date();
+
+	const router = useRouter();
 
 	const isOpen = useAddSheetModal((state) => state.isOpen);
 	const onClose = useAddSheetModal((state) => state.onClose);
@@ -52,7 +54,8 @@ export const AddSheetModal = () => {
 		}
 
 		if (res.success) {
-			redirect(`/dashboard/${res.sheetId}`);
+			onClose();
+			router.push(`/dashboard/${res.sheetId}`);
 		}
 	};
 

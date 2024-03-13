@@ -41,7 +41,7 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 						<>
 							<TableRow>
 								<TableCell
-									className='text-center font-semibold py-6'
+									className='text-center font-semibold py-6 bg-neutral-200'
 									colSpan={4}
 								>
 									Nenhuma despesa encontrada nessa planilha

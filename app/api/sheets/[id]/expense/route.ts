@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
 	const body = await req.json();
 
-	const order = body.date.slice(0, 2);
+	const order = Number(body.date.slice(0, 2));
 
 	try {
 		await db.expense.create({
@@ -38,6 +38,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			{ status: 200 }
 		);
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{
 				error: 'Something went wrong!',

@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 				success: 'Succesfully created!',
 				sheetId: newSheet.id,
 			},
-			{ status: 204 }
+			{ status: 200 }
 		);
 	} catch (error) {
 		console.log(error);
