@@ -7,11 +7,11 @@ import { expensesService } from '@/services/expensesService';
 import { months } from '@/constants/months';
 import { useEditExpenseModal } from '@/hooks/useEditExpenseModal';
 
-import { FormGroup } from './FormGroup';
-import { FormMessage } from './FormMessage';
-import { Calendar } from './ui/calendar';
-import { Dialog, DialogContent } from './ui/dialog';
-import { SubmitButton } from './SubmitButton';
+import { FormGroup } from '../FormGroup';
+import { FormMessage } from '../FormMessage';
+import { Calendar } from '../ui/calendar';
+import { Dialog, DialogContent } from '../ui/dialog';
+import { SubmitButton } from '../SubmitButton';
 
 export const EditExpenseModal = () => {
 	const params = useParams<{ sheetId: string }>();

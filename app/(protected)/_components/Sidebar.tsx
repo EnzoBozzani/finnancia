@@ -11,10 +11,22 @@ import { MdDashboardCustomize } from 'react-icons/md';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useSidebar } from '@/hooks/useSidebar';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { sheetsService } from '@/services/sheetsService';
 import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
+import { SelectLabel } from '@radix-ui/react-select';
+
+type SheetMonth = {
+	name: string;
+	id: string;
+	order: number;
+};
+
+type Year = {
+	order: number;
+	sheets: SheetMonth[];
+};
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();
@@ -26,18 +38,52 @@ export const Sidebar = () => {
 
 	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
-	const [sheets, setSheets] = useState<{ name: string; id: string }[]>([]);
+	const [sheets, setSheets] = useState<Year[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchSheets = async () => {
 			const res = await sheetsService.getUserSheets();
-			setSheets(res);
+
+			if (res.error) {
+				//TODO: Tratar erro
+				return;
+			}
+
+			const years = new Set<number>();
+
+			res.forEach((sheet: SheetMonth) => {
+				const year = sheet.name.split('/')[1];
+				years.add(Number(year));
+			});
+
+			const orderedYears: Year[] = [];
+
+			years.forEach((year: number) =>
+				orderedYears.push({
+					order: year,
+					sheets: [],
+				})
+			);
+
+			orderedYears.sort((a, b) => a.order - b.order);
+
+			res.forEach((sheet: SheetMonth) => {
+				const yearNumber = Number(sheet.name.split('/')[1]);
+				const yearObject = orderedYears.find((year) => year.order === yearNumber);
+				yearObject?.sheets.push({ id: sheet.id, name: sheet.name, order: sheet.order });
+			});
+
+			orderedYears.forEach((year) => {
+				year.sheets.sort((a, b) => a.order - b.order);
+			});
+
+			setSheets(orderedYears);
 
 			setIsLoading(false);
 		};
 		fetchSheets();
-	}, []);
+	}, [isOpen]);
 
 	return (
 		<>
@@ -98,14 +144,21 @@ export const Sidebar = () => {
 											<SelectValue placeholder='Selecionar planilha' />
 										</SelectTrigger>
 										<SelectContent>
-											{sheets.map((sheet, index: number) => (
-												<SelectItem
-													key={`${sheet.name}-${index}`}
-													value={sheet.id}
-													className='cursor-pointer text-lg'
-												>
-													{sheet.name}
-												</SelectItem>
+											{sheets.map((year, index: number) => (
+												<SelectGroup key={year.order + '-' + index}>
+													<SelectLabel className='text-lg font-bold text-center'>
+														{year.order}
+													</SelectLabel>
+													{year.sheets.map((sheet) => (
+														<SelectItem
+															key={`${sheet.id}-${index}`}
+															value={sheet.id}
+															className='cursor-pointer'
+														>
+															{sheet.name}
+														</SelectItem>
+													))}
+												</SelectGroup>
 											))}
 										</SelectContent>
 									</Select>

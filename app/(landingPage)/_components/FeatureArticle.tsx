@@ -19,5 +19,5 @@ FeatureArticle.Title = function ({ children }: ChildrenProps) {
 };
 
 FeatureArticle.Text = function ({ children }: ChildrenProps) {
-	return <p className='text-neutral-600 text-sm text-center md:text-justify'>{children}</p>;
+	return <p className='text-neutral-600 text-sm text-center md:text-justify bg-white'>{children}</p>;
 };

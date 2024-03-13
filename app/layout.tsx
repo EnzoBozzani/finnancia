@@ -33,7 +33,7 @@ export default async function RootLayout({
 	return (
 		<SessionProvider session={session}>
 			<html lang='en'>
-				<body className={cn('bg-neutral-100 flex flex-col', montserrat.className)}>{children}</body>
+				<body className={cn('flex flex-col', montserrat.className)}>{children}</body>
 			</html>
 		</SessionProvider>
 	);

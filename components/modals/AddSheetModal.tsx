@@ -6,9 +6,9 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { sheetsService } from '@/services/sheetsService';
 
-import { FormMessage } from './FormMessage';
-import { FormGroup } from './FormGroup';
-import { SubmitButton } from './SubmitButton';
+import { FormMessage } from '../FormMessage';
+import { FormGroup } from '../FormGroup';
+import { SubmitButton } from '../SubmitButton';
 import { useRouter } from 'next/navigation';
 
 export const AddSheetModal = () => {

@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
 			select: {
 				name: true,
 				id: true,
+				order: true,
 			},
 		});
 
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest) {
 				name: `${months[month - 1]}/${year}`,
 				totalAmount: 0,
 				userId: user.id!,
-				order: year,
+				order: month,
 			},
 		});
 

@@ -9,7 +9,7 @@ export const FeaturesSection = () => {
 	return (
 		<section className='mx-auto max-w-screen-xl py-12 px-6'>
 			<h1 className='text-2xl sm:text-4xl font-semibold text-center'>O que te proporcionamos</h1>
-			<p className='w-auto md:w-[700px] mx-auto text-sm text-neutral-400 text-center mt-2'>
+			<p className='w-auto md:w-[700px] mx-auto text-sm text-neutral-400 text-center mt-2 font-semibold bg-white'>
 				Nossos principais recursos que fazem com que você possa ter a experiência ideal enquanto tem o controle
 				total de suas finanças
 			</p>

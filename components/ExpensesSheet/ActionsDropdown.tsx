@@ -13,7 +13,7 @@ import {
 	DropdownMenuTrigger,
 	DropdownMenuSeparator,
 	DropdownMenuItem,
-} from '../ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import { expensesService } from '@/services/expensesService';
 import { useEditExpenseModal } from '@/hooks/useEditExpenseModal';
 
@@ -32,12 +32,13 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 			<DropdownMenuContent className='-mt-4'>
 				<DropdownMenuLabel className='text-center'>Ações</DropdownMenuLabel>
 				<DropdownMenuSeparator />
-				<DropdownMenuGroup
-					onClick={() => {
-						onOpen(expense);
-					}}
-				>
-					<DropdownMenuItem className='py-3 text-lg cursor-pointer flex items-center justify-center'>
+				<DropdownMenuGroup>
+					<DropdownMenuItem
+						onClick={() => {
+							onOpen(expense);
+						}}
+						className='py-3 text-lg cursor-pointer flex items-center justify-center'
+					>
 						<MdEdit className='w-6 h-6' />
 					</DropdownMenuItem>
 					<DropdownMenuItem

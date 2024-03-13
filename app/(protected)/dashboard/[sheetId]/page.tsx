@@ -25,11 +25,11 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 	}
 
 	return (
-		<div>
+		<main>
 			<h1 className='text-center mt-6 sm:mt-0 mb-12 text-3xl'>{sheetData.name}</h1>
 			<ExpensesSheet sheetData={sheetData} />
 			<AddExpenseButton />
-		</div>
+		</main>
 	);
 };
 
