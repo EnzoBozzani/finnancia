@@ -49,6 +49,22 @@ export async function POST(req: NextRequest) {
 	}
 
 	try {
+		const existingSheet = await db.sheet.findFirst({
+			where: {
+				name: `${months[month - 1]}/${year}`,
+				userId: user.id,
+			},
+		});
+
+		if (existingSheet) {
+			return NextResponse.json(
+				{
+					error: 'Já existe uma planilha para esse mês!',
+				},
+				{ status: 400 }
+			);
+		}
+
 		const newSheet = await db.sheet.create({
 			data: {
 				name: `${months[month - 1]}/${year}`,

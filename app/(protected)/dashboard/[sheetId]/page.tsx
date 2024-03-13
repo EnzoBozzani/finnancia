@@ -6,6 +6,19 @@ import { ExpensesSheet } from '@/components/ExpensesSheet';
 
 import { AddExpenseButton } from './_components/AddExpenseButton';
 
+export async function generateMetadata({ params }: { params: { sheetId: string } }) {
+	const user = await currentUser();
+
+	const sheetData = await db.sheet.findUnique({
+		where: { id: params.sheetId, userId: user?.id },
+		select: { name: true },
+	});
+
+	return {
+		title: sheetData?.name,
+	};
+}
+
 const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 	const user = await currentUser();
 

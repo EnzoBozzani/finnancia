@@ -74,7 +74,7 @@ export const AddSheetModal = () => {
 						<FormGroup
 							id='date'
 							label='Mês da planilha:'
-							initialValue={`${(currentDate.getMonth() + 1).toLocaleString('pt-BR', {
+							placeholder={`${(currentDate.getMonth() + 1).toLocaleString('pt-BR', {
 								minimumIntegerDigits: 2,
 							})}/${currentDate.getFullYear()}`}
 							mask='mm/yyyy'

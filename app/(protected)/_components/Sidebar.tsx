@@ -5,7 +5,6 @@ import { PlusIcon } from '@radix-ui/react-icons';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
-import { useRouter } from 'next/navigation';
 import { MdDashboardCustomize } from 'react-icons/md';
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -30,7 +29,6 @@ type Year = {
 
 export const Sidebar = () => {
 	const currentUser = useCurrentUser();
-	const router = useRouter();
 
 	const isOpen = useSidebar((state) => state.isOpen);
 	const onOpen = useSidebar((state) => state.onOpen);
@@ -137,7 +135,7 @@ export const Sidebar = () => {
 									<Select
 										onValueChange={(value) => {
 											onClose();
-											router.push(`/dashboard/${value}`);
+											location.href = `/dashboard/${value}`;
 										}}
 									>
 										<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>
