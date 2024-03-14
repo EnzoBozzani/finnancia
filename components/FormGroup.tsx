@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { cn } from '@/lib/utils';
 
 import { Input } from './ui/input';
@@ -16,8 +14,6 @@ interface FormGroupProps {
 }
 
 export const FormGroup = ({ label, id, className, placeholder, type, mask, initialValue }: FormGroupProps) => {
-	const [value, setValue] = useState(initialValue || '');
-
 	return (
 		<div className={cn('space-y-3', className)}>
 			<div>
@@ -38,8 +34,7 @@ export const FormGroup = ({ label, id, className, placeholder, type, mask, initi
 				min={type === 'password' ? 6 : 4}
 				data-mask={mask}
 				maxLength={id === 'amount' ? 25 : 50}
-				value={value}
-				onChange={(ev) => setValue(ev.target.value)}
+				defaultValue={initialValue}
 			/>
 		</div>
 	);
