@@ -12,6 +12,7 @@ import { FormMessage } from '../FormMessage';
 import { Calendar } from '../ui/calendar';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
+import { Label } from '../ui/label';
 
 export const AddExpenseModal = () => {
 	const currentDate = new Date();
@@ -35,42 +36,47 @@ export const AddExpenseModal = () => {
 
 		const title = formData.get('title') as string;
 		const amount = formData.get('amount') as string;
+		const dateInMobile = formData.get('date') as string;
 
-		if (!title || !amount || title === '' || amount === '' || !date) {
-			setMessage('Todos os campos são obrigatórios!');
-			return;
+		if (!dateInMobile) {
+			console.log('OIIII');
 		}
 
-		if (date.getMonth() !== currentDate.getMonth()) {
-			setMessage('Data inválida!');
-			return;
-		}
+		// if (!title || !amount || title === '' || amount === '' || !date) {
+		// 	setMessage('Todos os campos são obrigatórios!');
+		// 	return;
+		// }
 
-		const amountFormatted = amount.replace('R$ ', '').replaceAll('.', '').replace(',', '.');
+		// if (date.getMonth() !== currentDate.getMonth()) {
+		// 	setMessage('Data inválida!');
+		// 	return;
+		// }
 
-		const dateFormatted = `${date.getDate().toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${
-			months[date.getMonth()]
-		}/${date.getFullYear()}`;
+		// const amountFormatted = amount.replace('R$ ', '').replaceAll('.', '').replace(',', '.');
 
-		if (isNaN(Number(amountFormatted)) || amountFormatted === '' || Number(amountFormatted) <= 0) {
-			setMessage('Quantia inválida!');
-			return;
-		}
+		// const dateFormatted = `${date.getDate().toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${
+		// 	months[date.getMonth()]
+		// }/${date.getFullYear()}`;
 
-		const res = await expensesService.createExpense({
-			title,
-			amount: +amountFormatted,
-			date: dateFormatted,
-			sheetId: params.sheetId,
-		});
+		// if (isNaN(Number(amountFormatted)) || amountFormatted === '' || Number(amountFormatted) <= 0) {
+		// 	setMessage('Quantia inválida!');
+		// 	return;
+		// }
 
-		if (res.success) {
-			window.location.reload();
-		}
+		// const res = await expensesService.createExpense({
+		// 	title,
+		// 	amount: +amountFormatted,
+		// 	date: dateFormatted,
+		// 	sheetId: params.sheetId,
+		// });
 
-		if (res.error) {
-			setMessage(res.error);
-		}
+		// if (res.success) {
+		// 	window.location.reload();
+		// }
+
+		// if (res.error) {
+		// 	setMessage(res.error);
+		// }
 	};
 
 	return (
@@ -87,20 +93,35 @@ export const AddExpenseModal = () => {
 						<h3 className='text-center text-xl font-semibold'>Adicionar despesa</h3>
 						<FormGroup
 							id='title'
-							label='Título'
+							label='Título:'
 						/>
 						<FormGroup
 							id='amount'
-							label='Quantia'
+							label='Quantia:'
 							mask='R$ #.##0,00'
 						/>
-						<Calendar
-							disableNavigation
-							lang='pt'
-							mode='single'
-							selected={date}
-							onSelect={setDate}
-							className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+						<div className='hidden sm:block'>
+							<Label className='text-lg text-center'>Data:</Label>
+							<Calendar
+								disableNavigation
+								lang='pt'
+								mode='single'
+								selected={date}
+								onSelect={setDate}
+								className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+							/>
+						</div>
+						<FormGroup
+							id='date'
+							label='Data:'
+							placeholder={`${currentDate.getDate()}/${(currentDate.getMonth() + 1).toLocaleString(
+								'pt-BR',
+								{
+									minimumIntegerDigits: 2,
+								}
+							)}/${currentDate.getFullYear()}`}
+							mask='dd/mm/yyyy'
+							className='block sm:hidden'
 						/>
 						<FormMessage
 							message={message}

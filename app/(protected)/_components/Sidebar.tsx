@@ -141,7 +141,7 @@ export const Sidebar = () => {
 										<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>
 											<SelectValue placeholder='Selecionar planilha' />
 										</SelectTrigger>
-										<SelectContent>
+										<SelectContent className='h-[200px]'>
 											{sheets.map((year, index: number) => (
 												<SelectGroup key={year.order + '-' + index}>
 													<SelectLabel className='text-lg font-bold text-center'>
