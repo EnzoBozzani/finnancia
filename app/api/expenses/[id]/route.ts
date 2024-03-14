@@ -73,7 +73,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	if (!result.success) {
 		return NextResponse.json(
 			{
-				error: 'Data inválida!',
+				error: 'Dados inválidos!',
 			},
 			{ status: 400 }
 		);
@@ -84,7 +84,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	if (!title && !date && !amount) {
 		return NextResponse.json(
 			{
-				error: 'Data inválida!',
+				error: 'Dados inválidos!',
 			},
 			{ status: 400 }
 		);
@@ -101,7 +101,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		);
 	}
 
-	const valuesToUpdate: { title?: string; date?: string; amount?: number } = {};
+	const valuesToUpdate: { title?: string; date?: string; amount?: number; order?: number } = {};
 
 	if (title) valuesToUpdate['title'] = title;
 	if (date) valuesToUpdate['date'] = date;
@@ -137,6 +137,19 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 				},
 				{ status: 404 }
 			);
+		}
+
+		if (date) {
+			const newOrder = date.split('/')[0];
+			if (isNaN(Number(newOrder))) {
+				return NextResponse.json(
+					{
+						error: 'Dados inválidos!',
+					},
+					{ status: 400 }
+				);
+			}
+			valuesToUpdate['order'] = Number(newOrder);
 		}
 
 		await db.expense.update({

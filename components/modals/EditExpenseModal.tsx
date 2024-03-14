@@ -16,26 +16,26 @@ import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 
 export const EditExpenseModal = () => {
-	const params = useParams<{ sheetId: string }>();
-
-	const width = useScreenWidth();
-
 	const isOpen = useEditExpenseModal((state) => state.isOpen);
 	const onClose = useEditExpenseModal((state) => state.onClose);
 	const expense = useEditExpenseModal((state) => state.expense);
 
 	const expenseDateArr = expense?.date.split('/');
 
-	const day = Number(expenseDateArr && expenseDateArr[0]);
+	const expenseDay = Number(expenseDateArr && expenseDateArr[0]);
 	//@ts-ignore
-	const month = monthNameToMonthNumber[expenseDateArr && expenseDateArr[1]];
-	const year = Number(expenseDateArr && expenseDateArr[2]);
+	const expenseMonth = monthNameToMonthNumber[expenseDateArr && expenseDateArr[1]];
+	const expenseYear = Number(expenseDateArr && expenseDateArr[2]);
 
 	const expenseDate = new Date(
-		`${year}-${month?.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}-${(day + 1)?.toLocaleString('pt-BR', {
+		`${expenseYear}-${expenseMonth?.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}-${(
+			expenseDay + 1
+		)?.toLocaleString('pt-BR', {
 			minimumIntegerDigits: 2,
 		})}`
 	);
+
+	const width = useScreenWidth();
 
 	const [date, setDate] = useState<Date | undefined>(undefined);
 	const [message, setMessage] = useState<string | null>(null);
@@ -43,6 +43,8 @@ export const EditExpenseModal = () => {
 	useEffect(() => {
 		setDate(expenseDate);
 	}, [isOpen]);
+
+	if (!expense) return null;
 
 	const onSubmit = async (formData: FormData) => {
 		setMessage(null);
@@ -75,11 +77,7 @@ export const EditExpenseModal = () => {
 				return;
 			}
 
-			if (
-				year !== expenseDate.getFullYear() ||
-				month !== expenseDate.getMonth() + 1 ||
-				day !== expenseDate.getDate()
-			) {
+			if (year !== expenseDate.getFullYear() || month !== expenseDate.getMonth() + 1) {
 				setMessage('A data tem que ser no mês atual!');
 				return;
 			}
@@ -91,6 +89,7 @@ export const EditExpenseModal = () => {
 				return;
 			}
 
+			console.log(date, expenseDate);
 			if (date.getMonth() !== expenseDate.getMonth()) {
 				setMessage('Data inválida!');
 				return;
@@ -113,29 +112,24 @@ export const EditExpenseModal = () => {
 			return;
 		}
 
-		if (
-			title === expense?.title &&
-			Number(amountFormatted) === expense?.amount &&
-			dateFormatted === expense?.date
-		) {
+		if (title === expense.title && Number(amountFormatted) === expense.amount && dateFormatted === expense.date) {
 			onClose();
 			return;
 		}
 
-		// const res = await expensesService.createExpense({
-		// 	title,
-		// 	amount: +amountFormatted,
-		// 	date: dateFormatted,
-		// 	sheetId: params.sheetId,
-		// });
+		const res = await expensesService.editExpense(expense.id, {
+			title,
+			amount: +amountFormatted,
+			date: dateFormatted,
+		});
 
-		// if (res.success) {
-		// 	window.location.reload();
-		// }
+		if (res.success) {
+			window.location.reload();
+		}
 
-		// if (res.error) {
-		// 	setMessage(res.error);
-		// }
+		if (res.error) {
+			setMessage(res.error);
+		}
 	};
 
 	return (
@@ -153,13 +147,13 @@ export const EditExpenseModal = () => {
 						<FormGroup
 							id='title'
 							label='Título'
-							initialValue={expense?.title}
+							initialValue={expense.title}
 						/>
 						<FormGroup
 							id='amount'
 							label='Quantia'
 							mask='R$ #.##0,00'
-							initialValue={expense?.amount.toLocaleString('pt-BR', {
+							initialValue={expense.amount.toLocaleString('pt-BR', {
 								style: 'currency',
 								currency: 'BRL',
 							})}
@@ -187,9 +181,11 @@ export const EditExpenseModal = () => {
 									}
 								)}/${expenseDate.getFullYear()}`}
 								mask='dd/mm/yyyy'
-								initialValue={`${day?.toLocaleString('pt-BR', {
+								initialValue={`${expenseDay?.toLocaleString('pt-BR', {
 									minimumIntegerDigits: 2,
-								})}/${month?.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${year}`}
+								})}/${expenseMonth?.toLocaleString('pt-BR', {
+									minimumIntegerDigits: 2,
+								})}/${expenseYear}`}
 							/>
 						)}
 						<FormMessage

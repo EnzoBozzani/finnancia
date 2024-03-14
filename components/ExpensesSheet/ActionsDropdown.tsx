@@ -45,7 +45,7 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 						onClick={async () => {
 							const confirmation = confirm(`Quer mesmo deletar "${expense.title}"?`);
 							if (confirmation) {
-								await expensesService.deleteSheet(expense.id);
+								await expensesService.deleteExpense(expense.id);
 								location.reload();
 							}
 						}}
