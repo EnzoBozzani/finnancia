@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { months } from '@/constants/months';
+import { CreateSheetSchema } from '@/schemas/CreateSheetSchema';
 
 export async function GET(req: NextRequest) {
 	const user = await currentUser();
@@ -40,7 +41,20 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-	const { month, year } = await req.json();
+	const body = await req.json();
+
+	const result = CreateSheetSchema.safeParse(body);
+
+	if (!result.success) {
+		return NextResponse.json(
+			{
+				error: 'Data inválida!',
+			},
+			{ status: 400 }
+		);
+	}
+
+	const { month, year } = result.data;
 
 	const user = await currentUser();
 

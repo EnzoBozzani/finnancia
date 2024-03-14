@@ -52,7 +52,7 @@ export const AddExpenseModal = () => {
 			months[date.getMonth()]
 		}/${date.getFullYear()}`;
 
-		if (isNaN(Number(amountFormatted)) || amountFormatted === '') {
+		if (isNaN(Number(amountFormatted)) || amountFormatted === '' || Number(amountFormatted) <= 0) {
 			setMessage('Quantia inválida!');
 			return;
 		}
