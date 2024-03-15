@@ -1,10 +1,8 @@
 import Script from 'next/script';
 
-import { AddExpenseModal } from '@/components/modals/AddExpenseModal';
 import { Logo } from '@/components/Logo';
 import { currentUser } from '@/lib/auth';
-import { EditExpenseModal } from '@/components/modals/EditExpenseModal';
-import { AddSheetModal } from '@/components/modals/AddSheetModal';
+import { ModalProvider } from '@/components/modals/ModalProvider';
 
 import { Sidebar } from './_components/Sidebar';
 import { UserButton } from './_components/UserButton';
@@ -28,9 +26,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 					</div>
 					<UserButton user={user} />
 				</header>
-				<AddExpenseModal />
-				<EditExpenseModal />
-				<AddSheetModal />
+				<ModalProvider />
 				{children}
 			</div>
 			<Script src='https://jsuites.net/v4/jsuites.js'></Script>

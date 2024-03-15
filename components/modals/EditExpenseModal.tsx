@@ -19,26 +19,23 @@ export const EditExpenseModal = () => {
 	const isOpen = useEditExpenseModal((state) => state.isOpen);
 	const onClose = useEditExpenseModal((state) => state.onClose);
 	const expense = useEditExpenseModal((state) => state.expense);
-
-	const expenseDateArr = expense?.date.split('/');
-
-	const expenseDay = Number(expenseDateArr && expenseDateArr[0]);
-	//@ts-ignore
-	const expenseMonth = monthNameToMonthNumber[expenseDateArr && expenseDateArr[1]];
-	const expenseYear = Number(expenseDateArr && expenseDateArr[2]);
-
-	const expenseDate = new Date(
-		`${expenseYear}-${expenseMonth?.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}-${(
-			expenseDay + 1
-		)?.toLocaleString('pt-BR', {
-			minimumIntegerDigits: 2,
-		})}`
-	);
-
 	const width = useScreenWidth();
 
 	const [date, setDate] = useState<Date | undefined>(undefined);
 	const [message, setMessage] = useState<string | null>(null);
+
+	const expenseDateArr = expense?.date.split('/');
+
+	const expenseDay = (Number(expenseDateArr && expenseDateArr[0]) + 1)?.toLocaleString('pt-BR', {
+		minimumIntegerDigits: 2,
+	});
+	//@ts-ignore
+	const expenseMonth = monthNameToMonthNumber[expenseDateArr && expenseDateArr[1]]?.toLocaleString('pt-BR', {
+		minimumIntegerDigits: 2,
+	});
+	const expenseYear = Number(expenseDateArr && expenseDateArr[2]);
+
+	const expenseDate = new Date(`${expenseYear}-${expenseMonth}-${expenseDay}`);
 
 	useEffect(() => {
 		setDate(expenseDate);
@@ -62,34 +59,27 @@ export const EditExpenseModal = () => {
 				return;
 			}
 
-			if (dateInMobile.length !== 10) {
-				setMessage('Data inválida!');
+			if (dateInMobile.length !== 2 && dateInMobile.length !== 1) {
+				setMessage('Dia inválido!');
 				return;
 			}
 
-			const dateArr = dateInMobile.split('/');
-			const year = Number(dateArr[2]);
-			const month = Number(dateArr[1]);
-			const day = Number(dateArr[0]);
+			const day = Number(dateInMobile);
 
-			if (isNaN(year) || isNaN(month) || isNaN(day)) {
-				setMessage('Data inválida!');
+			if (isNaN(day)) {
+				setMessage('Dia inválido!');
 				return;
 			}
 
-			if (year !== expenseDate.getFullYear() || month !== expenseDate.getMonth() + 1) {
-				setMessage('A data tem que ser no mês atual!');
-				return;
-			}
-
-			dateFormatted = `${day.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${months[month - 1]}/${year}`;
+			dateFormatted = `${day.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${
+				months[expenseDate.getMonth()]
+			}/${expenseDate.getFullYear()}`;
 		} else {
 			if (!date) {
 				setMessage('Todos os campos são obrigatórios!');
 				return;
 			}
 
-			console.log(date, expenseDate);
 			if (date.getMonth() !== expenseDate.getMonth()) {
 				setMessage('Data inválida!');
 				return;
@@ -132,6 +122,10 @@ export const EditExpenseModal = () => {
 		}
 	};
 
+	if (!date) return null;
+
+	console.log(date);
+
 	return (
 		<>
 			<Dialog
@@ -159,33 +153,27 @@ export const EditExpenseModal = () => {
 							})}
 						/>
 						{width >= 700 ? (
-							<div>
-								<Label className='text-lg text-center'>Data:</Label>
-								<Calendar
-									disableNavigation
-									lang='pt'
-									mode='single'
-									selected={date}
-									onSelect={setDate}
-									className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
-								/>
-							</div>
+							!!date && (
+								<div>
+									<Label className='text-lg text-center'>Data:</Label>
+									<Calendar
+										disableNavigation
+										lang='pt'
+										mode='single'
+										selected={date}
+										onSelect={setDate}
+										className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+									/>
+								</div>
+							)
 						) : (
 							<FormGroup
 								id='date'
-								label='Data:'
-								placeholder={`${expenseDate.getDate()}/${(expenseDate.getMonth() + 1).toLocaleString(
-									'pt-BR',
-									{
-										minimumIntegerDigits: 2,
-									}
-								)}/${expenseDate.getFullYear()}`}
-								mask='dd/mm/yyyy'
-								initialValue={`${expenseDay?.toLocaleString('pt-BR', {
-									minimumIntegerDigits: 2,
-								})}/${expenseMonth?.toLocaleString('pt-BR', {
-									minimumIntegerDigits: 2,
-								})}/${expenseYear}`}
+								label='Dia:'
+								placeholder={`${expenseDate.getDate()}`}
+								mask={'dd'}
+								initialValue={expenseDay}
+								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
 							/>
 						)}
 						<FormMessage

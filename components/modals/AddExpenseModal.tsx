@@ -50,31 +50,21 @@ export const AddExpenseModal = () => {
 				return;
 			}
 
-			if (dateInMobile.length !== 10) {
-				setMessage('Data inválida!');
+			if (dateInMobile.length !== 2 && dateInMobile.length !== 1) {
+				setMessage('Dia inválido!');
 				return;
 			}
 
-			const dateArr = dateInMobile.split('/');
-			const year = Number(dateArr[2]);
-			const month = Number(dateArr[1]);
-			const day = Number(dateArr[0]);
+			const day = Number(dateInMobile);
 
-			if (isNaN(year) || isNaN(month) || isNaN(day)) {
-				setMessage('Data inválida!');
+			if (isNaN(day)) {
+				setMessage('Dia inválido!');
 				return;
 			}
 
-			if (
-				year !== currentDate.getFullYear() ||
-				month !== currentDate.getMonth() + 1 ||
-				day !== currentDate.getDate()
-			) {
-				setMessage('A data tem que ser no mês atual!');
-				return;
-			}
-
-			dateFormatted = `${day.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${months[month - 1]}/${year}`;
+			dateFormatted = `${day.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${
+				months[currentDate.getMonth()]
+			}/${currentDate.getFullYear()}`;
 		} else {
 			if (!date) {
 				setMessage('Todos os campos são obrigatórios!');
@@ -82,7 +72,7 @@ export const AddExpenseModal = () => {
 			}
 
 			if (date.getMonth() !== currentDate.getMonth()) {
-				setMessage('Data inválida!');
+				setMessage('Tem que ser no mês atual!');
 				return;
 			}
 
@@ -144,7 +134,7 @@ export const AddExpenseModal = () => {
 						/>
 						{width >= 700 ? (
 							<div>
-								<Label className='text-lg text-center'>Data:</Label>
+								<Label className='text-lg text-center'>Dia:</Label>
 								<Calendar
 									disableNavigation
 									lang='pt'
@@ -157,14 +147,10 @@ export const AddExpenseModal = () => {
 						) : (
 							<FormGroup
 								id='date'
-								label='Data:'
-								placeholder={`${currentDate.getDate()}/${(currentDate.getMonth() + 1).toLocaleString(
-									'pt-BR',
-									{
-										minimumIntegerDigits: 2,
-									}
-								)}/${currentDate.getFullYear()}`}
-								mask='dd/mm/yyyy'
+								label='Dia:'
+								placeholder={`${currentDate.getDate()}`}
+								mask={'dd'}
+								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
 							/>
 						)}
 						<FormMessage
