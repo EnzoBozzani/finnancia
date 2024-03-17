@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 
 import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
 import { expensesService } from '@/services/expensesService';
-import { months } from '@/constants/months';
+import { Month, monthNameToMonthNumber, months } from '@/constants/months';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 import { FormGroup } from '../FormGroup';
@@ -14,25 +14,26 @@ import { Calendar } from '../ui/calendar';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
+import { sheetNameToDate } from '@/lib/utils';
 
 export const AddExpenseModal = () => {
-	const currentDate = new Date();
+	const isOpen = useAddExpenseModal((state) => state.isOpen);
+	const onClose = useAddExpenseModal((state) => state.onClose);
+	const sheetName = useAddExpenseModal((state) => state.sheetMonth);
 
 	const width = useScreenWidth();
 
 	const params = useParams<{ sheetId: string }>();
 
-	const [date, setDate] = useState<Date | undefined>(currentDate);
+	const sheetDate = sheetNameToDate(sheetName);
+
+	const [date, setDate] = useState<Date | undefined>(sheetDate);
 	const [message, setMessage] = useState<string | null>(null);
 
-	const isOpen = useAddExpenseModal((state) => state.isOpen);
-	const onClose = useAddExpenseModal((state) => state.onClose);
-
 	useEffect(() => {
-		if (date?.getMonth() !== currentDate.getMonth()) {
-			setMessage('Selecione uma data dentro do mês atual!');
-		}
-	}, [date]);
+		const newSheetDate = sheetNameToDate(sheetName);
+		setDate(newSheetDate);
+	}, [isOpen, setDate]);
 
 	const onSubmit = async (formData: FormData) => {
 		setMessage(null);
@@ -63,16 +64,16 @@ export const AddExpenseModal = () => {
 			}
 
 			dateFormatted = `${day.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${
-				months[currentDate.getMonth()]
-			}/${currentDate.getFullYear()}`;
+				months[sheetDate.getMonth()]
+			}/${sheetDate.getFullYear()}`;
 		} else {
 			if (!date) {
 				setMessage('Todos os campos são obrigatórios!');
 				return;
 			}
 
-			if (date.getMonth() !== currentDate.getMonth()) {
-				setMessage('Tem que ser no mês atual!');
+			if (date.getMonth() !== sheetDate.getMonth()) {
+				setMessage('Dia deve ser do mês da planilha!');
 				return;
 			}
 
@@ -136,6 +137,9 @@ export const AddExpenseModal = () => {
 							<div>
 								<Label className='text-lg text-center'>Dia:</Label>
 								<Calendar
+									fromMonth={date}
+									toMonth={date}
+									month={date}
 									disableNavigation
 									lang='pt'
 									mode='single'
@@ -148,7 +152,9 @@ export const AddExpenseModal = () => {
 							<FormGroup
 								id='date'
 								label='Dia:'
-								placeholder={`${currentDate.getDate()}`}
+								placeholder={`${sheetDate
+									.getDate()
+									.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}`}
 								mask={'dd'}
 								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
 							/>

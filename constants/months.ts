@@ -27,3 +27,17 @@ export enum monthNameToMonthNumber {
 	'Novembro',
 	'Dezembro',
 }
+
+export type Month =
+	| 'Janeiro'
+	| 'Fevereiro'
+	| 'Março'
+	| 'Abril'
+	| 'Maio'
+	| 'Junho'
+	| 'Julho'
+	| 'Agosto'
+	| 'Setembro'
+	| 'Outubro'
+	| 'Novembro'
+	| 'Dezembro';

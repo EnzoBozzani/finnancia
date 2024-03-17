@@ -14,6 +14,7 @@ import { Calendar } from '../ui/calendar';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
+import { expenseStringToDate } from '@/lib/utils';
 
 export const EditExpenseModal = () => {
 	const isOpen = useEditExpenseModal((state) => state.isOpen);
@@ -24,18 +25,7 @@ export const EditExpenseModal = () => {
 	const [date, setDate] = useState<Date | undefined>(undefined);
 	const [message, setMessage] = useState<string | null>(null);
 
-	const expenseDateArr = expense?.date.split('/');
-
-	const expenseDay = (Number(expenseDateArr && expenseDateArr[0]) + 1)?.toLocaleString('pt-BR', {
-		minimumIntegerDigits: 2,
-	});
-	//@ts-ignore
-	const expenseMonth = monthNameToMonthNumber[expenseDateArr && expenseDateArr[1]]?.toLocaleString('pt-BR', {
-		minimumIntegerDigits: 2,
-	});
-	const expenseYear = Number(expenseDateArr && expenseDateArr[2]);
-
-	const expenseDate = new Date(`${expenseYear}-${expenseMonth}-${expenseDay}`);
+	const expenseDate = expenseStringToDate(expense?.date);
 
 	useEffect(() => {
 		setDate(expenseDate);
@@ -122,10 +112,6 @@ export const EditExpenseModal = () => {
 		}
 	};
 
-	if (!date) return null;
-
-	console.log(date);
-
 	return (
 		<>
 			<Dialog
@@ -155,8 +141,11 @@ export const EditExpenseModal = () => {
 						{width >= 700 ? (
 							!!date && (
 								<div>
-									<Label className='text-lg text-center'>Data:</Label>
+									<Label className='text-lg text-center'>Dia:</Label>
 									<Calendar
+										month={date}
+										fromMonth={date}
+										toMonth={date}
 										disableNavigation
 										lang='pt'
 										mode='single'
@@ -170,9 +159,13 @@ export const EditExpenseModal = () => {
 							<FormGroup
 								id='date'
 								label='Dia:'
-								placeholder={`${expenseDate.getDate()}`}
+								placeholder={`${expenseDate.getDate().toLocaleString('pt-BR', {
+									minimumIntegerDigits: 2,
+								})}`}
 								mask={'dd'}
-								initialValue={expenseDay}
+								initialValue={expenseDate.getDate().toLocaleString('pt-BR', {
+									minimumIntegerDigits: 2,
+								})}
 								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
 							/>
 						)}
