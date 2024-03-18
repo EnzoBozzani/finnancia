@@ -54,8 +54,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			data: { totalAmount: sheet.totalAmount - expenseToBeDeleted.amount },
 		});
 
-		return NextResponse.json({ success: 'Deletado com sucesso!' }, { status: 204 });
+		return NextResponse.json({ success: 'Deletado com sucesso!' }, { status: 200 });
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',

@@ -1,20 +1,37 @@
 'use client';
 
+import { toast } from 'sonner';
+
 import { useDeleteExpenseModal } from '@/hooks/useDeleteExpenseModal';
+import { expensesService } from '@/services/expensesService';
 
 import { SubmitButton } from '../SubmitButton';
 import { Dialog, DialogContent } from '../ui/dialog';
-import { expensesService } from '@/services/expensesService';
+import { useRouter } from 'next/navigation';
 
 export const DeleteExpenseModal = () => {
+	const router = useRouter();
+
 	const isOpen = useDeleteExpenseModal((state) => state.isOpen);
 	const onClose = useDeleteExpenseModal((state) => state.onClose);
 	const expense = useDeleteExpenseModal((state) => state.expense);
 
 	const onSubmit = async () => {
 		if (!expense?.id) return;
-		await expensesService.deleteExpense(expense.id);
-		location.reload();
+
+		const res = await expensesService.deleteExpense(expense.id);
+
+		if (res.error) {
+			onClose();
+			router.refresh();
+			toast.error('Algo deu errado!');
+		}
+
+		if (res.success) {
+			onClose();
+			router.refresh();
+			toast.success(`"${expense.title}" deletado com sucesso!`);
+		}
 	};
 
 	return (

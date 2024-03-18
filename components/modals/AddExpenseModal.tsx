@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
 import { expensesService } from '@/services/expensesService';
-import { Month, monthNameToMonthNumber, months } from '@/constants/months';
+import { months } from '@/constants/months';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 import { FormGroup } from '../FormGroup';
@@ -17,6 +17,8 @@ import { Label } from '../ui/label';
 import { sheetNameToDate } from '@/lib/utils';
 
 export const AddExpenseModal = () => {
+	const router = useRouter();
+
 	const isOpen = useAddExpenseModal((state) => state.isOpen);
 	const onClose = useAddExpenseModal((state) => state.onClose);
 	const sheetName = useAddExpenseModal((state) => state.sheetMonth);
@@ -102,7 +104,7 @@ export const AddExpenseModal = () => {
 		});
 
 		if (res.success) {
-			window.location.reload();
+			router.refresh();
 		}
 
 		if (res.error) {

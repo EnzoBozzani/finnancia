@@ -6,15 +6,24 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
+import { useRouter } from 'next/navigation';
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import { useSidebar } from '@/hooks/useSidebar';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+	SelectLabel,
+} from '@/components/ui/select';
 import { sheetsService } from '@/services/sheetsService';
 import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
-import { SelectLabel } from '@radix-ui/react-select';
+import { toast } from 'sonner';
 
 type SheetMonth = {
 	name: string;
@@ -28,6 +37,8 @@ type Year = {
 };
 
 export const Sidebar = () => {
+	const router = useRouter();
+
 	const currentUser = useCurrentUser();
 
 	const isOpen = useSidebar((state) => state.isOpen);
@@ -44,7 +55,7 @@ export const Sidebar = () => {
 			const res = await sheetsService.getUserSheets();
 
 			if (res.error) {
-				//TODO: Tratar erro
+				toast.error('Algo deu errado!');
 				return;
 			}
 
@@ -135,7 +146,7 @@ export const Sidebar = () => {
 									<Select
 										onValueChange={(value) => {
 											onClose();
-											location.href = `/dashboard/${value}`;
+											router.push(`/dashboard/${value}`);
 										}}
 									>
 										<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>

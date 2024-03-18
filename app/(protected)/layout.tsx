@@ -1,5 +1,6 @@
 import Script from 'next/script';
 
+import { Toaster } from '@/components/ui/sonner';
 import { Logo } from '@/components/Logo';
 import { currentUser } from '@/lib/auth';
 import { ModalProvider } from '@/components/modals/ModalProvider';
@@ -27,6 +28,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 					<UserButton user={user} />
 				</header>
 				<ModalProvider />
+				<Toaster closeButton />
 				{children}
 			</div>
 			<Script src='https://jsuites.net/v4/jsuites.js'></Script>

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { expensesService } from '@/services/expensesService';
-import { monthNameToMonthNumber, months } from '@/constants/months';
+import { months } from '@/constants/months';
 import { useEditExpenseModal } from '@/hooks/useEditExpenseModal';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 
@@ -17,6 +17,8 @@ import { Label } from '../ui/label';
 import { expenseStringToDate } from '@/lib/utils';
 
 export const EditExpenseModal = () => {
+	const router = useRouter();
+
 	const isOpen = useEditExpenseModal((state) => state.isOpen);
 	const onClose = useEditExpenseModal((state) => state.onClose);
 	const expense = useEditExpenseModal((state) => state.expense);
@@ -104,7 +106,7 @@ export const EditExpenseModal = () => {
 		});
 
 		if (res.success) {
-			window.location.reload();
+			router.refresh();
 		}
 
 		if (res.error) {
