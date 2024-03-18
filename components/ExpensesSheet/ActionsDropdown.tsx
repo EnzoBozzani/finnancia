@@ -27,8 +27,8 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className='rounded-full hover:bg-neutral-200'>
-				<RiMoreFill className='text-neutral-800 w-12 h-12' />
+			<DropdownMenuTrigger className='bg-neutral-200 lg:bg-transparent rounded-full hover:bg-neutral-200'>
+				<RiMoreFill className='text-neutral-800 w-8 h-8 lg:w-12 lg:h-12' />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='-mt-4'>
 				<DropdownMenuLabel className='text-center'>Ações</DropdownMenuLabel>

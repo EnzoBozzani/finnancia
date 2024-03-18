@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -23,7 +24,6 @@ import {
 import { sheetsService } from '@/services/sheetsService';
 import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
-import { toast } from 'sonner';
 
 type SheetMonth = {
 	name: string;
@@ -145,8 +145,8 @@ export const Sidebar = () => {
 								<div className='my-12 flex justify-center items-center'>
 									<Select
 										onValueChange={(value) => {
-											onClose();
 											router.push(`/dashboard/${value}`);
+											onClose();
 										}}
 									>
 										<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>

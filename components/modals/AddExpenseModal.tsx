@@ -165,7 +165,9 @@ export const AddExpenseModal = () => {
 							<FormGroup
 								id='date'
 								label='Dia:'
-								placeholder={`${sheetDate
+								placeholder={`${sheetMonthIsTheCurrentMonth ? currentDate
+									.getDate()
+									.toLocaleString('pt-BR', { minimumIntegerDigits: 2 }) : sheetDate
 									.getDate()
 									.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}`}
 								mask={'dd'}

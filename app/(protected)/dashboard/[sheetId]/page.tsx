@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { ExpensesSheet } from '@/components/ExpensesSheet';
 
 import { AddExpenseButton } from './_components/AddExpenseButton';
+import { ExpensesMobileRow } from '@/components/ExpensesMobileRow';
 
 export async function generateMetadata({ params }: { params: { sheetId: string } }) {
 	const user = await currentUser();
@@ -39,8 +40,16 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 
 	return (
 		<main>
-			<h1 className='text-center mt-6 sm:mt-0 mb-12 text-3xl'>{sheetData.name}</h1>
+			<h1 className='text-center my-6 sm:mt-0 md:mb-12 text-3xl'>{sheetData.name}</h1>
 			<ExpensesSheet sheetData={sheetData} />
+			<section className='block lg:hidden mb-24'>
+				{sheetData.expenses.map((expense) => (
+					<ExpensesMobileRow
+						expense={expense}
+						key={expense.id}
+					/>
+				))}
+			</section>
 			<AddExpenseButton sheetMonth={sheetData.name} />
 		</main>
 	);

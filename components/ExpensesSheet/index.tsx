@@ -23,8 +23,8 @@ interface ExpensesSheetProps {
 
 export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 	return (
-		<div className='max-w-screen-xl rounded-xl border border-neutral-200 w-[90%] mx-auto mb-12'>
-			<Table className='md:text-xl'>
+		<div className='hidden lg:block max-w-screen-xl rounded-xl border border-neutral-200 w-[90%] mx-auto mb-12'>
+			<Table className='md:text-lg'>
 				<TableCaption className='mt-0 py-4 text-xl text-white bg-green-700 rounded-b-xl'>
 					{sheetData.name}
 				</TableCaption>

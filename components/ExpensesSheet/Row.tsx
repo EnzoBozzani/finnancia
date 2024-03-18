@@ -22,7 +22,7 @@ export const Row = ({ expense, i }: RowProps) => {
 				})}
 			</TableCell>
 			<TableCell className='text-center'>{expense.date}</TableCell>
-			<TableCell className='flex items-center justify-center'>
+			<TableCell className='grid place-items-center'>
 				<ActionsDropdown expense={expense} />
 			</TableCell>
 		</TableRow>
