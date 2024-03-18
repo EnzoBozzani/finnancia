@@ -14,15 +14,16 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { expensesService } from '@/services/expensesService';
 import { useEditExpenseModal } from '@/hooks/useEditExpenseModal';
+import { useDeleteExpenseModal } from '@/hooks/useDeleteExpenseModal';
 
 interface ActionsDropdownProps {
 	expense: Expense;
 }
 
 export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
-	const onOpen = useEditExpenseModal((state) => state.onOpen);
+	const onOpenEdit = useEditExpenseModal((state) => state.onOpen);
+	const onOpenDelete = useDeleteExpenseModal((state) => state.onOpen);
 
 	return (
 		<DropdownMenu>
@@ -35,23 +36,19 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => {
-							onOpen(expense);
+							onOpenEdit(expense);
 						}}
-						className='py-3 text-lg cursor-pointer flex items-center justify-center'
+						className='py-3 cursor-pointer flex items-center justify-center'
 					>
-						<MdEdit className='w-6 h-6' />
+						<MdEdit className='w-6 h-6 mr-2' /> Editar
 					</DropdownMenuItem>
 					<DropdownMenuItem
-						onClick={async () => {
-							const confirmation = confirm(`Quer mesmo deletar "${expense.title}"?`);
-							if (confirmation) {
-								await expensesService.deleteExpense(expense.id);
-								location.reload();
-							}
+						onClick={() => {
+							onOpenDelete(expense);
 						}}
-						className='py-3 text-lg cursor-pointer flex items-center justify-center'
+						className='py-3 cursor-pointer flex items-center justify-center'
 					>
-						<FaTrash className='w-6 h-6' />
+						<FaTrash className='w-6 h-6 mr-2' /> Remover
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
