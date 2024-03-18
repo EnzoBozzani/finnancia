@@ -15,6 +15,7 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 import { expenseStringToDate } from '@/lib/utils';
+import { toast } from 'sonner';
 
 export const EditExpenseModal = () => {
 	const router = useRouter();
@@ -106,7 +107,9 @@ export const EditExpenseModal = () => {
 		});
 
 		if (res.success) {
+			onClose();
 			router.refresh();
+			toast.success('Despesa editada com sucesso!');
 		}
 
 		if (res.error) {

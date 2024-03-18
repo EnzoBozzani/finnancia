@@ -15,8 +15,11 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 import { sheetNameToDate } from '@/lib/utils';
+import { toast } from 'sonner';
 
 export const AddExpenseModal = () => {
+	const currentDate = new Date();
+
 	const router = useRouter();
 
 	const isOpen = useAddExpenseModal((state) => state.isOpen);
@@ -29,12 +32,18 @@ export const AddExpenseModal = () => {
 
 	const sheetDate = sheetNameToDate(sheetName);
 
-	const [date, setDate] = useState<Date | undefined>(sheetDate);
+	const sheetMonthIsTheCurrentMonth =
+		currentDate.getMonth() === sheetDate.getMonth() && currentDate.getFullYear() === sheetDate.getFullYear();
+
+	const [date, setDate] = useState<Date | undefined>(sheetMonthIsTheCurrentMonth ? currentDate : sheetDate);
 	const [message, setMessage] = useState<string | null>(null);
 
 	useEffect(() => {
 		const newSheetDate = sheetNameToDate(sheetName);
-		setDate(newSheetDate);
+		const sheetMonthIsTheCurrentMonth =
+			currentDate.getMonth() === newSheetDate.getMonth() &&
+			currentDate.getFullYear() === newSheetDate.getFullYear();
+		setDate(sheetMonthIsTheCurrentMonth ? currentDate : newSheetDate);
 	}, [isOpen, setDate]);
 
 	const onSubmit = async (formData: FormData) => {
@@ -104,7 +113,9 @@ export const AddExpenseModal = () => {
 		});
 
 		if (res.success) {
+			onClose();
 			router.refresh();
+			toast.success(`Despesa "${title}" criada com sucesso!`);
 		}
 
 		if (res.error) {

@@ -28,7 +28,10 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 					<UserButton user={user} />
 				</header>
 				<ModalProvider />
-				<Toaster closeButton />
+				<Toaster
+					closeButton
+					duration={2000}
+				/>
 				{children}
 			</div>
 			<Script src='https://jsuites.net/v4/jsuites.js'></Script>
