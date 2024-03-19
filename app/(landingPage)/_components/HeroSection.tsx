@@ -5,12 +5,24 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/Logo';
 
 import { IconsWithText } from './IconsWithText';
 
 export const HeroSection = () => {
 	return (
-		<section className='w-full bg-green-100'>
+		<section className='w-full bg-green-100 h-auto lg:min-h-screen lg:flex lg:flex-col lg:justify-center lg:items-center'>
+			<header className='bg-green-100 w-full'>
+				<div className='mx-auto max-w-screen-xl px-4 md:px-12 py-4 flex items-center justify-between'>
+					<Logo
+						hide
+						className='w-fit'
+					/>
+					<Button asChild>
+						<Link href={'/auth'}>Entrar</Link>
+					</Button>
+				</div>
+			</header>
 			<div className='mx-auto max-w-screen-xl'>
 				<article className='w-full grid grid-cols-1 lg:grid-cols-2'>
 					<div className='px-4 md:px-12 py-12 flex items-center justify-center'>

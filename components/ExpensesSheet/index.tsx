@@ -62,8 +62,9 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 				</TableBody>
 				<TableFooter>
 					<TableRow className='bg-green-700 hover:bg-green-700 text-white'>
-						<TableCell colSpan={3}>Total</TableCell>
+						<TableCell colSpan={3}>Saldo total:</TableCell>
 						<TableCell className='text-right'>
+							-{' '}
 							{sheetData.totalAmount.toLocaleString('pt-BR', {
 								style: 'currency',
 								currency: 'BRL',

@@ -19,17 +19,6 @@ export const viewport: Viewport = {
 const LandingPage = async () => {
 	return (
 		<>
-			<header className='bg-green-100 w-full'>
-				<div className='mx-auto max-w-screen-xl px-4 md:px-12 py-4 flex items-center justify-between'>
-					<Logo
-						hide
-						className='w-fit'
-					/>
-					<Button asChild>
-						<Link href={'/auth'}>Entrar</Link>
-					</Button>
-				</div>
-			</header>
 			<HeroSection />
 			<FeaturesSection />
 			<FAQSection />
