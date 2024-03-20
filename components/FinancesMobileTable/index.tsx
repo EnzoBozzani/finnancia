@@ -1,29 +1,29 @@
-import { Expense, Sheet } from '@prisma/client';
+import { Finance, Sheet } from '@prisma/client';
 
-import { ExpensesMobileRow } from './ExpensesMobileRow';
+import { FinancesMobileRow } from './FinancesMobileRow';
 
-interface SheetWithExpenses extends Sheet {
-	expenses: Expense[];
+interface SheetWithFinances extends Sheet {
+	finances: Finance[];
 }
 
-interface ExpensesMobileTableProps {
-	sheetData: SheetWithExpenses;
+interface FinancesMobileTableProps {
+	sheetData: SheetWithFinances;
 }
 
-export const ExpensesMobileTable = ({ sheetData }: ExpensesMobileTableProps) => {
+export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => {
 	return (
 		<section className='block lg:hidden mb-24'>
-			{sheetData.expenses.length === 0 ? (
+			{sheetData.finances.length === 0 ? (
 				<>
 					<div className='w-full p-4 bg-white border-t text-center font-semibold'>
 						Nenhuma finança encontrada
 					</div>
 				</>
 			) : (
-				sheetData.expenses.map((expense) => (
-					<ExpensesMobileRow
-						expense={expense}
-						key={expense.id}
+				sheetData.finances.map((finance) => (
+					<FinancesMobileRow
+						finance={finance}
+						key={finance.id}
 					/>
 				))
 			)}

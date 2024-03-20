@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { EditExpenseSchema } from '@/schemas/EditExpenseSchema';
+import { EditFinanceSchema } from '@/schemas/EditFinanceSchema';
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
 	const user = await currentUser();
@@ -17,12 +17,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 	}
 
 	try {
-		const expenseToBeDeleted = await db.expense.findUnique({
+		const financeToBeDeleted = await db.finance.findUnique({
 			where: { id: params.id },
-			select: { sheetId: true, amount: true },
+			select: { sheetId: true, amount: true, type: true },
 		});
 
-		if (!expenseToBeDeleted) {
+		if (!financeToBeDeleted) {
 			return NextResponse.json(
 				{
 					error: 'Not found!',
@@ -32,7 +32,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		}
 
 		const sheet = await db.sheet.findUnique({
-			where: { id: expenseToBeDeleted?.sheetId, userId: user.id },
+			where: { id: financeToBeDeleted?.sheetId, userId: user.id },
 			select: { id: true, totalAmount: true },
 		});
 
@@ -45,13 +45,18 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			);
 		}
 
-		await db.expense.delete({
+		await db.finance.delete({
 			where: { id: params.id, sheetId: sheet.id },
 		});
 
 		await db.sheet.update({
-			where: { id: expenseToBeDeleted?.sheetId, userId: user.id },
-			data: { totalAmount: sheet.totalAmount - expenseToBeDeleted.amount },
+			where: { id: financeToBeDeleted.sheetId, userId: user.id },
+			data: {
+				totalAmount:
+					financeToBeDeleted.type === 'PROFIT'
+						? sheet.totalAmount - financeToBeDeleted.amount
+						: sheet.totalAmount + financeToBeDeleted.amount,
+			},
 		});
 
 		return NextResponse.json({ success: 'Deletado com sucesso!' }, { status: 200 });
@@ -68,7 +73,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
 	const body = await req.json();
 
-	const result = EditExpenseSchema.safeParse(body);
+	const result = EditFinanceSchema.safeParse(body);
 
 	if (!result.success) {
 		return NextResponse.json(
@@ -108,12 +113,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	if (amount) valuesToUpdate['amount'] = amount;
 
 	try {
-		const expenseToBeEdited = await db.expense.findUnique({
+		const financeToBeEdited = await db.finance.findUnique({
 			where: { id: params.id },
 			select: { sheetId: true, amount: true },
 		});
 
-		if (!expenseToBeEdited) {
+		if (!financeToBeEdited) {
 			return NextResponse.json(
 				{
 					error: 'Not found',
@@ -123,7 +128,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		}
 
 		const sheet = await db.sheet.findUnique({
-			where: { id: expenseToBeEdited.sheetId, userId: user.id },
+			where: { id: financeToBeEdited.sheetId, userId: user.id },
 			select: {
 				id: true,
 				totalAmount: true,
@@ -152,7 +157,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 			valuesToUpdate['order'] = Number(newOrder);
 		}
 
-		await db.expense.update({
+		await db.finance.update({
 			where: { id: params.id, sheetId: sheet.id },
 			data: {
 				...valuesToUpdate,
@@ -161,9 +166,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 		if (amount) {
 			await db.sheet.update({
-				where: { id: expenseToBeEdited.sheetId, userId: user.id },
+				where: { id: financeToBeEdited.sheetId, userId: user.id },
 				data: {
-					totalAmount: sheet.totalAmount - expenseToBeEdited.amount + amount,
+					totalAmount: sheet.totalAmount - financeToBeEdited.amount + amount,
 				},
 			});
 		}

@@ -2,24 +2,24 @@
 
 import { toast } from 'sonner';
 
-import { useDeleteExpenseModal } from '@/hooks/useDeleteExpenseModal';
-import { expensesService } from '@/services/expensesService';
+import { useDeleteFinanceModal } from '@/hooks/useDeleteFinanceModal';
+import { financesService } from '@/services/financesService';
 
 import { SubmitButton } from '../SubmitButton';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { useRouter } from 'next/navigation';
 
-export const DeleteExpenseModal = () => {
+export const DeleteFinanceModal = () => {
 	const router = useRouter();
 
-	const isOpen = useDeleteExpenseModal((state) => state.isOpen);
-	const onClose = useDeleteExpenseModal((state) => state.onClose);
-	const expense = useDeleteExpenseModal((state) => state.expense);
+	const isOpen = useDeleteFinanceModal((state) => state.isOpen);
+	const onClose = useDeleteFinanceModal((state) => state.onClose);
+	const finance = useDeleteFinanceModal((state) => state.finance);
 
 	const onSubmit = async () => {
-		if (!expense?.id) return;
+		if (!finance?.id) return;
 
-		const res = await expensesService.deleteExpense(expense.id);
+		const res = await financesService.deleteFinance(finance.id);
 
 		if (res.error) {
 			onClose();
@@ -30,7 +30,7 @@ export const DeleteExpenseModal = () => {
 		if (res.success) {
 			onClose();
 			router.refresh();
-			toast.success(`"${expense.title}" deletado com sucesso!`);
+			toast.success(`"${finance.title}" deletado com sucesso!`);
 		}
 	};
 
@@ -46,7 +46,7 @@ export const DeleteExpenseModal = () => {
 						className='space-y-6 mt-6'
 					>
 						<h3 className='text-justify text-xl'>
-							Deseja mesmo remover a despesa "<strong>{expense?.title}</strong>"?
+							Deseja mesmo remover a finança "<strong>{finance?.title}</strong>"?
 						</h3>
 
 						<SubmitButton type='delete' />

@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
-import { expensesService } from '@/services/expensesService';
+import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
+import { useEditFinanceModal } from '@/hooks/useEditFinanceModal';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 import { FormGroup } from '../FormGroup';
@@ -14,37 +14,27 @@ import { Calendar } from '../ui/calendar';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
-import { sheetNameToDate } from '@/lib/utils';
+import { financeStringToDate } from '@/lib/utils';
 import { toast } from 'sonner';
 
-export const AddExpenseModal = () => {
-	const currentDate = new Date();
-
+export const EditFinanceModal = () => {
 	const router = useRouter();
 
-	const isOpen = useAddExpenseModal((state) => state.isOpen);
-	const onClose = useAddExpenseModal((state) => state.onClose);
-	const sheetName = useAddExpenseModal((state) => state.sheetMonth);
-
+	const isOpen = useEditFinanceModal((state) => state.isOpen);
+	const onClose = useEditFinanceModal((state) => state.onClose);
+	const finance = useEditFinanceModal((state) => state.finance);
 	const width = useScreenWidth();
 
-	const params = useParams<{ sheetId: string }>();
-
-	const sheetDate = sheetNameToDate(sheetName);
-
-	const sheetMonthIsTheCurrentMonth =
-		currentDate.getMonth() === sheetDate.getMonth() && currentDate.getFullYear() === sheetDate.getFullYear();
-
-	const [date, setDate] = useState<Date | undefined>(sheetMonthIsTheCurrentMonth ? currentDate : sheetDate);
+	const [date, setDate] = useState<Date | undefined>(undefined);
 	const [message, setMessage] = useState<string | null>(null);
 
+	const financeDate = financeStringToDate(finance?.date);
+
 	useEffect(() => {
-		const newSheetDate = sheetNameToDate(sheetName);
-		const sheetMonthIsTheCurrentMonth =
-			currentDate.getMonth() === newSheetDate.getMonth() &&
-			currentDate.getFullYear() === newSheetDate.getFullYear();
-		setDate(sheetMonthIsTheCurrentMonth ? currentDate : newSheetDate);
-	}, [isOpen, setDate]);
+		setDate(financeDate);
+	}, [isOpen]);
+
+	if (!finance) return null;
 
 	const onSubmit = async (formData: FormData) => {
 		setMessage(null);
@@ -75,16 +65,16 @@ export const AddExpenseModal = () => {
 			}
 
 			dateFormatted = `${day.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${
-				months[sheetDate.getMonth()]
-			}/${sheetDate.getFullYear()}`;
+				months[financeDate.getMonth()]
+			}/${financeDate.getFullYear()}`;
 		} else {
 			if (!date) {
 				setMessage('Todos os campos são obrigatórios!');
 				return;
 			}
 
-			if (date.getMonth() !== sheetDate.getMonth()) {
-				setMessage('Dia deve ser do mês da planilha!');
+			if (date.getMonth() !== financeDate.getMonth()) {
+				setMessage('Data inválida!');
 				return;
 			}
 
@@ -98,24 +88,28 @@ export const AddExpenseModal = () => {
 			return;
 		}
 
-		const amountFormatted = amount.replace('R$ ', '').replaceAll('.', '').replace(',', '.');
+		const amountFormatted = amount.replace('R$ ', '').replace('R$ ', '').replaceAll('.', '').replace(',', '.');
 
 		if (isNaN(Number(amountFormatted)) || amountFormatted === '' || Number(amountFormatted) <= 0) {
 			setMessage('Quantia inválida!');
 			return;
 		}
 
-		const res = await expensesService.createExpense({
+		if (title === finance.title && Number(amountFormatted) === finance.amount && dateFormatted === finance.date) {
+			onClose();
+			return;
+		}
+
+		const res = await financesService.editFinance(finance.id, {
 			title,
 			amount: +amountFormatted,
 			date: dateFormatted,
-			sheetId: params.sheetId,
 		});
 
 		if (res.success) {
 			onClose();
 			router.refresh();
-			toast.success(`Despesa "${title}" criada com sucesso!`);
+			toast.success('Finança editada com sucesso!');
 		}
 
 		if (res.error) {
@@ -134,43 +128,49 @@ export const AddExpenseModal = () => {
 						action={onSubmit}
 						className='space-y-3'
 					>
-						<h3 className='text-center text-xl font-semibold'>Adicionar despesa</h3>
+						<h3 className='text-center text-xl font-semibold'>Editar finança</h3>
 						<FormGroup
 							id='title'
-							label='Título:'
-							placeholder='Ida ao mercado'
+							label='Título'
+							initialValue={finance.title}
 						/>
 						<FormGroup
 							id='amount'
-							label='Quantia:'
+							label='Quantia'
 							mask='R$ #.##0,00'
-							placeholder='R$ XXX,XX'
+							initialValue={finance.amount.toLocaleString('pt-BR', {
+								style: 'currency',
+								currency: 'BRL',
+							})}
 						/>
 						{width >= 700 ? (
-							<div>
-								<Label className='text-lg text-center'>Dia:</Label>
-								<Calendar
-									fromMonth={date}
-									toMonth={date}
-									month={date}
-									disableNavigation
-									lang='pt'
-									mode='single'
-									selected={date}
-									onSelect={setDate}
-									className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
-								/>
-							</div>
+							!!date && (
+								<div>
+									<Label className='text-lg text-center'>Dia:</Label>
+									<Calendar
+										month={date}
+										fromMonth={date}
+										toMonth={date}
+										disableNavigation
+										lang='pt'
+										mode='single'
+										selected={date}
+										onSelect={setDate}
+										className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+									/>
+								</div>
+							)
 						) : (
 							<FormGroup
 								id='date'
 								label='Dia:'
-								placeholder={`${sheetMonthIsTheCurrentMonth ? currentDate
-									.getDate()
-									.toLocaleString('pt-BR', { minimumIntegerDigits: 2 }) : sheetDate
-									.getDate()
-									.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}`}
+								placeholder={`${financeDate.getDate().toLocaleString('pt-BR', {
+									minimumIntegerDigits: 2,
+								})}`}
 								mask={'dd'}
+								initialValue={financeDate.getDate().toLocaleString('pt-BR', {
+									minimumIntegerDigits: 2,
+								})}
 								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
 							/>
 						)}
@@ -179,7 +179,7 @@ export const AddExpenseModal = () => {
 							type='error'
 							className='mx-auto'
 						/>
-						<SubmitButton type='add' />
+						<SubmitButton type='edit' />
 					</form>
 				</DialogContent>
 			</Dialog>

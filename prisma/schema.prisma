@@ -13,6 +13,11 @@ datasource db {
   url  	    = env("DATABASE_URL")
 }
 
+enum FinanceType {
+  EXPENSE
+  PROFIT
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -42,13 +47,14 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model Expense {
+model Finance {
 	id  String @id @default(cuid())
 	title String
 	amount Float
 	date String
 	sheetId String
   order Int
+  type FinanceType
 
   sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
 }
@@ -60,7 +66,7 @@ model Sheet {
 	totalAmount Float
   order Int
 
-  expenses Expense[]
+  finances Finance[]
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

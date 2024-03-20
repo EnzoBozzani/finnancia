@@ -2,10 +2,10 @@
 
 import { PlusIcon } from '@radix-ui/react-icons';
 
-import { useAddExpenseModal } from '@/hooks/useAddExpenseModal';
+import { useAddFinanceModal } from '@/hooks/useAddFinanceModal';
 
-export const AddExpenseButton = ({ sheetMonth }: { sheetMonth: string }) => {
-	const onOpen = useAddExpenseModal((state) => state.onOpen);
+export const AddFinanceButton = ({ sheetMonth }: { sheetMonth: string }) => {
+	const onOpen = useAddFinanceModal((state) => state.onOpen);
 
 	return (
 		<div

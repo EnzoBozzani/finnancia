@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
-import { CreateExpenseSchema } from '@/schemas/CreateExpenseSchema';
+import { CreateFinanceSchema } from '@/schemas/CreateFinanceSchema';
 import { currentUser } from '@/lib/auth';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 		);
 	}
 
-	const result = CreateExpenseSchema.safeParse(body);
+	const result = CreateFinanceSchema.safeParse(body);
 
 	if (!result.success) {
 		return NextResponse.json(
@@ -29,7 +29,16 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 		);
 	}
 
-	const { amount, date, title } = result.data;
+	const { amount, date, title, type } = result.data;
+
+	if (type !== 'EXPENSE' && type !== 'PROFIT') {
+		return NextResponse.json(
+			{
+				error: 'Valores inválidos!',
+			},
+			{ status: 400 }
+		);
+	}
 
 	const order = Number(date.slice(0, 2));
 
@@ -50,26 +59,27 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			);
 		}
 
-		await db.expense.create({
+		await db.finance.create({
 			data: {
 				amount: amount,
 				title: title,
 				sheetId: params.id,
 				date: date,
 				order,
+				type,
 			},
 		});
 
 		await db.sheet.update({
 			where: { id: params.id },
 			data: {
-				totalAmount: sheet.totalAmount + amount,
+				totalAmount: type === 'PROFIT' ? sheet.totalAmount + amount : sheet.totalAmount - amount,
 			},
 		});
 
 		return NextResponse.json(
 			{
-				success: 'Expense created!',
+				success: 'Finança criada!',
 			},
 			{ status: 200 }
 		);

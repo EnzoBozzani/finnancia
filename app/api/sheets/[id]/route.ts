@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 		const sheet = await db.sheet.findUnique({
 			where: { id: params.id, userId: user.id },
 			include: {
-				expenses: {
+				finances: {
 					orderBy: {
 						order: 'asc',
 					},

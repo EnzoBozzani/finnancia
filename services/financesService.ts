@@ -1,19 +1,22 @@
-interface CreateExpenseData {
+import { FinanceType } from '@prisma/client';
+
+interface CreateFinanceData {
 	title: string;
 	amount: number;
 	date: string;
 	sheetId: string;
+	type: FinanceType;
 }
 
-interface UpdateExpenseData {
+interface UpdateFinanceData {
 	title?: string;
 	amount?: number;
 	date?: string;
 }
 
-export const expensesService = {
-	async createExpense({ title, amount, date, sheetId }: CreateExpenseData) {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}/expense`, {
+export const financesService = {
+	async createFinance({ title, amount, date, type, sheetId }: CreateFinanceData) {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}/finance`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
@@ -25,8 +28,8 @@ export const expensesService = {
 		return res.json();
 	},
 
-	async deleteExpense(expenseId: string) {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses/${expenseId}`, {
+	async deleteFinance(financeId: string) {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/finances/${financeId}`, {
 			method: 'DELETE',
 			headers: {
 				Accept: 'application/json',
@@ -37,8 +40,8 @@ export const expensesService = {
 		return res.json();
 	},
 
-	async editExpense(expenseId: string, updateValues: UpdateExpenseData) {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/expenses/${expenseId}`, {
+	async editFinance(financeId: string, updateValues: UpdateFinanceData) {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/finances/${financeId}`, {
 			method: 'PUT',
 			headers: {
 				Accept: 'application/json',

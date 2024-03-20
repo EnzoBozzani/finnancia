@@ -17,19 +17,19 @@ export function sheetNameToDate(sheetName: string | null) {
 	return sheetDate;
 }
 
-export function expenseStringToDate(expenseString: string | undefined) {
-	const expenseDateArr = expenseString?.split('/');
+export function financeStringToDate(financeString: string | undefined) {
+	const financeDateArr = financeString?.split('/');
 
-	const expenseDay = (Number(expenseDateArr && expenseDateArr[0]) + 1)?.toLocaleString('pt-BR', {
+	const financeDay = (Number(financeDateArr && financeDateArr[0]) + 1)?.toLocaleString('pt-BR', {
 		minimumIntegerDigits: 2,
 	});
 	//@ts-ignore
-	const expenseMonth = monthNameToMonthNumber[expenseDateArr && expenseDateArr[1]]?.toLocaleString('pt-BR', {
+	const financeMonth = monthNameToMonthNumber[financeDateArr && financeDateArr[1]]?.toLocaleString('pt-BR', {
 		minimumIntegerDigits: 2,
 	});
-	const expenseYear = Number(expenseDateArr && expenseDateArr[2]);
+	const financeYear = Number(financeDateArr && financeDateArr[2]);
 
-	const expenseDate = new Date(`${expenseYear}-${expenseMonth}-${expenseDay}`);
+	const financeDate = new Date(`${financeYear}-${financeMonth}-${financeDay}`);
 
-	return expenseDate;
+	return financeDate;
 }

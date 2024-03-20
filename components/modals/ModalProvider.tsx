@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import { AddExpenseModal } from './AddExpenseModal';
+import { AddFinanceModal } from './AddFinanceModal';
 import { AddSheetModal } from './AddSheetModal';
-import { EditExpenseModal } from './EditExpenseModal';
-import { DeleteExpenseModal } from './DeleteExpenseModal';
+import { EditFinanceModal } from './EditFinanceModal';
+import { DeleteFinanceModal } from './DeleteFinanceModal';
 
 export const ModalProvider = () => {
 	const [isMounted, setIsMounted] = useState(false);
@@ -18,10 +18,10 @@ export const ModalProvider = () => {
 
 	return (
 		<>
-			<AddExpenseModal />
+			<AddFinanceModal />
 			<AddSheetModal />
-			<EditExpenseModal />
-			<DeleteExpenseModal />
+			<EditFinanceModal />
+			<DeleteFinanceModal />
 		</>
 	);
 };

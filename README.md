@@ -1,17 +1,17 @@
-# Finnancia - Control your Expenses
+# Finnancia - Control your finances
 
 ### Status: Development
 
-Finnancia is a platform that empowers users to efficiently manage their monthly expenses using customizable sheets. With Finnancia, users can:
+Finnancia is a platform that empowers users to efficiently manage their monthly finances using customizable sheets. With Finnancia, users can:
 
--   Add recurring monthly expenses that will be automatically reflected across all sheets.
--   Record individual expenses in detail.
+-   Add recurring monthly finances that will be automatically reflected across all sheets.
+-   Record individual finances in detail.
 -   View and manage multiple sheets quickly and simply.
 
 **Highlighted Features:**
 
--   Centralized Control: Add monthly expenses once and see them automatically distributed across all your sheets.
--   Flexibility: Record individual expenses for a more detailed and accurate view.
+-   Centralized Control: Add monthly finances once and see them automatically distributed across all your sheets.
+-   Flexibility: Record individual finances for a more detailed and accurate view.
 -   Intuitive Navigation: Access different sheets quickly and uncomplicatedly.
 -   Finnancial Facilitator: Simplify financial control like never before.
 

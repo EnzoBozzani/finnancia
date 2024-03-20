@@ -138,7 +138,7 @@ export const Sidebar = () => {
 								</SheetTitle>
 								<SheetDescription>
 									Faça o gerenciamento de suas finanças aqui. Navegue entre planilhas, adicione
-									despesas mensais e altere seus dados.
+									finanças mensais e altere seus dados.
 								</SheetDescription>
 							</SheetHeader>
 							<div className='mt-12'>

@@ -1,4 +1,4 @@
-import { Expense, Sheet } from '@prisma/client';
+import { Finance, Sheet } from '@prisma/client';
 
 import {
 	Table,
@@ -13,15 +13,15 @@ import {
 
 import { Row } from './Row';
 
-interface SheetWithExpenses extends Sheet {
-	expenses: Expense[];
+interface SheetWithFinances extends Sheet {
+	finances: Finance[];
 }
 
-interface ExpensesSheetProps {
-	sheetData: SheetWithExpenses;
+interface FinancesSheetProps {
+	sheetData: SheetWithFinances;
 }
 
-export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
+export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	return (
 		<div className='hidden lg:block max-w-screen-xl rounded-xl border border-neutral-200 w-[90%] mx-auto mb-12'>
 			<Table className='md:text-lg'>
@@ -37,23 +37,23 @@ export const ExpensesSheet = ({ sheetData }: ExpensesSheetProps) => {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{sheetData.expenses.length === 0 ? (
+					{sheetData.finances.length === 0 ? (
 						<>
 							<TableRow>
 								<TableCell
 									className='text-center font-semibold py-6 bg-neutral-100'
 									colSpan={4}
 								>
-									Nenhuma despesa encontrada nessa planilha
+									Nenhuma finança encontrada nessa planilha
 								</TableCell>
 							</TableRow>
 						</>
 					) : (
 						<>
-							{sheetData.expenses.map((expense, i) => (
+							{sheetData.finances.map((finance, i) => (
 								<Row
-									key={expense.id}
-									expense={expense}
+									key={finance.id}
+									finance={finance}
 									i={i}
 								/>
 							))}

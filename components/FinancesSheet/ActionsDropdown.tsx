@@ -3,7 +3,7 @@
 import { RiMoreFill } from 'react-icons/ri';
 import { MdEdit } from 'react-icons/md';
 import { FaTrash } from 'react-icons/fa';
-import { Expense } from '@prisma/client';
+import { Finance } from '@prisma/client';
 
 import {
 	DropdownMenu,
@@ -14,16 +14,16 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { useEditExpenseModal } from '@/hooks/useEditExpenseModal';
-import { useDeleteExpenseModal } from '@/hooks/useDeleteExpenseModal';
+import { useEditFinanceModal } from '@/hooks/useEditFinanceModal';
+import { useDeleteFinanceModal } from '@/hooks/useDeleteFinanceModal';
 
 interface ActionsDropdownProps {
-	expense: Expense;
+	finance: Finance;
 }
 
-export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
-	const onOpenEdit = useEditExpenseModal((state) => state.onOpen);
-	const onOpenDelete = useDeleteExpenseModal((state) => state.onOpen);
+export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
+	const onOpenEdit = useEditFinanceModal((state) => state.onOpen);
+	const onOpenDelete = useDeleteFinanceModal((state) => state.onOpen);
 
 	return (
 		<DropdownMenu>
@@ -36,7 +36,7 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => {
-							onOpenEdit(expense);
+							onOpenEdit(finance);
 						}}
 						className='py-3 cursor-pointer flex items-center justify-center'
 					>
@@ -44,7 +44,7 @@ export const ActionsDropdown = ({ expense }: ActionsDropdownProps) => {
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={() => {
-							onOpenDelete(expense);
+							onOpenDelete(finance);
 						}}
 						className='py-3 cursor-pointer flex items-center justify-center'
 					>
