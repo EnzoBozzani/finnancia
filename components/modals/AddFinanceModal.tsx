@@ -37,6 +37,7 @@ export const AddFinanceModal = () => {
 		currentDate.getMonth() === sheetDate.getMonth() && currentDate.getFullYear() === sheetDate.getFullYear();
 
 	const [date, setDate] = useState<Date | undefined>(sheetMonthIsTheCurrentMonth ? currentDate : sheetDate);
+	const [type, setType] = useState<'PROFIT' | 'EXPENSE'>('PROFIT');
 	const [message, setMessage] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -94,7 +95,15 @@ export const AddFinanceModal = () => {
 			}/${date.getFullYear()}`;
 		}
 
-		if (!title || !amount || title === '' || amount === '' || !dateFormatted) {
+		if (
+			!title ||
+			!amount ||
+			title === '' ||
+			amount === '' ||
+			!dateFormatted ||
+			!type ||
+			(type !== 'PROFIT' && type !== 'EXPENSE')
+		) {
 			setMessage('Todos os campos são obrigatórios!');
 			return;
 		}
@@ -111,7 +120,7 @@ export const AddFinanceModal = () => {
 			amount: +amountFormatted,
 			date: dateFormatted,
 			sheetId: params.sheetId,
-			type: 'PROFIT', //TODO: Arrumar
+			type,
 		});
 
 		if (res.success) {
@@ -134,7 +143,7 @@ export const AddFinanceModal = () => {
 				<DialogContent className='sm:max-w-[425px]'>
 					<form
 						action={onSubmit}
-						className='space-y-3'
+						className='space-y-4'
 					>
 						<h3 className='text-center text-xl font-semibold'>Adicionar finança</h3>
 						<FormGroup
@@ -148,49 +157,61 @@ export const AddFinanceModal = () => {
 							mask='R$ #.##0,00'
 							placeholder='R$ XXX,XX'
 						/>
-						{width >= 700 ? (
-							<div className='flex items-center gap-x-4'>
-								<div className='flex flex-col gap-y-2'>
-									<Label className='text-lg'>Dia:</Label>
-									<Calendar
-										fromMonth={date}
-										toMonth={date}
-										month={date}
-										disableNavigation
-										lang='pt'
-										mode='single'
-										selected={date}
-										onSelect={setDate}
-										className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+						<div className='flex items-center gap-x-2'>
+							<Label
+								htmlFor='type'
+								className='text-lg'
+							>
+								Tipo:
+							</Label>
+							<RadioGroup
+								defaultValue='PROFIT'
+								id='type'
+								className='w-full flex items-center justify-center gap-x-6'
+								onValueChange={(ev: 'EXPENSE' | 'PROFIT') => setType(ev)}
+							>
+								<div className='flex items-center space-x-2'>
+									<RadioGroupItem
+										value='PROFIT'
+										id='profit'
+										className='w-6 h-6'
 									/>
-								</div>
-								<div className='flex flex-col gap-y-2'>
 									<Label
-										htmlFor='type'
-										className='text-lg'
+										htmlFor='profit'
+										className='text-base text-green-500'
 									>
-										Tipo:
+										Ganho
 									</Label>
-									<RadioGroup
-										defaultValue='PROFIT'
-										id='type'
-									>
-										<div className='flex items-center space-x-2'>
-											<RadioGroupItem
-												value='PROFIT'
-												id='profit'
-											/>
-											<Label htmlFor='profit'>Ganho</Label>
-										</div>
-										<div className='flex items-center space-x-2'>
-											<RadioGroupItem
-												value='EXPENSE'
-												id='expense'
-											/>
-											<Label htmlFor='expense'>Despesa</Label>
-										</div>
-									</RadioGroup>
 								</div>
+								<div className='flex items-center space-x-2'>
+									<RadioGroupItem
+										value='EXPENSE'
+										id='expense'
+										className='w-6 h-6'
+									/>
+									<Label
+										htmlFor='expense'
+										className='text-base text-red-500'
+									>
+										Despesa
+									</Label>
+								</div>
+							</RadioGroup>
+						</div>
+						{width >= 1024 ? (
+							<div>
+								<Label className='text-lg'>Dia:</Label>
+								<Calendar
+									fromMonth={date}
+									toMonth={date}
+									month={date}
+									disableNavigation
+									lang='pt'
+									mode='single'
+									selected={date}
+									onSelect={setDate}
+									className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+								/>
 							</div>
 						) : (
 							<FormGroup
@@ -202,7 +223,7 @@ export const AddFinanceModal = () => {
 										: sheetDate.getDate().toLocaleString('pt-BR', { minimumIntegerDigits: 2 })
 								}`}
 								mask={'dd'}
-								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
+								className='flex items-center justify-center gap-x-4 space-y-0 odd:w-[95px] even:flex even:items-center'
 							/>
 						)}
 						<FormMessage

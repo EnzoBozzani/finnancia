@@ -64,9 +64,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 				<TableFooter>
 					<TableRow className='bg-green-700 hover:bg-green-700 text-white'>
 						<TableCell colSpan={3}>Saldo total:</TableCell>
-						<TableCell
-							className={cn('text-right', sheetData.totalAmount >= 0 ? 'text-white' : 'text-red-500')}
-						>
+						<TableCell className={cn('text-right')}>
 							{sheetData.totalAmount.toLocaleString('pt-BR', {
 								style: 'currency',
 								currency: 'BRL',

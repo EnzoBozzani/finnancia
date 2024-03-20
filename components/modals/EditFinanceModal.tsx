@@ -145,7 +145,7 @@ export const EditFinanceModal = () => {
 								currency: 'BRL',
 							})}
 						/>
-						{width >= 700 ? (
+						{width >= 1024 ? (
 							!!date && (
 								<div>
 									<Label className='text-lg text-center'>Dia:</Label>
@@ -173,7 +173,7 @@ export const EditFinanceModal = () => {
 								initialValue={financeDate.getDate().toLocaleString('pt-BR', {
 									minimumIntegerDigits: 2,
 								})}
-								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
+								className='flex items-center justify-center gap-x-4 space-y-0 odd:w-[95px] even:flex even:items-center'
 							/>
 						)}
 						<FormMessage
