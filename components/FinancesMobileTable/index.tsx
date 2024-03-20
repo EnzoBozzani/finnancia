@@ -1,5 +1,7 @@
 import { Finance, Sheet } from '@prisma/client';
 
+import { cn } from '@/lib/utils';
+
 import { FinancesMobileRow } from './FinancesMobileRow';
 
 interface SheetWithFinances extends Sheet {
@@ -29,7 +31,12 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 			)}
 			<div className='w-full grid grid-cols-2 gap-x-2 p-4 bg-white border-t'>
 				<p className='text-sm font-semibold'>Saldo total:</p>
-				<p className='text-red-600 text-sm break-all font-semibold text-end'>
+				<p
+					className={cn(
+						'text-red-600 text-sm break-all font-semibold text-end',
+						sheetData.totalAmount >= 0 ? 'text-green-500' : 'text-red-500'
+					)}
+				>
 					{sheetData.totalAmount.toLocaleString('pt-BR', {
 						style: 'currency',
 						currency: 'BRL',

@@ -22,7 +22,7 @@ export const financesService = {
 				Accept: 'application/json',
 				'Conten-Type': 'application/json',
 			},
-			body: JSON.stringify({ title, amount, date, sheetId }),
+			body: JSON.stringify({ title, amount, date, sheetId, type }),
 		});
 
 		return res.json();

@@ -8,6 +8,7 @@ import { useAddFinanceModal } from '@/hooks/useAddFinanceModal';
 import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
+import { sheetNameToDate } from '@/lib/utils';
 
 import { FormGroup } from '../FormGroup';
 import { FormMessage } from '../FormMessage';
@@ -15,7 +16,7 @@ import { Calendar } from '../ui/calendar';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
-import { sheetNameToDate } from '@/lib/utils';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
 export const AddFinanceModal = () => {
 	const currentDate = new Date();
@@ -110,7 +111,7 @@ export const AddFinanceModal = () => {
 			amount: +amountFormatted,
 			date: dateFormatted,
 			sheetId: params.sheetId,
-			type: 'EXPENSE', //TODO: Arrumar
+			type: 'PROFIT', //TODO: Arrumar
 		});
 
 		if (res.success) {
@@ -148,19 +149,48 @@ export const AddFinanceModal = () => {
 							placeholder='R$ XXX,XX'
 						/>
 						{width >= 700 ? (
-							<div>
-								<Label className='text-lg text-center'>Dia:</Label>
-								<Calendar
-									fromMonth={date}
-									toMonth={date}
-									month={date}
-									disableNavigation
-									lang='pt'
-									mode='single'
-									selected={date}
-									onSelect={setDate}
-									className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
-								/>
+							<div className='flex items-center gap-x-4'>
+								<div className='flex flex-col gap-y-2'>
+									<Label className='text-lg'>Dia:</Label>
+									<Calendar
+										fromMonth={date}
+										toMonth={date}
+										month={date}
+										disableNavigation
+										lang='pt'
+										mode='single'
+										selected={date}
+										onSelect={setDate}
+										className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+									/>
+								</div>
+								<div className='flex flex-col gap-y-2'>
+									<Label
+										htmlFor='type'
+										className='text-lg'
+									>
+										Tipo:
+									</Label>
+									<RadioGroup
+										defaultValue='PROFIT'
+										id='type'
+									>
+										<div className='flex items-center space-x-2'>
+											<RadioGroupItem
+												value='PROFIT'
+												id='profit'
+											/>
+											<Label htmlFor='profit'>Ganho</Label>
+										</div>
+										<div className='flex items-center space-x-2'>
+											<RadioGroupItem
+												value='EXPENSE'
+												id='expense'
+											/>
+											<Label htmlFor='expense'>Despesa</Label>
+										</div>
+									</RadioGroup>
+								</div>
 							</div>
 						) : (
 							<FormGroup

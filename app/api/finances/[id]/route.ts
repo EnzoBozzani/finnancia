@@ -115,7 +115,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	try {
 		const financeToBeEdited = await db.finance.findUnique({
 			where: { id: params.id },
-			select: { sheetId: true, amount: true },
+			select: { sheetId: true, amount: true, type: true },
 		});
 
 		if (!financeToBeEdited) {
@@ -168,7 +168,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 			await db.sheet.update({
 				where: { id: financeToBeEdited.sheetId, userId: user.id },
 				data: {
-					totalAmount: sheet.totalAmount - financeToBeEdited.amount + amount,
+					totalAmount:
+						financeToBeEdited.type === 'PROFIT'
+							? sheet.totalAmount - financeToBeEdited.amount + amount
+							: sheet.totalAmount + financeToBeEdited.amount - amount,
 				},
 			});
 		}

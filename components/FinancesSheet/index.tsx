@@ -10,6 +10,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
 import { Row } from './Row';
 
@@ -63,8 +64,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 				<TableFooter>
 					<TableRow className='bg-green-700 hover:bg-green-700 text-white'>
 						<TableCell colSpan={3}>Saldo total:</TableCell>
-						<TableCell className='text-right'>
-							-{' '}
+						<TableCell
+							className={cn('text-right', sheetData.totalAmount >= 0 ? 'text-white' : 'text-red-500')}
+						>
 							{sheetData.totalAmount.toLocaleString('pt-BR', {
 								style: 'currency',
 								currency: 'BRL',

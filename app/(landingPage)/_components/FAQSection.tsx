@@ -29,7 +29,7 @@ export const FAQSection = () => {
 						</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
 							Vá para a seção "Minhas finanças" e clique em "Adicionar finança Individual", onde você pode
-							detalhar gastos específicos que não são recorrentes.
+							detalhar finanças específicos que não são recorrentes.
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 					<FAQAccordion.Item value='item-4'>

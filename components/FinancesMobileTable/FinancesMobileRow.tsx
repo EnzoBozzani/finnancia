@@ -1,5 +1,7 @@
 import { Finance } from '@prisma/client';
 
+import { cn } from '@/lib/utils';
+
 import { ActionsDropdown } from '../FinancesSheet/ActionsDropdown';
 
 export const FinancesMobileRow = ({ finance }: { finance: Finance }) => {
@@ -11,8 +13,13 @@ export const FinancesMobileRow = ({ finance }: { finance: Finance }) => {
 			</div>
 			<div className='flex flex-col items-end justify-center'>
 				<div className='flex flex-col items-end justify-center gap-y-2'>
-					<p className='text-red-600 text-sm break-all font-semibold text-end'>
-						-{' '}
+					<p
+						className={cn(
+							'text-sm break-all font-semibold text-end',
+							finance.type === 'PROFIT' ? 'text-green-500' : 'text-red-500'
+						)}
+					>
+						{finance.type === 'PROFIT' ? '+ ' : '- '}
 						{finance.amount.toLocaleString('pt-BR', {
 							style: 'currency',
 							currency: 'BRL',

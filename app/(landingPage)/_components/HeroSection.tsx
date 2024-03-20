@@ -28,7 +28,7 @@ export const HeroSection = () => {
 					<div className='px-4 md:px-12 py-12 flex items-center justify-center'>
 						<div className='space-y-8'>
 							<h1 className='text-3xl md:text-5xl font-semibold text-center lg:text-start'>
-								Controle seus gastos com <span className='text-green-700'>Finnancia</span>
+								Controle suas finanças com <span className='text-green-700'>Finnancia</span>
 							</h1>
 							<p className='text-sm md:text-base text-center lg:text-justify'>
 								Centralize finanças, registre gastos detalhados e navegue intuitivamente entre

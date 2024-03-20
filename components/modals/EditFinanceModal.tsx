@@ -128,7 +128,9 @@ export const EditFinanceModal = () => {
 						action={onSubmit}
 						className='space-y-3'
 					>
-						<h3 className='text-center text-xl font-semibold'>Editar finança</h3>
+						<h3 className='text-center text-xl font-semibold'>
+							Editar {finance.type === 'PROFIT' ? 'Ganho' : 'Despesa'}
+						</h3>
 						<FormGroup
 							id='title'
 							label='Título'

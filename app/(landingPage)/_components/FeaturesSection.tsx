@@ -31,7 +31,7 @@ export const FeaturesSection = () => {
 					<FeatureArticle.Title>Flexibilidade no Registro</FeatureArticle.Title>
 					<FeatureArticle.Text>
 						Registre finanças individuais com precisão, oferecendo uma análise detalhada e precisa de seus
-						hábitos de gastos para uma visão abrangente de suas finanças.
+						hábitos de finanças para uma visão abrangente de suas finanças.
 					</FeatureArticle.Text>
 				</FeatureArticle>
 				<FeatureArticle>

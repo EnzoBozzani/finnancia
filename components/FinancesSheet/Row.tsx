@@ -1,5 +1,7 @@
 import { Finance } from '@prisma/client';
 
+import { cn } from '@/lib/utils';
+
 import { TableRow, TableCell } from '../ui/table';
 import { ActionsDropdown } from './ActionsDropdown';
 
@@ -15,8 +17,8 @@ export const Row = ({ finance, i }: RowProps) => {
 			className={i % 2 === 0 ? 'bg-white hover:bg-white' : 'bg-neutral-100 hover:bg-neutral-100'}
 		>
 			<TableCell className='text-center'>{finance.title}</TableCell>
-			<TableCell className='text-center text-red-600'>
-				-{' '}
+			<TableCell className={cn('text-center', finance.type === 'PROFIT' ? 'text-green-500' : 'text-red-500')}>
+				{finance.type === 'PROFIT' ? '+ ' : '- '}
 				{finance.amount.toLocaleString('pt-BR', {
 					style: 'currency',
 					currency: 'BRL',

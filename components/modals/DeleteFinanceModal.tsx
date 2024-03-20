@@ -46,7 +46,8 @@ export const DeleteFinanceModal = () => {
 						className='space-y-6 mt-6'
 					>
 						<h3 className='text-justify text-xl'>
-							Deseja mesmo remover a finança "<strong>{finance?.title}</strong>"?
+							Deseja mesmo remover {finance?.type === 'PROFIT' ? 'o ganho' : 'a despesa'} "
+							<strong>{finance?.title}</strong>"?
 						</h3>
 
 						<SubmitButton type='delete' />
