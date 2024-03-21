@@ -31,9 +31,9 @@ export const HeroSection = () => {
 								Controle suas finanças com <span className='text-green-700'>Finnancia</span>
 							</h1>
 							<p className='text-sm md:text-base text-center lg:text-justify'>
-								Centralize finanças, registre gastos detalhados e navegue intuitivamente entre
-								planilhas. Financia simplifica o controle financeiro, tornando a gestão mensal fácil e
-								eficiente. Experimente agora!
+								Centralize finanças, registre gastos detalhados e navegue intuitivamente entre as
+								planilhas de cada mês. Finnancia simplifica o controle financeiro, tornando a gestão
+								mensal fácil e eficiente. Experimente agora!
 							</p>
 							<div className='flex items-center justify-center lg:block'>
 								<Button

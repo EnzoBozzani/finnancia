@@ -20,8 +20,9 @@ export const FeaturesSection = () => {
 					</FeatureArticle.Icon>
 					<FeatureArticle.Title>Controle Centralizado</FeatureArticle.Title>
 					<FeatureArticle.Text>
-						Adicione finanças mensais recorrentes uma vez, e o Finnancia automaticamente as distribuirá em
-						todas as suas planilhas, proporcionando uma visão centralizada de seus compromissos financeiros.
+						Adicione, edite e remova finanças mensais recorrentes, e o Finnancia automaticamente as
+						distribuirá em suas planilhas, proporcionando uma visão centralizada de seus compromissos
+						financeiros.
 					</FeatureArticle.Text>
 				</FeatureArticle>
 				<FeatureArticle>
@@ -31,7 +32,7 @@ export const FeaturesSection = () => {
 					<FeatureArticle.Title>Flexibilidade no Registro</FeatureArticle.Title>
 					<FeatureArticle.Text>
 						Registre finanças individuais com precisão, oferecendo uma análise detalhada e precisa de seus
-						hábitos de finanças para uma visão abrangente de suas finanças.
+						hábitos de financeiros para ter uma visão totalmente abrangente.
 					</FeatureArticle.Text>
 				</FeatureArticle>
 				<FeatureArticle>

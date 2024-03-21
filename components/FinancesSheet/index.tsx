@@ -51,20 +51,21 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 						</>
 					) : (
 						<>
-							{sheetData.finances.map((finance, i) => (
+							{sheetData.finances.map((finance) => (
 								<Row
 									key={finance.id}
 									finance={finance}
-									i={i}
 								/>
 							))}
 						</>
 					)}
 				</TableBody>
 				<TableFooter>
-					<TableRow className='bg-green-700 hover:bg-green-700 text-white'>
+					<TableRow className='bg-white'>
 						<TableCell colSpan={3}>Saldo total:</TableCell>
-						<TableCell className={cn('text-right')}>
+						<TableCell
+							className={cn('text-right', sheetData.totalAmount >= 0 ? 'text-green-500' : 'text-red-500')}
+						>
 							{sheetData.totalAmount.toLocaleString('pt-BR', {
 								style: 'currency',
 								currency: 'BRL',

@@ -9,9 +9,9 @@ export const FAQSection = () => {
 					<FAQAccordion.Item value='item-1'>
 						<FAQAccordion.Trigger>Como posso adicionar uma nova finança mensal?</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
-							No painel principal, clique em "Adicionar finança" e preencha os detalhes, garantindo que a
-							opção "Recorrente" esteja selecionada para que a finança seja refletida em todas as
-							planilhas.
+							No painel principal, clique em "Adicionar finança" e preencha os detalhes. Feito isso, a
+							finança será adicionada em cada nova planilha que for criada. Também é possível alterar
+							essas finanças individualmente quando forem inseridas nas planilhas.
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 					<FAQAccordion.Item value='item-2'>
@@ -19,17 +19,15 @@ export const FAQSection = () => {
 							É possível editar ou excluir uma finança já registrada?
 						</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
-							Sim, vá para a seção "Minhas finanças", encontre a finança desejada e clique em "Editar"
-							para fazer alterações ou em "Excluir" para remover a finança.
+							Sim, você pode alterar de maneira extremamente simples clicando no ícone de ações e
+							selecionando as opções apresentadas. É possível editar e remover também finanças mensais.
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 					<FAQAccordion.Item value='item-3'>
-						<FAQAccordion.Trigger>
-							Como registro finanças individuais além das mensais recorrentes?
-						</FAQAccordion.Trigger>
+						<FAQAccordion.Trigger>Como registro finanças individuais?</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
-							Vá para a seção "Minhas finanças" e clique em "Adicionar finança Individual", onde você pode
-							detalhar finanças específicos que não são recorrentes.
+							Para registrar finanças individuais é extremamente simples! Quando estiver em alguma tela de
+							planilha, basta clicar no botão verde no canto inferior direito da tela!
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 					<FAQAccordion.Item value='item-4'>
@@ -37,8 +35,8 @@ export const FAQSection = () => {
 							Posso visualizar um resumo rápido das minhas finanças em uma única tela?
 						</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
-							Sim, utilize a opção "Visão Geral" para ter uma visão consolidada de todas as suas finanças
-							e saldos em todas as suas planilhas.
+							Sim, na página do painel você pode ter uma noção total das suas finanças, mostrando dados
+							como gasto, ganho e saldo médio por mês, saldo total, além de análises de seus dados!
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 				</FAQAccordion>

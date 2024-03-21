@@ -6,10 +6,15 @@ import { ActionsDropdown } from '../FinancesSheet/ActionsDropdown';
 
 export const FinancesMobileRow = ({ finance }: { finance: Finance }) => {
 	return (
-		<div className='w-full grid grid-cols-2 gap-x-2 p-4 bg-white border-t'>
+		<div
+			className={cn(
+				'w-full grid grid-cols-2 gap-x-2 p-4 border-t border-neutral-400',
+				finance.type === 'PROFIT' ? 'bg-green-100' : 'bg-red-100'
+			)}
+		>
 			<div className='flex flex-col items-start justify-center gap-y-2'>
 				<p className='text-sm break-all'>{finance.title}</p>
-				<div className='rounded bg-neutral-200 px-2 py-1 text-xs font-semibold'>{finance.date}</div>
+				<div className='rounded bg-white px-2 py-1 text-xs font-semibold'>{finance.date}</div>
 			</div>
 			<div className='flex flex-col items-end justify-center'>
 				<div className='flex flex-col items-end justify-center gap-y-2'>

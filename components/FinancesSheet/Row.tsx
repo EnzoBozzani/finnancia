@@ -7,17 +7,16 @@ import { ActionsDropdown } from './ActionsDropdown';
 
 interface RowProps {
 	finance: Finance;
-	i: number;
 }
 
-export const Row = ({ finance, i }: RowProps) => {
+export const Row = ({ finance }: RowProps) => {
 	return (
 		<TableRow
 			key={finance.id}
-			className={i % 2 === 0 ? 'bg-white hover:bg-white' : 'bg-neutral-100 hover:bg-neutral-100'}
+			className={finance.type === 'PROFIT' ? 'bg-green-100 hover:bg-green-200' : 'bg-red-100 hover:bg-red-200'}
 		>
 			<TableCell className='text-center'>{finance.title}</TableCell>
-			<TableCell className={cn('text-center', finance.type === 'PROFIT' ? 'text-green-500' : 'text-red-500')}>
+			<TableCell className={cn('text-center', finance.type === 'PROFIT' ? 'text-green-700' : 'text-red-700')}>
 				{finance.type === 'PROFIT' ? '+ ' : '- '}
 				{finance.amount.toLocaleString('pt-BR', {
 					style: 'currency',

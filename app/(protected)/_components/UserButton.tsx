@@ -15,14 +15,20 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
 
 interface UserButtonProps {
 	user: User;
 }
 
 export const UserButton = ({ user }: UserButtonProps) => {
+	const [isOpen, setIsOpen] = useState(false);
+
 	return (
-		<DropdownMenu>
+		<DropdownMenu
+			open={isOpen}
+			onOpenChange={setIsOpen}
+		>
 			<DropdownMenuTrigger asChild>
 				<button className='p-4'>
 					<Image
@@ -38,10 +44,10 @@ export const UserButton = ({ user }: UserButtonProps) => {
 				<DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setIsOpen(false)}>
 						<Link href={'/billing'}>Assinatura</Link>
 					</DropdownMenuItem>
-					<DropdownMenuItem>
+					<DropdownMenuItem onClick={() => setIsOpen(false)}>
 						<Link href={'/settings'}>Configurações</Link>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>

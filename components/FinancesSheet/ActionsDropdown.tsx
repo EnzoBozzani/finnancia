@@ -27,7 +27,7 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className='bg-neutral-200 lg:bg-transparent rounded-full hover:bg-neutral-200'>
+			<DropdownMenuTrigger className='bg-white lg:bg-transparent rounded-full hover:opacity-60'>
 				<RiMoreFill className='text-neutral-800 w-8 h-8 lg:w-12 lg:h-12' />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='-mt-4'>
