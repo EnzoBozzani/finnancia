@@ -24,6 +24,7 @@ import {
 import { sheetsService } from '@/services/sheetsService';
 import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
+import { orderYearsForSelectSheet } from '@/lib/utils';
 
 type SheetMonth = {
 	name: string;
@@ -49,6 +50,7 @@ export const Sidebar = () => {
 
 	const [sheets, setSheets] = useState<Year[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isSelectOpen, setIsSelectOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchSheets = async () => {
@@ -59,33 +61,7 @@ export const Sidebar = () => {
 				return;
 			}
 
-			const years = new Set<number>();
-
-			res.forEach((sheet: SheetMonth) => {
-				const year = sheet.name.split('/')[1];
-				years.add(Number(year));
-			});
-
-			const orderedYears: Year[] = [];
-
-			years.forEach((year: number) =>
-				orderedYears.push({
-					order: year,
-					sheets: [],
-				})
-			);
-
-			orderedYears.sort((a, b) => a.order - b.order);
-
-			res.forEach((sheet: SheetMonth) => {
-				const yearNumber = Number(sheet.name.split('/')[1]);
-				const yearObject = orderedYears.find((year) => year.order === yearNumber);
-				yearObject?.sheets.push({ id: sheet.id, name: sheet.name, order: sheet.order });
-			});
-
-			orderedYears.forEach((year) => {
-				year.sheets.sort((a, b) => a.order - b.order);
-			});
+			const orderedYears = orderYearsForSelectSheet(res);
 
 			setSheets(orderedYears);
 
@@ -144,6 +120,8 @@ export const Sidebar = () => {
 							<div className='mt-12'>
 								<div className='my-12 flex justify-center items-center'>
 									<Select
+										open={isSelectOpen}
+										onOpenChange={setIsSelectOpen}
 										onValueChange={(value) => {
 											router.push(`/dashboard/${value}`);
 											onClose();
@@ -172,41 +150,64 @@ export const Sidebar = () => {
 										</SelectContent>
 									</Select>
 								</div>
-								<Link
-									href={'/dashboard'}
-									className='p-3 flex items-center hover:bg-neutral-200'
-									onClick={() => onClose()}
-								>
-									<MdDashboardCustomize className='w-8 h-8 mr-2' />
-									Painel
-								</Link>
-								<div
-									role='button'
-									className='p-3 flex items-center hover:bg-neutral-200'
-									onClick={() => {
-										onClose();
-										onOpenSheetModal();
-									}}
-								>
-									<PlusIcon className='w-8 h-8 mr-2' />
-									Adicionar planilha
-								</div>
-								<Link
-									href={'/billing'}
-									className='p-3 flex items-center hover:bg-neutral-200'
-									onClick={() => onClose()}
-								>
-									<CiCreditCard1 className='w-8 h-8 mr-2' />
-									Planos
-								</Link>
-								<Link
-									href={'/settings'}
-									className='p-3 flex items-center hover:bg-neutral-200'
-									onClick={() => onClose()}
-								>
-									<CiSettings className='w-8 h-8 mr-2' />
-									Configurações
-								</Link>
+								{isSelectOpen ? (
+									<>
+										<div className='p-3 flex items-center hover:bg-neutral-200'>
+											<MdDashboardCustomize className='w-8 h-8 mr-2' />
+											Painel
+										</div>
+										<div className='p-3 flex items-center hover:bg-neutral-200'>
+											<PlusIcon className='w-8 h-8 mr-2' />
+											Adicionar planilha
+										</div>
+										<div className='p-3 flex items-center hover:bg-neutral-200'>
+											<CiCreditCard1 className='w-8 h-8 mr-2' />
+											Planos
+										</div>
+										<div className='p-3 flex items-center hover:bg-neutral-200'>
+											<CiSettings className='w-8 h-8 mr-2' />
+											Configurações
+										</div>
+									</>
+								) : (
+									<>
+										<Link
+											href={'/dashboard'}
+											className='p-3 flex items-center hover:bg-neutral-200'
+											onClick={() => onClose()}
+										>
+											<MdDashboardCustomize className='w-8 h-8 mr-2' />
+											Painel
+										</Link>
+										<div
+											role='button'
+											className='p-3 flex items-center hover:bg-neutral-200'
+											onClick={() => {
+												onClose();
+												onOpenSheetModal();
+											}}
+										>
+											<PlusIcon className='w-8 h-8 mr-2' />
+											Adicionar planilha
+										</div>
+										<Link
+											href={'/billing'}
+											className='p-3 flex items-center hover:bg-neutral-200'
+											onClick={() => onClose()}
+										>
+											<CiCreditCard1 className='w-8 h-8 mr-2' />
+											Planos
+										</Link>
+										<Link
+											href={'/settings'}
+											className='p-3 flex items-center hover:bg-neutral-200'
+											onClick={() => onClose()}
+										>
+											<CiSettings className='w-8 h-8 mr-2' />
+											Configurações
+										</Link>
+									</>
+								)}
 							</div>
 						</>
 					)}

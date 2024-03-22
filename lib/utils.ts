@@ -1,6 +1,18 @@
-import { Month, monthNameToMonthNumber } from '@/constants/months';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+
+import { Month, monthNameToMonthNumber } from '@/constants/months';
+
+type SheetMonth = {
+	name: string;
+	id: string;
+	order: number;
+};
+
+type Year = {
+	order: number;
+	sheets: SheetMonth[];
+};
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -32,4 +44,36 @@ export function financeStringToDate(financeString: string | undefined) {
 	const financeDate = new Date(`${financeYear}-${financeMonth}-${financeDay}`);
 
 	return financeDate;
+}
+
+export function orderYearsForSelectSheet(res: any[]) {
+	const years = new Set<number>();
+
+	res.forEach((sheet: SheetMonth) => {
+		const year = sheet.name.split('/')[1];
+		years.add(Number(year));
+	});
+
+	const orderedYears: Year[] = [];
+
+	years.forEach((year: number) =>
+		orderedYears.push({
+			order: year,
+			sheets: [],
+		})
+	);
+
+	orderedYears.sort((a, b) => a.order - b.order);
+
+	res.forEach((sheet: SheetMonth) => {
+		const yearNumber = Number(sheet.name.split('/')[1]);
+		const yearObject = orderedYears.find((year) => year.order === yearNumber);
+		yearObject?.sheets.push({ id: sheet.id, name: sheet.name, order: sheet.order });
+	});
+
+	orderedYears.forEach((year) => {
+		year.sheets.sort((a, b) => a.order - b.order);
+	});
+
+	return orderedYears;
 }
