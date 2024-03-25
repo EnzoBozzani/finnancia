@@ -5,6 +5,7 @@ import { MdEdit } from 'react-icons/md';
 import { FaTrash } from 'react-icons/fa';
 import { Finance } from '@prisma/client';
 
+import { cn } from '@/lib/utils';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -16,6 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useEditFinanceModal } from '@/hooks/useEditFinanceModal';
 import { useDeleteFinanceModal } from '@/hooks/useDeleteFinanceModal';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface ActionsDropdownProps {
 	finance: Finance;
@@ -25,10 +27,14 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 	const onOpenEdit = useEditFinanceModal((state) => state.onOpen);
 	const onOpenDelete = useDeleteFinanceModal((state) => state.onOpen);
 
+	const isDark = useIsDarkTheme();
+
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className='bg-white lg:bg-transparent rounded-full hover:opacity-60'>
-				<RiMoreFill className='text-neutral-800 w-8 h-8 lg:w-12 lg:h-12' />
+			<DropdownMenuTrigger className='bg-white lg:bg-transparent rounded-full'>
+				<RiMoreFill
+					className={cn('w-8 h-8 lg:w-12 lg:h-12', isDark ? 'text-neutral-100' : 'text-neutral-800 ')}
+				/>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='-mt-4'>
 				<DropdownMenuLabel className='text-center'>Ações</DropdownMenuLabel>

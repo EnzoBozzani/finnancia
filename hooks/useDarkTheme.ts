@@ -1,6 +1,18 @@
-import { useTheme } from 'next-themes';
+import { create } from 'zustand';
+
+type ThemeStore = {
+	theme: 'dark' | 'light';
+	toDark: () => void;
+	toWhite: () => void;
+};
+
+export const useTheme = create<ThemeStore>((set) => ({
+	theme: 'light',
+	toDark: () => set({ theme: 'dark' }),
+	toWhite: () => set({ theme: 'light' }),
+}));
 
 export function useIsDarkTheme() {
-	const { systemTheme } = useTheme();
-	return systemTheme === 'dark';
+	const { theme } = useTheme();
+	return theme === 'dark';
 }

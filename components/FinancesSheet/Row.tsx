@@ -1,22 +1,46 @@
+'use client';
+
 import { Finance } from '@prisma/client';
 
 import { cn } from '@/lib/utils';
 
 import { TableRow, TableCell } from '../ui/table';
 import { ActionsDropdown } from './ActionsDropdown';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface RowProps {
 	finance: Finance;
 }
 
 export const Row = ({ finance }: RowProps) => {
+	const isDark = useIsDarkTheme();
+
 	return (
 		<TableRow
 			key={finance.id}
-			className={finance.type === 'PROFIT' ? 'bg-green-100 hover:bg-green-200' : 'bg-red-100 hover:bg-red-200'}
+			className={
+				finance.type === 'PROFIT'
+					? isDark
+						? 'bg-green-900 hover:bg-green-800 text-white outline-none border-none'
+						: 'bg-green-100 hover:bg-green-200 outline-none border-none'
+					: isDark
+					? 'bg-red-900 hover:bg-red-800 text-white outline-none border-none'
+					: 'bg-red-100 hover:bg-red-200 outline-none border-none'
+			}
 		>
 			<TableCell className='text-center'>{finance.title}</TableCell>
-			<TableCell className={cn('text-center', finance.type === 'PROFIT' ? 'text-green-700' : 'text-red-700')}>
+			<TableCell
+				className={cn(
+					'text-center',
+					finance.type === 'PROFIT'
+						? isDark
+							? 'text-green-200'
+							: 'text-green-700'
+						: isDark
+						? 'text-red-200'
+						: 'text-red-700'
+				)}
+			>
 				{finance.type === 'PROFIT' ? '+ ' : '- '}
 				{finance.amount.toLocaleString('pt-BR', {
 					style: 'currency',

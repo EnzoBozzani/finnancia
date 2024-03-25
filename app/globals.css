@@ -24,13 +24,17 @@ svg {
 body {
 	margin: 0;
 	min-height: 100dvh;
-	background: linear-gradient(90deg, #cbcbcb31 2%, transparent 10%), linear-gradient(#cbcbcb31 2%, transparent 10%);
-	background-size: 25px 25px;
 }
 
 .white-bg {
 	background: linear-gradient(90deg, #cbcbcb31 2%, transparent 10%), linear-gradient(#cbcbcb31 2%, transparent 10%),
 		#fff;
+	background-size: 25px 25px;
+}
+
+.dark-bg {
+	background: linear-gradient(90deg, #ffffff31 2%, transparent 10%), linear-gradient(#ffffff31 2%, transparent 10%),
+		#0a0a0a;
 	background-size: 25px 25px;
 }
 
@@ -117,15 +121,5 @@ p {
 	}
 	body {
 		@apply bg-background text-foreground;
-	}
-}
-
-@media (prefers-color-scheme: dark) {
-	body {
-		margin: 0;
-		min-height: 100dvh;
-		background: linear-gradient(90deg, #ffffff31 2%, transparent 10%),
-			linear-gradient(#ffffff31 2%, transparent 10%), #0a0a0a;
-		background-size: 25px 25px;
 	}
 }

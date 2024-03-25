@@ -7,6 +7,7 @@ import { ModalProvider } from '@/components/modals/ModalProvider';
 
 import { Sidebar } from './_components/Sidebar';
 import { UserButton } from './_components/UserButton';
+import { ThemeSwitch } from './_components/ThemeSwitch';
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 	const user = await currentUser();
@@ -25,7 +26,10 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 							isNotLink
 						/>
 					</div>
-					<UserButton user={user} />
+					<div className='flex items-center gap-x-4'>
+						<ThemeSwitch />
+						<UserButton user={user} />
+					</div>
 				</header>
 				<ModalProvider />
 				<Toaster

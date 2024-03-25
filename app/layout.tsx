@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
-import { ThemeProvider } from 'next-themes';
 
-import { cn } from '@/lib/utils';
 import { auth } from '@/auth';
 
 import './globals.css';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] });
 
@@ -37,9 +36,10 @@ export default async function RootLayout({
 				lang='pt'
 				suppressHydrationWarning
 			>
-				<body className={cn('flex flex-col', montserrat.className)}>
+				{/* <body className={cn('flex flex-col', montserrat.className)}>
 					<ThemeProvider enableSystem>{children}</ThemeProvider>
-				</body>
+				</body> */}
+				<ThemeProvider fontClassName={montserrat.className}>{children}</ThemeProvider>
 			</html>
 		</SessionProvider>
 	);

@@ -1,3 +1,5 @@
+'use client';
+
 import { Finance, Sheet } from '@prisma/client';
 
 import {
@@ -13,6 +15,7 @@ import {
 import { cn } from '@/lib/utils';
 
 import { Row } from './Row';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -23,14 +26,28 @@ interface FinancesSheetProps {
 }
 
 export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
+	const isDark = useIsDarkTheme();
+
 	return (
-		<div className='hidden lg:block max-w-screen-xl rounded-xl border border-neutral-200 w-[90%] mx-auto mb-12'>
+		<div
+			className={cn(
+				'hidden lg:block max-w-screen-xl rounded-xl border w-[90%] mx-auto mb-12',
+				isDark ? 'border-neutral-900' : 'border-neutral-200'
+			)}
+		>
 			<Table className='md:text-lg'>
-				<TableCaption className='mt-0 py-4 text-xl text-white bg-green-700 rounded-b-xl'>
+				<TableCaption
+					className={cn('mt-0 py-4 text-xl rounded-b-xl', isDark ? 'text-white bg-black' : 'bg-white')}
+				>
 					{sheetData.name}
 				</TableCaption>
-				<TableHeader className='rounded-t-xl'>
-					<TableRow className='bg-green-700 hover:bg-green-700 rounded-t-xl'>
+				<TableHeader className='rounded-t-xl py-4'>
+					<TableRow
+						className={cn(
+							'rounded-t-xl',
+							isDark ? 'text-white bg-black hover:bg-black' : 'bg-white hover:bg-white'
+						)}
+					>
 						<TableHead className='text-center rounded-tl-xl text-white '>Título</TableHead>
 						<TableHead className='text-center text-white '>Quantia</TableHead>
 						<TableHead className='text-center text-white '>Data</TableHead>
@@ -42,7 +59,10 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 						<>
 							<TableRow>
 								<TableCell
-									className='text-center font-semibold py-6 bg-neutral-100'
+									className={cn(
+										'text-center font-semibold py-6',
+										isDark ? 'bg-neutral-900 text-white' : 'bg-neutral-100'
+									)}
 									colSpan={4}
 								>
 									Nenhuma finança encontrada nessa planilha
@@ -61,7 +81,12 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					)}
 				</TableBody>
 				<TableFooter>
-					<TableRow className='bg-white hover:bg-white'>
+					<TableRow
+						className={cn(
+							'outline-none border-none',
+							isDark ? 'bg-black hover:bg-black text-white' : 'bg-white hover:bg-white'
+						)}
+					>
 						<TableCell colSpan={3}>Saldo total:</TableCell>
 						<TableCell
 							className={cn('text-right', sheetData.totalAmount >= 0 ? 'text-green-500' : 'text-red-500')}

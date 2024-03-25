@@ -133,7 +133,9 @@ export const Sidebar = () => {
 										<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>
 											<SelectValue placeholder='Selecionar planilha' />
 										</SelectTrigger>
-										<SelectContent className='h-[200px]'>
+										<SelectContent
+											className={cn('h-[200px]', isDark ? 'bg-neutral-950 text-neutral-100' : '')}
+										>
 											{sheets.map((year, index: number) => (
 												<SelectGroup key={year.order + '-' + index}>
 													<SelectLabel className='text-lg font-bold text-center'>
@@ -143,7 +145,10 @@ export const Sidebar = () => {
 														<SelectItem
 															key={`${sheet.id}-${index}`}
 															value={sheet.id}
-															className='cursor-pointer'
+															className={cn(
+																'cursor-pointer',
+																isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-100'
+															)}
 														>
 															{sheet.name}
 														</SelectItem>
