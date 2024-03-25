@@ -29,8 +29,8 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 				</header>
 				<ModalProvider />
 				<Toaster
-					closeButton
 					duration={2000}
+					theme='system'
 				/>
 				{children}
 			</div>

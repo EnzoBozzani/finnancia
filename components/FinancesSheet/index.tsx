@@ -61,7 +61,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					)}
 				</TableBody>
 				<TableFooter>
-					<TableRow className='bg-white'>
+					<TableRow className='bg-white hover:bg-white'>
 						<TableCell colSpan={3}>Saldo total:</TableCell>
 						<TableCell
 							className={cn('text-right', sheetData.totalAmount >= 0 ? 'text-green-500' : 'text-red-500')}

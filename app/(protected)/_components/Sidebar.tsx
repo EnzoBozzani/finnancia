@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -24,7 +25,7 @@ import {
 import { sheetsService } from '@/services/sheetsService';
 import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
-import { orderYearsForSelectSheet } from '@/lib/utils';
+import { cn, orderYearsForSelectSheet } from '@/lib/utils';
 
 type SheetMonth = {
 	name: string;
@@ -47,6 +48,9 @@ export const Sidebar = () => {
 	const onClose = useSidebar((state) => state.onClose);
 
 	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
+
+	const { systemTheme } = useTheme();
+	const isDark = systemTheme === 'dark';
 
 	const [sheets, setSheets] = useState<Year[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -82,7 +86,7 @@ export const Sidebar = () => {
 					viewBox='0 0 24 24'
 					strokeWidth={1.5}
 					stroke='currentColor'
-					className='w-12 h-12'
+					className={cn('w-12 h-12', isDark && 'text-neutral-100')}
 				>
 					<path
 						strokeLinecap='round'
@@ -97,7 +101,7 @@ export const Sidebar = () => {
 			>
 				<SheetContent
 					side={'left'}
-					className='p-0'
+					className={cn('p-0 border-none', isDark && 'bg-neutral-950 text-neutral-100')}
 				>
 					{isLoading ? (
 						<>
@@ -108,7 +112,7 @@ export const Sidebar = () => {
 					) : (
 						<>
 							<SheetHeader className='p-4'>
-								<SheetTitle>
+								<SheetTitle className={isDark ? 'text-neutral-100' : ''}>
 									Olá{currentUser?.name?.split(' ')[0] ? ', ' + currentUser?.name?.split(' ')[0] : ''}
 									!
 								</SheetTitle>
@@ -152,19 +156,39 @@ export const Sidebar = () => {
 								</div>
 								{isSelectOpen ? (
 									<>
-										<div className='p-3 flex items-center hover:bg-neutral-200'>
+										<div
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
+										>
 											<MdDashboardCustomize className='w-8 h-8 mr-2' />
 											Painel
 										</div>
-										<div className='p-3 flex items-center hover:bg-neutral-200'>
+										<div
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
+										>
 											<PlusIcon className='w-8 h-8 mr-2' />
 											Adicionar planilha
 										</div>
-										<div className='p-3 flex items-center hover:bg-neutral-200'>
+										<div
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
+										>
 											<CiCreditCard1 className='w-8 h-8 mr-2' />
 											Planos
 										</div>
-										<div className='p-3 flex items-center hover:bg-neutral-200'>
+										<div
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
+										>
 											<CiSettings className='w-8 h-8 mr-2' />
 											Configurações
 										</div>
@@ -173,7 +197,10 @@ export const Sidebar = () => {
 									<>
 										<Link
 											href={'/dashboard'}
-											className='p-3 flex items-center hover:bg-neutral-200'
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
 											onClick={() => onClose()}
 										>
 											<MdDashboardCustomize className='w-8 h-8 mr-2' />
@@ -181,7 +208,10 @@ export const Sidebar = () => {
 										</Link>
 										<div
 											role='button'
-											className='p-3 flex items-center hover:bg-neutral-200'
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
 											onClick={() => {
 												onClose();
 												onOpenSheetModal();
@@ -192,7 +222,10 @@ export const Sidebar = () => {
 										</div>
 										<Link
 											href={'/billing'}
-											className='p-3 flex items-center hover:bg-neutral-200'
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
 											onClick={() => onClose()}
 										>
 											<CiCreditCard1 className='w-8 h-8 mr-2' />
@@ -200,7 +233,10 @@ export const Sidebar = () => {
 										</Link>
 										<Link
 											href={'/settings'}
-											className='p-3 flex items-center hover:bg-neutral-200'
+											className={cn(
+												'p-3 flex items-center',
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+											)}
 											onClick={() => onClose()}
 										>
 											<CiSettings className='w-8 h-8 mr-2' />
