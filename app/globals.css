@@ -28,6 +28,12 @@ body {
 	background-size: 25px 25px;
 }
 
+.white-bg {
+	background: linear-gradient(90deg, #cbcbcb31 2%, transparent 10%), linear-gradient(#cbcbcb31 2%, transparent 10%),
+		#fff;
+	background-size: 25px 25px;
+}
+
 h1,
 h2,
 h3,

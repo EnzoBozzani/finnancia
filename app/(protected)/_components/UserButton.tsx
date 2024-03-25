@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { useTheme } from 'next-themes';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface UserButtonProps {
 	user: User;
@@ -26,8 +26,7 @@ interface UserButtonProps {
 export const UserButton = ({ user }: UserButtonProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const { systemTheme } = useTheme();
-	const isDark = systemTheme === 'dark';
+	const isDark = useIsDarkTheme();
 
 	return (
 		<DropdownMenu

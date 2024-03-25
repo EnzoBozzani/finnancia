@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
 import { toast } from 'sonner';
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -26,6 +25,7 @@ import { sheetsService } from '@/services/sheetsService';
 import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 type SheetMonth = {
 	name: string;
@@ -49,8 +49,7 @@ export const Sidebar = () => {
 
 	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
-	const { systemTheme } = useTheme();
-	const isDark = systemTheme === 'dark';
+	const isDark = useIsDarkTheme();
 
 	const [sheets, setSheets] = useState<Year[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
