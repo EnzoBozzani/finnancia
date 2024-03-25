@@ -100,7 +100,7 @@ export const Sidebar = () => {
 			>
 				<SheetContent
 					side={'left'}
-					className={cn('p-0 border-none', isDark && 'bg-neutral-950 text-neutral-100')}
+					className={cn('p-0 border-none', isDark && 'bg-neutral-900 text-neutral-100')}
 				>
 					{isLoading ? (
 						<>
@@ -130,11 +130,11 @@ export const Sidebar = () => {
 											onClose();
 										}}
 									>
-										<SelectTrigger className='w-[95%] text-lg py-6 active:border-green-500 focus:border-green-500'>
+										<SelectTrigger className='w-[95%] text-lg py-6'>
 											<SelectValue placeholder='Selecionar planilha' />
 										</SelectTrigger>
 										<SelectContent
-											className={cn('h-[200px]', isDark ? 'bg-neutral-950 text-neutral-100' : '')}
+											className={cn('h-[200px]', isDark ? 'bg-neutral-900 text-neutral-100' : '')}
 										>
 											{sheets.map((year, index: number) => (
 												<SelectGroup key={year.order + '-' + index}>
@@ -163,7 +163,7 @@ export const Sidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 										>
 											<MdDashboardCustomize className='w-8 h-8 mr-2' />
@@ -172,7 +172,7 @@ export const Sidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 										>
 											<PlusIcon className='w-8 h-8 mr-2' />
@@ -181,7 +181,7 @@ export const Sidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 										>
 											<CiCreditCard1 className='w-8 h-8 mr-2' />
@@ -190,7 +190,7 @@ export const Sidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 										>
 											<CiSettings className='w-8 h-8 mr-2' />
@@ -203,7 +203,7 @@ export const Sidebar = () => {
 											href={'/dashboard'}
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 											onClick={() => onClose()}
 										>
@@ -214,7 +214,7 @@ export const Sidebar = () => {
 											role='button'
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 											onClick={() => {
 												onClose();
@@ -228,7 +228,7 @@ export const Sidebar = () => {
 											href={'/billing'}
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 											onClick={() => onClose()}
 										>
@@ -239,7 +239,7 @@ export const Sidebar = () => {
 											href={'/settings'}
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
 											)}
 											onClick={() => onClose()}
 										>

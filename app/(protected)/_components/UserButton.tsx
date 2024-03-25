@@ -16,8 +16,6 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface UserButtonProps {
 	user: User;
@@ -25,8 +23,6 @@ interface UserButtonProps {
 
 export const UserButton = ({ user }: UserButtonProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-
-	const isDark = useIsDarkTheme();
 
 	return (
 		<DropdownMenu
@@ -40,7 +36,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
 						alt='user image'
 						height={40}
 						width={40}
-						className={cn('rounded-full border', isDark ? 'border-neutral-100' : 'border-neutral-900')}
+						className='rounded-full'
 					/>
 				</button>
 			</DropdownMenuTrigger>

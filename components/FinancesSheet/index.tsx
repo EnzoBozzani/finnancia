@@ -36,22 +36,19 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 			)}
 		>
 			<Table className='md:text-lg'>
-				<TableCaption
-					className={cn('mt-0 py-4 text-xl rounded-b-xl', isDark ? 'text-white bg-black' : 'bg-white')}
-				>
+				<TableCaption className='mt-0 py-4 text-xl rounded-b-xl bg-neutral-600 hover:bg-neutral-600 text-neutral-100'>
 					{sheetData.name}
 				</TableCaption>
 				<TableHeader className='rounded-t-xl py-4'>
-					<TableRow
-						className={cn(
-							'rounded-t-xl',
-							isDark ? 'text-white bg-black hover:bg-black' : 'bg-white hover:bg-white'
-						)}
-					>
-						<TableHead className='text-center rounded-tl-xl text-white '>Título</TableHead>
-						<TableHead className='text-center text-white '>Quantia</TableHead>
-						<TableHead className='text-center text-white '>Data</TableHead>
-						<TableHead className='text-center rounded-tr-xl text-white'>Ações</TableHead>
+					<TableRow className='rounded-t-xl bg-neutral-600 hover:bg-neutral-600'>
+						<TableHead className='text-center border-none outline-none rounded-tl-xl text-neutral-100'>
+							Título
+						</TableHead>
+						<TableHead className='text-center border-none outline-none text-neutral-100'>Quantia</TableHead>
+						<TableHead className='text-center border-none outline-none text-neutral-100'>Data</TableHead>
+						<TableHead className='text-center border-none outline-none rounded-tr-xl text-neutral-100'>
+							Ações
+						</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -81,15 +78,10 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					)}
 				</TableBody>
 				<TableFooter>
-					<TableRow
-						className={cn(
-							'outline-none border-none',
-							isDark ? 'bg-black hover:bg-black text-white' : 'bg-white hover:bg-white'
-						)}
-					>
+					<TableRow className='outline-none border-none bg-neutral-600 hover:bg-neutral-600 text-neutral-100'>
 						<TableCell colSpan={3}>Saldo total:</TableCell>
 						<TableCell
-							className={cn('text-right', sheetData.totalAmount >= 0 ? 'text-green-500' : 'text-red-500')}
+							className={cn('text-right', sheetData.totalAmount >= 0 ? 'text-green-400' : 'text-red-500')}
 						>
 							{sheetData.totalAmount.toLocaleString('pt-BR', {
 								style: 'currency',
