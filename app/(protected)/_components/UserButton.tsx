@@ -5,7 +5,9 @@ import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { ExitIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
 
+import { cn } from '@/lib/utils';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,7 +17,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useState } from 'react';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface UserButtonProps {
 	user: User;
@@ -23,6 +25,8 @@ interface UserButtonProps {
 
 export const UserButton = ({ user }: UserButtonProps) => {
 	const [isOpen, setIsOpen] = useState(false);
+
+	const isDark = useIsDarkTheme();
 
 	return (
 		<DropdownMenu
@@ -40,20 +44,26 @@ export const UserButton = ({ user }: UserButtonProps) => {
 					/>
 				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className='w-56'>
+			<DropdownMenuContent className={cn('w-56', isDark ? 'bg-neutral-950 text-neutral-100' : '')}>
 				<DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem onClick={() => setIsOpen(false)}>
+					<DropdownMenuItem
+						onClick={() => setIsOpen(false)}
+						className={isDark ? 'focus:bg-neutral-800 focus:text-white' : ''}
+					>
 						<Link href={'/billing'}>Assinatura</Link>
 					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => setIsOpen(false)}>
+					<DropdownMenuItem
+						onClick={() => setIsOpen(false)}
+						className={isDark ? 'focus:bg-neutral-800 focus:text-white' : ''}
+					>
 						<Link href={'/settings'}>Configurações</Link>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
-					className='cursor-pointer'
+					className={cn('cursor-pointer', isDark ? 'focus:bg-neutral-800 focus:text-white' : '')}
 					onClick={() => signOut()}
 				>
 					Sair

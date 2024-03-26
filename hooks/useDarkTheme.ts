@@ -7,9 +7,18 @@ type ThemeStore = {
 };
 
 export const useTheme = create<ThemeStore>((set) => ({
-	theme: 'light',
-	toDark: () => set({ theme: 'dark' }),
-	toWhite: () => set({ theme: 'light' }),
+	theme:
+		localStorage.getItem('finnancia-theme') === 'dark' || localStorage.getItem('finnancia-theme') === 'light'
+			? (localStorage.getItem('finnancia-theme') as 'dark' | 'light')
+			: 'light',
+	toDark: () => {
+		localStorage.setItem('finnancia-theme', 'dark');
+		set({ theme: 'dark' });
+	},
+	toWhite: () => {
+		localStorage.setItem('finnancia-theme', 'light');
+		set({ theme: 'light' });
+	},
 }));
 
 export function useIsDarkTheme() {

@@ -26,6 +26,7 @@ import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+import { ThemeSwitch } from './ThemeSwitch';
 
 type SheetMonth = {
 	name: string;
@@ -147,7 +148,9 @@ export const Sidebar = () => {
 															value={sheet.id}
 															className={cn(
 																'cursor-pointer',
-																isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-100'
+																isDark
+																	? 'focus:bg-neutral-800 focus:text-neutral-100'
+																	: ''
 															)}
 														>
 															{sheet.name}
@@ -251,6 +254,9 @@ export const Sidebar = () => {
 							</div>
 						</>
 					)}
+					<div className='md:hidden mx-auto flex justify-center items-center mt-6'>
+						<ThemeSwitch />
+					</div>
 				</SheetContent>
 			</Sheet>
 		</>

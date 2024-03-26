@@ -18,7 +18,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 		<>
 			<div className='flex-1'>
 				<header className='mx-auto max-w-screen-xl w-full flex items-center justify-between'>
-					<div className='flex items-center gap-x-4'>
+					<div className='flex items-center'>
 						<Sidebar />
 						<Logo
 							hideFully
@@ -26,8 +26,10 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 							isNotLink
 						/>
 					</div>
-					<div className='flex items-center gap-x-4'>
-						<ThemeSwitch />
+					<div className='flex items-center'>
+						<div className='hidden md:block'>
+							<ThemeSwitch />
+						</div>
 						<UserButton user={user} />
 					</div>
 				</header>
