@@ -26,6 +26,7 @@ import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+
 import { ThemeSwitch } from './ThemeSwitch';
 
 type SheetMonth = {
@@ -39,7 +40,7 @@ type Year = {
 	sheets: SheetMonth[];
 };
 
-export const Sidebar = () => {
+export const MobileSidebar = () => {
 	const router = useRouter();
 
 	const currentUser = useCurrentUser();
@@ -78,7 +79,7 @@ export const Sidebar = () => {
 		<>
 			<button
 				onClick={onOpen}
-				className='p-2'
+				className='p-2 block lg:hidden'
 			>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
@@ -101,7 +102,7 @@ export const Sidebar = () => {
 			>
 				<SheetContent
 					side={'left'}
-					className={cn('p-0 border-none', isDark && 'bg-neutral-900 text-neutral-100')}
+					className={cn('p-0 border-none block lg:hidden', isDark && 'bg-neutral-900 text-neutral-100')}
 				>
 					{isLoading ? (
 						<>

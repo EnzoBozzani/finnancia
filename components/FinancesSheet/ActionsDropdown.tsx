@@ -36,7 +36,7 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 					className={cn('w-8 h-8 lg:w-12 lg:h-12', isDark ? 'text-neutral-100' : 'text-neutral-800 ')}
 				/>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className='-mt-4'>
+			<DropdownMenuContent className={cn('-mt-4', isDark && 'bg-neutral-950 text-white')}>
 				<DropdownMenuLabel className='text-center'>Ações</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
@@ -44,7 +44,10 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 						onClick={() => {
 							onOpenEdit(finance);
 						}}
-						className='py-3 cursor-pointer flex items-center justify-center'
+						className={cn(
+							'py-3 cursor-pointer flex items-center justify-center',
+							isDark && 'focus:bg-neutral-800 focus:text-white'
+						)}
 					>
 						<MdEdit className='w-6 h-6 mr-2' /> Editar
 					</DropdownMenuItem>
@@ -52,7 +55,10 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 						onClick={() => {
 							onOpenDelete(finance);
 						}}
-						className='py-3 cursor-pointer flex items-center justify-center'
+						className={cn(
+							'py-3 cursor-pointer flex items-center justify-center',
+							isDark && 'focus:bg-neutral-800 focus:text-white'
+						)}
 					>
 						<FaTrash className='w-6 h-6 mr-2' /> Remover
 					</DropdownMenuItem>

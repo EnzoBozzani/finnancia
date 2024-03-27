@@ -7,7 +7,7 @@ export const ThemeProvider = ({ children, fontClassName }: { children: React.Rea
 	const isDark = useIsDarkTheme();
 
 	return (
-		<body className={cn('flex flex-col', isDark ? 'dark-bg' : 'white-bg', fontClassName)}>
+		<body className={cn('flex flex-col', isDark ? 'bg-neutral-950' : 'bg-white', fontClassName)}>
 			<div>{children}</div>
 		</body>
 	);

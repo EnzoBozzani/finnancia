@@ -39,10 +39,7 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 	}
 
 	return (
-		<main>
-			<h1 className='font-semibold text-center my-6 sm:mt-0 md:mb-12 text-3xl text-green-600'>
-				{sheetData.name}
-			</h1>
+		<main className='flex-1'>
 			<FinancesSheet sheetData={sheetData} />
 			<FinancesMobileTable sheetData={sheetData} />
 			<AddFinanceButton sheetMonth={sheetData.name} />
