@@ -255,9 +255,6 @@ export const MobileSidebar = () => {
 							</div>
 						</>
 					)}
-					<div className='md:hidden mx-auto flex justify-center items-center mt-6'>
-						<ThemeSwitch />
-					</div>
 				</SheetContent>
 			</Sheet>
 		</>

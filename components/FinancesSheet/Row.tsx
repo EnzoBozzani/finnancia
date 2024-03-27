@@ -20,7 +20,9 @@ export const Row = ({ finance }: RowProps) => {
 			key={finance.id}
 			className={cn(
 				'outline-none border-none',
-				isDark ? 'bg-neutral-900 text-white hover:bg-neutral-800' : 'bg-white text-black hover:bg-neutral-100'
+				isDark
+					? 'bg-neutral-900 text-white hover:bg-neutral-800'
+					: 'bg-neutral-100 text-black hover:bg-neutral-200'
 			)}
 		>
 			<TableCell className='text-center'>{finance.title}</TableCell>

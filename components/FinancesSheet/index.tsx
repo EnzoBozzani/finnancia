@@ -37,7 +37,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 						<TableRow
 							className={cn(
 								'rounded-t-xl border-none outline-none',
-								isDark ? 'bg-neutral-800 hover:bg-neutral-800' : 'bg-neutral-100 hover:bg-neutral-100'
+								isDark ? 'bg-neutral-800 hover:bg-neutral-800' : 'bg-neutral-200 hover:bg-neutral-200'
 							)}
 						>
 							<TableHead
@@ -100,7 +100,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 								'outline-none border-none rounded-b-xl',
 								isDark
 									? 'bg-neutral-800 hover:bg-neutral-800 text-white'
-									: 'bg-neutral-100 hover:bg-neutral-100 text-black'
+									: 'bg-neutral-200 hover:bg-neutral-200 text-black'
 							)}
 						>
 							<TableCell

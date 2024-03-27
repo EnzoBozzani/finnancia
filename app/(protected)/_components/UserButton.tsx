@@ -34,7 +34,12 @@ export const UserButton = ({ user }: UserButtonProps) => {
 			onOpenChange={setIsOpen}
 		>
 			<DropdownMenuTrigger asChild>
-				<button className='p-4'>
+				<button
+					className={cn(
+						'rounded-full border border-neutral-700',
+						isDark ? 'bg-neutral-800 text-white' : 'bg-neutral-200 text-black'
+					)}
+				>
 					<Image
 						src={user.image || ''}
 						alt='user image'

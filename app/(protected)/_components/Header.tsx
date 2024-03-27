@@ -14,10 +14,8 @@ export const Header = ({ user }: { user: any }) => {
 					isNotLink
 				/>
 			</div>
-			<div className='flex items-center'>
-				<div className='hidden md:block'>
-					<ThemeSwitch />
-				</div>
+			<div className='flex items-center gap-x-4'>
+				<ThemeSwitch />
 				<UserButton user={user} />
 			</div>
 		</header>

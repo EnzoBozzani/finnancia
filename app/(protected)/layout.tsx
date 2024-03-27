@@ -16,15 +16,16 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 		<>
 			<div className='min-h-full max-w-[1400px] mx-auto'>
 				<Header user={user} />
-				<ModalProvider />
-				<Toaster
-					duration={2000}
-					theme='system'
-				/>
 				<div className='flex min-h-full'>
 					<DesktopSidebar />
 					{children}
 				</div>
+				<ModalProvider />
+				<Toaster
+					closeButton
+					duration={2000}
+					theme='system'
+				/>
 			</div>
 			<Script src='https://jsuites.net/v4/jsuites.js'></Script>
 		</>

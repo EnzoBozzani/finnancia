@@ -7,6 +7,7 @@ import { CiCreditCard1, CiSettings } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 import { Loader } from '@/components/Loader';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
@@ -70,7 +71,7 @@ export const DesktopSidebar = () => {
 		<aside
 			className={cn(
 				'w-[350px] min-h-full hidden lg:block border-r pe-4',
-				isDark ? 'bg-neutral-950 text-white' : 'bg-white'
+				isDark ? 'bg-neutral-950 text-white border-r-neutral-700' : 'bg-white'
 			)}
 		>
 			{isLoading ? (
@@ -82,10 +83,10 @@ export const DesktopSidebar = () => {
 			) : (
 				<>
 					<header className='p-4'>
-						<h1 className={isDark ? 'text-neutral-100' : ''}>
+						<h1 className={cn('font-bold', isDark ? 'text-white' : '')}>
 							Olá{currentUser?.name?.split(' ')[0] ? ', ' + currentUser?.name?.split(' ')[0] : ''}!
 						</h1>
-						<p>
+						<p className='text-justify'>
 							Faça o gerenciamento de suas finanças aqui. Navegue entre planilhas, adicione finanças
 							mensais e altere seus dados.
 						</p>

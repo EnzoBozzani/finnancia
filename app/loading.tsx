@@ -2,7 +2,7 @@ import { Loader } from '@/components/Loader';
 
 const LoadingPage = () => {
 	return (
-		<main className='flex-1 flex justify-center items-center'>
+		<main className='min-h-dvh w-full flex justify-center items-center'>
 			<Loader />
 		</main>
 	);
