@@ -7,10 +7,7 @@ type ThemeStore = {
 };
 
 export const useTheme = create<ThemeStore>((set) => ({
-	theme:
-		localStorage.getItem('finnancia-theme') === 'dark' || localStorage.getItem('finnancia-theme') === 'light'
-			? (localStorage.getItem('finnancia-theme') as 'dark' | 'light')
-			: 'light',
+	theme: 'light',
 	toDark: () => {
 		localStorage.setItem('finnancia-theme', 'dark');
 		set({ theme: 'dark' });
