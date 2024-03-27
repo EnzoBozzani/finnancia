@@ -7,7 +7,6 @@ import { CiCreditCard1, CiSettings } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import Image from 'next/image';
 
 import { Loader } from '@/components/Loader';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
