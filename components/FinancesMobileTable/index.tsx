@@ -23,7 +23,12 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 			<h1 className='font-semibold text-center mb-6 text-2xl text-green-600'>{sheetData.name}</h1>
 			{sheetData.finances.length === 0 ? (
 				<>
-					<div className='w-full p-4 bg-white border-t text-center font-semibold'>
+					<div
+						className={cn(
+							'w-full p-4 bg-white border-t text-center font-semibold',
+							isDark ? 'bg-neutral-900 text-white' : 'bg-neutral-100'
+						)}
+					>
 						Nenhuma finança encontrada
 					</div>
 				</>

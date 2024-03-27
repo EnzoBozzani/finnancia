@@ -7,6 +7,8 @@ Finnancia is a platform that empowers users to efficiently manage their monthly 
 -   Add recurring monthly finances that will be automatically reflected across all sheets.
 -   Record individual finances in detail.
 -   View and manage multiple sheets quickly and simply.
+-   Export sheet data in XLSX format
+-   View analysis of their finances
 
 **Highlighted Features:**
 
