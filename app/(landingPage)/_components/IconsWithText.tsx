@@ -3,7 +3,7 @@ import { MdCalendarMonth, MdOutlineManageSearch } from 'react-icons/md';
 
 export const IconsWithText = () => {
 	return (
-		<article className='px-12 w-full flex items-start md:items-center justify-start md:justify-center gap-x-12 gap-y-6 mt-12 md:mt-24 mb-12 flex-col md:flex-row'>
+		<article className='px-12 w-full flex items-start md:items-center justify-start md:justify-center gap-x-12 gap-y-6 mt-12 md:mt-24 pb-12 flex-col md:flex-row'>
 			<div className='md:hidden mx-auto space-y-6'>
 				<div className='flex items-center gap-x-2'>
 					<div className='p-2 rounded-full bg-green-200 border border-neutral-200'>

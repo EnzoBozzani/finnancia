@@ -31,7 +31,7 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className='bg-white lg:bg-transparent rounded-full'>
+			<DropdownMenuTrigger className={cn('lg:bg-transparent rounded-full', isDark ? 'bg-black' : 'bg-white')}>
 				<RiMoreFill
 					className={cn('w-8 h-8 lg:w-12 lg:h-12', isDark ? 'text-neutral-100' : 'text-neutral-800 ')}
 				/>
