@@ -19,23 +19,23 @@ export const Row = ({ finance }: RowProps) => {
 		<TableRow
 			key={finance.id}
 			className={cn(
-				'outline-none border-none',
+				'outline-none border-b',
 				isDark
-					? 'bg-neutral-900 text-white hover:bg-neutral-800'
-					: 'bg-neutral-100 text-black hover:bg-neutral-200'
+					? 'bg-neutral-950 text-white hover:bg-neutral-900 border-neutral-700'
+					: 'bg-white text-black hover:bg-neutral-100 border-neutral-300'
 			)}
 		>
 			<TableCell className='text-center'>{finance.title}</TableCell>
 			<TableCell
 				className={cn(
-					'text-center',
+					'text-center font-semibold',
 					finance.type === 'PROFIT'
 						? isDark
-							? 'text-green-200'
-							: 'text-green-600'
+							? 'text-green-400'
+							: 'text-green-700'
 						: isDark
-						? 'text-red-200'
-						: 'text-red-600'
+						? 'text-red-400'
+						: 'text-red-700'
 				)}
 			>
 				{finance.type === 'PROFIT' ? '+ ' : '- '}

@@ -43,9 +43,8 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 		<main className='flex-1'>
 			<FinancesSheet sheetData={sheetData} />
 			<FinancesMobileTable sheetData={sheetData} />
-			<footer className='mx-auto w-[95%] flex flex-col-reverse sm:flex-row items-center justify-center gap-4 pb-6'>
+			<footer className='mx-auto w-[95%] flex items-center justify-center pb-6'>
 				<ExportXLSX sheetData={sheetData} />
-				<div>Pagination</div>
 			</footer>
 			<AddFinanceButton sheetMonth={sheetData.name} />
 		</main>

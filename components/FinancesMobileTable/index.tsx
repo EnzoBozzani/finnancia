@@ -25,8 +25,10 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 				<>
 					<div
 						className={cn(
-							'w-full p-4 bg-white border-t text-center font-semibold',
-							isDark ? 'bg-neutral-900 text-white' : 'bg-neutral-100'
+							'w-full p-4 bg-white border-b text-center font-semibold',
+							isDark
+								? 'bg-neutral-950 text-white border-neutral-700'
+								: 'bg-white text-black border-neutral-300'
 						)}
 					>
 						Nenhuma finança encontrada
@@ -44,15 +46,21 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 			)}
 			<div
 				className={cn(
-					'w-full grid grid-cols-2 gap-x-2 p-4 border-t',
-					isDark ? 'bg-neutral-900 text-white' : 'bg-neutral-100'
+					'w-full grid grid-cols-2 gap-x-2 p-4',
+					isDark ? 'bg-neutral-950 text-white border-neutral-700' : 'bg-white text-black border-neutral-300'
 				)}
 			>
 				<p className='text-sm font-semibold'>Saldo total:</p>
 				<p
 					className={cn(
 						'text-red-600 text-sm break-all font-semibold text-end',
-						sheetData.totalAmount >= 0 ? 'text-green-500' : 'text-red-500'
+						sheetData.totalAmount >= 0
+							? isDark
+								? 'text-green-400'
+								: 'text-green-700'
+							: isDark
+							? 'text-red-400'
+							: 'text-red-700'
 					)}
 				>
 					{sheetData.totalAmount.toLocaleString('pt-BR', {

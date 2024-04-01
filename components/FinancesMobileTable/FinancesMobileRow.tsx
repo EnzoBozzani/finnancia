@@ -13,13 +13,18 @@ export const FinancesMobileRow = ({ finance }: { finance: Finance }) => {
 	return (
 		<div
 			className={cn(
-				'w-full grid grid-cols-2 gap-x-2 p-4 border-t',
-				isDark ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-black'
+				'w-full grid grid-cols-2 gap-x-2 p-4 border-b',
+				isDark ? 'bg-neutral-950 text-white border-neutral-700' : 'bg-white text-black border-neutral-300'
 			)}
 		>
 			<div className='flex flex-col items-start justify-center gap-y-2'>
 				<p className='text-sm break-all'>{finance.title}</p>
-				<div className={cn('rounded px-2 py-1 text-xs font-semibold', isDark ? 'bg-black' : 'bg-white')}>
+				<div
+					className={cn(
+						'rounded px-2 py-1 text-xs font-semibold',
+						isDark ? 'bg-neutral-800' : 'bg-neutral-200'
+					)}
+				>
 					{finance.date}
 				</div>
 			</div>
