@@ -158,6 +158,11 @@ export const EditFinanceModal = () => {
 										mode='single'
 										selected={date}
 										onSelect={setDate}
+										modifiersStyles={{
+											selected: {
+												backgroundColor: '#16a34a',
+											},
+										}}
 										className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
 									/>
 								</div>

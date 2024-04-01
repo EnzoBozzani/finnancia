@@ -8,7 +8,7 @@ import { useAddFinanceModal } from '@/hooks/useAddFinanceModal';
 import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
-import { sheetNameToDate } from '@/lib/utils';
+import { cn, sheetNameToDate } from '@/lib/utils';
 
 import { FormGroup } from '../FormGroup';
 import { FormMessage } from '../FormMessage';
@@ -17,6 +17,7 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 export const AddFinanceModal = () => {
 	const currentDate = new Date();
@@ -30,6 +31,8 @@ export const AddFinanceModal = () => {
 	const width = useScreenWidth();
 
 	const params = useParams<{ sheetId: string }>();
+
+	const isDark = useIsDarkTheme();
 
 	const sheetDate = sheetNameToDate(sheetName);
 
@@ -140,7 +143,12 @@ export const AddFinanceModal = () => {
 				open={isOpen}
 				onOpenChange={onClose}
 			>
-				<DialogContent className='sm:max-w-[425px]'>
+				<DialogContent
+					className={cn(
+						'sm:max-w-[425px] border-none outline-none',
+						isDark ? 'bg-neutral-900 text-white' : 'bg-white'
+					)}
+				>
 					<form
 						action={onSubmit}
 						className='space-y-4'
@@ -174,7 +182,7 @@ export const AddFinanceModal = () => {
 									<RadioGroupItem
 										value='PROFIT'
 										id='profit'
-										className='w-6 h-6'
+										className={cn('w-6 h-6', isDark && 'odd:odd:text-white border border-white')}
 									/>
 									<Label
 										htmlFor='profit'
@@ -187,7 +195,7 @@ export const AddFinanceModal = () => {
 									<RadioGroupItem
 										value='EXPENSE'
 										id='expense'
-										className='w-6 h-6'
+										className={cn('w-6 h-6', isDark && 'odd:odd:text-white border border-white')}
 									/>
 									<Label
 										htmlFor='expense'
@@ -210,7 +218,15 @@ export const AddFinanceModal = () => {
 									mode='single'
 									selected={date}
 									onSelect={setDate}
-									className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+									className={cn(
+										'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
+										isDark && 'border-neutral-600'
+									)}
+									modifiersStyles={{
+										selected: {
+											backgroundColor: '#16a34a',
+										},
+									}}
 								/>
 							</div>
 						) : (
