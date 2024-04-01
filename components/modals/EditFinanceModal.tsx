@@ -2,11 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
 import { useEditFinanceModal } from '@/hooks/useEditFinanceModal';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { FormGroup } from '../FormGroup';
 import { FormMessage } from '../FormMessage';
@@ -15,10 +18,11 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 import { financeStringToDate } from '@/lib/utils';
-import { toast } from 'sonner';
 
 export const EditFinanceModal = () => {
 	const router = useRouter();
+
+	const isDark = useIsDarkTheme();
 
 	const isOpen = useEditFinanceModal((state) => state.isOpen);
 	const onClose = useEditFinanceModal((state) => state.onClose);
@@ -123,7 +127,12 @@ export const EditFinanceModal = () => {
 				open={isOpen}
 				onOpenChange={onClose}
 			>
-				<DialogContent className='sm:max-w-[425px]'>
+				<DialogContent
+					className={cn(
+						'sm:max-w-[425px] border-none outline-none',
+						isDark ? 'bg-neutral-900 text-white' : 'bg-white'
+					)}
+				>
 					<form
 						action={onSubmit}
 						className='space-y-3'
@@ -163,7 +172,10 @@ export const EditFinanceModal = () => {
 												backgroundColor: '#16a34a',
 											},
 										}}
-										className='mx-auto w-fit flex justify-center items-center rounded-md border shadow'
+										className={cn(
+											'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
+											isDark && 'border-neutral-600'
+										)}
 									/>
 								</div>
 							)

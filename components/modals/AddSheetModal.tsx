@@ -1,18 +1,22 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { sheetsService } from '@/services/sheetsService';
+import { cn } from '@/lib/utils';
 
 import { FormMessage } from '../FormMessage';
 import { FormGroup } from '../FormGroup';
 import { SubmitButton } from '../SubmitButton';
-import { useRouter } from 'next/navigation';
 
 export const AddSheetModal = () => {
 	const currentDate = new Date();
+
+	const isDark = useIsDarkTheme();
 
 	const router = useRouter();
 
@@ -65,7 +69,12 @@ export const AddSheetModal = () => {
 				open={isOpen}
 				onOpenChange={onClose}
 			>
-				<DialogContent className='sm:max-w-[425px]'>
+				<DialogContent
+					className={cn(
+						'sm:max-w-[425px] border-none outline-none',
+						isDark ? 'bg-neutral-900 text-white' : 'bg-white'
+					)}
+				>
 					<form
 						action={onSubmit}
 						className='space-y-3'

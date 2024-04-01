@@ -1,16 +1,20 @@
 'use client';
 
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { useDeleteFinanceModal } from '@/hooks/useDeleteFinanceModal';
 import { financesService } from '@/services/financesService';
+import { cn } from '@/lib/utils';
 
 import { SubmitButton } from '../SubmitButton';
 import { Dialog, DialogContent } from '../ui/dialog';
-import { useRouter } from 'next/navigation';
 
 export const DeleteFinanceModal = () => {
 	const router = useRouter();
+
+	const isDark = useIsDarkTheme();
 
 	const isOpen = useDeleteFinanceModal((state) => state.isOpen);
 	const onClose = useDeleteFinanceModal((state) => state.onClose);
@@ -40,7 +44,12 @@ export const DeleteFinanceModal = () => {
 				open={isOpen}
 				onOpenChange={onClose}
 			>
-				<DialogContent className='sm:max-w-[425px] p-6'>
+				<DialogContent
+					className={cn(
+						'sm:max-w-[425px] p-6 border-none outline-none',
+						isDark ? 'bg-neutral-900 text-white' : 'bg-white'
+					)}
+				>
 					<form
 						action={onSubmit}
 						className='space-y-6 mt-6'
