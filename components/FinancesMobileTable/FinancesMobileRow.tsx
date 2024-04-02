@@ -33,7 +33,13 @@ export const FinancesMobileRow = ({ finance }: { finance: Finance }) => {
 					<p
 						className={cn(
 							'text-sm break-all font-semibold text-end',
-							finance.type === 'PROFIT' ? 'text-green-500' : 'text-red-500'
+							finance.type === 'PROFIT'
+								? isDark
+									? 'text-green-400'
+									: 'text-green-700'
+								: isDark
+								? 'text-red-400'
+								: 'text-red-700'
 						)}
 					>
 						{finance.type === 'PROFIT' ? '+ ' : '- '}
