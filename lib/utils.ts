@@ -77,3 +77,7 @@ export function orderYearsForSelectSheet(res: any[]) {
 
 	return orderedYears;
 }
+
+export function getSheetTimeSinceJanuary1970(sheet: { order: number; name: string }) {
+	return new Date(`${sheet.name.split('/')[1]}-${sheet.order}-01`).valueOf();
+}

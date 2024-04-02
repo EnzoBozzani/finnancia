@@ -1,7 +1,5 @@
 'use client';
 
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
-import { cn } from '@/lib/utils';
 import { FinanceType } from '@prisma/client';
 import {
 	Chart as ChartJS,
@@ -12,12 +10,17 @@ import {
 	Title,
 	Tooltip,
 	Legend,
+	ChartData,
+	ChartOptions,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+import { cn } from '@/lib/utils';
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export const options = {
+export const options: ChartOptions<'line'> = {
 	responsive: true,
 	plugins: {
 		legend: {
@@ -51,29 +54,36 @@ export const DashboardChart = ({
 	const formattedSheets = sheets.map((sheet) => ({
 		name: sheet.name,
 		expenseAmount: sheet.finances.reduce(
-			(current, finance) => (finance.type === 'EXPENSE' ? current + finance.amount : current),
+			(current, finance) => (finance.type === 'EXPENSE' ? current - finance.amount : current),
 			0
 		),
 		profitAmount: sheet.finances.reduce(
 			(current, finance) => (finance.type === 'PROFIT' ? current + finance.amount : current),
 			0
 		),
+		amount: sheet.totalAmount,
 	}));
 
-	const data = {
+	const data: ChartData<'line'> = {
 		labels: formattedSheets.map((sheet) => sheet.name),
 		datasets: [
 			{
 				label: 'Gasto por mês',
 				data: formattedSheets.map((sheet) => sheet.expenseAmount),
-				borderColor: 'rgb(255, 99, 132)',
-				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				borderColor: '#dc2626',
+				backgroundColor: '#dc2626',
 			},
 			{
 				label: 'Lucro por mês',
 				data: formattedSheets.map((sheet) => sheet.profitAmount),
-				borderColor: 'rgb(53, 162, 235)',
-				backgroundColor: 'rgba(53, 162, 235, 0.5)',
+				borderColor: '#16a34a',
+				backgroundColor: '#16a34a',
+			},
+			{
+				label: 'Saldo por mês',
+				data: formattedSheets.map((sheet) => sheet.amount),
+				borderColor: '#0284c7',
+				backgroundColor: '#0284c7',
 			},
 		],
 	};
@@ -82,7 +92,7 @@ export const DashboardChart = ({
 		<Line
 			options={options}
 			data={data}
-			className={cn('w-max', isDark ? 'bg-neutral-900' : 'bg-neutral-100')}
+			className={cn('w-max h-auto')}
 		/>
 	);
 };
