@@ -20,18 +20,10 @@ import { cn } from '@/lib/utils';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export const options: ChartOptions<'line'> = {
-	responsive: true,
-	plugins: {
-		legend: {
-			position: 'top' as const,
-		},
-		title: {
-			display: true,
-			text: 'Gasto e lucro (últimos 6 meses)',
-		},
-	},
-};
+interface DashboardChartProps {
+	title: string;
+	labels: string[];
+}
 
 export const DashboardChart = ({
 	sheets,
@@ -54,7 +46,7 @@ export const DashboardChart = ({
 	const formattedSheets = sheets.map((sheet) => ({
 		name: sheet.name,
 		expenseAmount: sheet.finances.reduce(
-			(current, finance) => (finance.type === 'EXPENSE' ? current - finance.amount : current),
+			(current, finance) => (finance.type === 'EXPENSE' ? current + finance.amount : current),
 			0
 		),
 		profitAmount: sheet.finances.reduce(
@@ -64,6 +56,43 @@ export const DashboardChart = ({
 		amount: sheet.totalAmount,
 	}));
 
+	const options: ChartOptions<'line'> = {
+		responsive: true,
+		color: isDark ? '#d4d4d4' : '#404040',
+		plugins: {
+			legend: {
+				position: 'bottom' as const,
+			},
+			title: {
+				display: true,
+				text: 'Gasto e lucro (últimos 6 meses)',
+			},
+		},
+		scales: {
+			x: {
+				grid: {
+					color: !isDark ? '#d4d4d4' : '#404040',
+					drawTicks: false,
+				},
+				ticks: {
+					padding: 10,
+				},
+			},
+			y: {
+				grid: {
+					color: !isDark ? '#d4d4d4' : '#404040',
+					drawTicks: false,
+				},
+				ticks: {
+					callback(tickValue, index, ticks) {
+						return tickValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+					},
+					padding: 10,
+				},
+			},
+		},
+	};
+
 	const data: ChartData<'line'> = {
 		labels: formattedSheets.map((sheet) => sheet.name),
 		datasets: [
@@ -72,18 +101,6 @@ export const DashboardChart = ({
 				data: formattedSheets.map((sheet) => sheet.expenseAmount),
 				borderColor: '#dc2626',
 				backgroundColor: '#dc2626',
-			},
-			{
-				label: 'Lucro por mês',
-				data: formattedSheets.map((sheet) => sheet.profitAmount),
-				borderColor: '#16a34a',
-				backgroundColor: '#16a34a',
-			},
-			{
-				label: 'Saldo por mês',
-				data: formattedSheets.map((sheet) => sheet.amount),
-				borderColor: '#0284c7',
-				backgroundColor: '#0284c7',
 			},
 		],
 	};
