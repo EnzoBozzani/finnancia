@@ -1,6 +1,5 @@
 'use client';
 
-import { FinanceType } from '@prisma/client';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -23,38 +22,13 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 interface DashboardChartProps {
 	title: string;
 	labels: string[];
+	dataset: number[];
+	datasetLabel: string;
+	color: string;
 }
 
-export const DashboardChart = ({
-	sheets,
-}: {
-	sheets: ({
-		finances: {
-			amount: number;
-			type: FinanceType;
-		}[];
-	} & {
-		id: string;
-		name: string;
-		userId: string;
-		totalAmount: number;
-		order: number;
-	})[];
-}) => {
+export const DashboardChart = ({ title, labels, datasetLabel, dataset, color }: DashboardChartProps) => {
 	const isDark = useIsDarkTheme();
-
-	const formattedSheets = sheets.map((sheet) => ({
-		name: sheet.name,
-		expenseAmount: sheet.finances.reduce(
-			(current, finance) => (finance.type === 'EXPENSE' ? current + finance.amount : current),
-			0
-		),
-		profitAmount: sheet.finances.reduce(
-			(current, finance) => (finance.type === 'PROFIT' ? current + finance.amount : current),
-			0
-		),
-		amount: sheet.totalAmount,
-	}));
 
 	const options: ChartOptions<'line'> = {
 		responsive: true,
@@ -65,7 +39,7 @@ export const DashboardChart = ({
 			},
 			title: {
 				display: true,
-				text: 'Gasto e lucro (últimos 6 meses)',
+				text: title,
 			},
 		},
 		scales: {
@@ -94,13 +68,13 @@ export const DashboardChart = ({
 	};
 
 	const data: ChartData<'line'> = {
-		labels: formattedSheets.map((sheet) => sheet.name),
+		labels,
 		datasets: [
 			{
-				label: 'Gasto por mês',
-				data: formattedSheets.map((sheet) => sheet.expenseAmount),
-				borderColor: '#dc2626',
-				backgroundColor: '#dc2626',
+				label: datasetLabel,
+				data: dataset,
+				borderColor: color,
+				backgroundColor: color,
 			},
 		],
 	};

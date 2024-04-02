@@ -68,7 +68,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 									<TableCell
 										className={cn(
 											'text-center font-semibold py-6',
-											isDark ? 'bg-neutral-900 text-white' : 'bg-neutral-100'
+											isDark ? 'bg-neutral-950 text-white' : 'bg-white'
 										)}
 										colSpan={4}
 									>
