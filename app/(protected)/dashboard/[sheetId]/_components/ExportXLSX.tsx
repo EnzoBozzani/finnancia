@@ -6,6 +6,8 @@ import { saveAs } from 'file-saver';
 import { Finance, Sheet } from '@prisma/client';
 import { toast } from 'sonner';
 
+import { currencyFormat } from '@/lib/utils';
+
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
 }
@@ -26,7 +28,7 @@ export const ExportXLSX = ({ sheetData }: ExportXLSXProps) => {
 			data.push([
 				finance.title,
 				finance.type === 'PROFIT' ? 'Ganho' : 'Despesa',
-				finance.amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+				`${finance.type === 'PROFIT' ? '+' : '-'} ${currencyFormat(finance.amount)}`,
 				finance.date.replaceAll('/', '-'),
 			]);
 		});

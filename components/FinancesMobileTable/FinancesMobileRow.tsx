@@ -2,10 +2,10 @@
 
 import { Finance } from '@prisma/client';
 
-import { cn } from '@/lib/utils';
+import { cn, currencyFormat } from '@/lib/utils';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { ActionsDropdown } from '../FinancesSheet/ActionsDropdown';
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 export const FinancesMobileRow = ({ finance }: { finance: Finance }) => {
 	const isDark = useIsDarkTheme();
@@ -43,10 +43,7 @@ export const FinancesMobileRow = ({ finance }: { finance: Finance }) => {
 						)}
 					>
 						{finance.type === 'PROFIT' ? '+ ' : '- '}
-						{finance.amount.toLocaleString('pt-BR', {
-							style: 'currency',
-							currency: 'BRL',
-						})}
+						{currencyFormat(finance.amount)}
 					</p>
 					<ActionsDropdown finance={finance} />
 				</div>

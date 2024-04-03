@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 import { Month, monthNameToMonthNumber } from '@/constants/months';
+import { number } from 'zod';
 
 type SheetMonth = {
 	name: string;
@@ -81,3 +82,6 @@ export function orderYearsForSelectSheet(res: any[]) {
 export function getSheetTimeSinceJanuary1970(sheet: { order: number; name: string }) {
 	return new Date(`${sheet.name.split('/')[1]}-${sheet.order}-01`).valueOf();
 }
+
+export const currencyFormat = (value: number) =>
+	Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }).format(value);

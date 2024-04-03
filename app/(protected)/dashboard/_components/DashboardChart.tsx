@@ -16,7 +16,7 @@ import { Line } from 'react-chartjs-2';
 import { FinanceType } from '@prisma/client';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
-import { cn } from '@/lib/utils';
+import { cn, currencyFormat } from '@/lib/utils';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -70,7 +70,7 @@ export const DashboardChart = ({ labels, datasetsLabels, datasets, colors, sheet
 				},
 				ticks: {
 					callback(tickValue, index, ticks) {
-						return tickValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+						return currencyFormat(Number(tickValue));
 					},
 					padding: 10,
 				},
@@ -125,10 +125,16 @@ export const DashboardChart = ({ labels, datasetsLabels, datasets, colors, sheet
 							<div className='w-full'>
 								<p className='uppercase font-bold text-sm'>{sheet.name}</p>
 							</div>
-							<div className='flex items-center justify-between'>
-								<p className={cn(isDark ? 'text-green-400' : 'text-green-700')}>{datasets[0][i]}</p>
-								<p className={cn(isDark ? 'text-red-400' : 'text-red-700')}>{datasets[1][i]}</p>
-								<p className={cn()}>{datasets[2][i]}</p>
+							<div className='flex items-center justify-between font-semibold text-xs'>
+								<p className={cn(isDark ? 'text-green-400' : 'text-green-700')}>
+									+ {currencyFormat(datasets[1][i])}
+								</p>
+								<p className={cn(isDark ? 'text-red-400' : 'text-red-700')}>
+									- {currencyFormat(datasets[2][i])}
+								</p>
+								<p className={cn(isDark ? 'text-sky-400' : 'text-sky-700')}>
+									{currencyFormat(datasets[0][i])}
+								</p>
 							</div>
 						</div>
 					))}

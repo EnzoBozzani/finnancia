@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 
+import { cn, currencyFormat, financeStringToDate } from '@/lib/utils';
 import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
 import { useEditFinanceModal } from '@/hooks/useEditFinanceModal';
@@ -17,7 +17,6 @@ import { Calendar } from '../ui/calendar';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
-import { financeStringToDate } from '@/lib/utils';
 
 export const EditFinanceModal = () => {
 	const router = useRouter();
@@ -149,10 +148,7 @@ export const EditFinanceModal = () => {
 							id='amount'
 							label='Quantia'
 							mask='R$ #.##0,00'
-							initialValue={finance.amount.toLocaleString('pt-BR', {
-								style: 'currency',
-								currency: 'BRL',
-							})}
+							initialValue={currencyFormat(finance.amount)}
 						/>
 						{width >= 1024 ? (
 							!!date && (

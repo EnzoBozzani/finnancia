@@ -12,10 +12,10 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import { cn } from '@/lib/utils';
+import { cn, currencyFormat } from '@/lib/utils';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { Row } from './Row';
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -109,10 +109,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 										: 'text-red-700'
 								)}
 							>
-								{sheetData.totalAmount.toLocaleString('pt-BR', {
-									style: 'currency',
-									currency: 'BRL',
-								})}
+								{currencyFormat(sheetData.totalAmount)}
 							</TableCell>
 						</TableRow>
 					</TableFooter>

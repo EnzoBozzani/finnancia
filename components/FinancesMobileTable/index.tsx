@@ -2,10 +2,10 @@
 
 import { Finance, Sheet } from '@prisma/client';
 
-import { cn } from '@/lib/utils';
+import { cn, currencyFormat } from '@/lib/utils';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { FinancesMobileRow } from './FinancesMobileRow';
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -63,10 +63,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 							: 'text-red-700'
 					)}
 				>
-					{sheetData.totalAmount.toLocaleString('pt-BR', {
-						style: 'currency',
-						currency: 'BRL',
-					})}
+					{currencyFormat(sheetData.totalAmount)}
 				</p>
 			</div>
 		</section>

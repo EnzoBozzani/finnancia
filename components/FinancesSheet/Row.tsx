@@ -2,11 +2,11 @@
 
 import { Finance } from '@prisma/client';
 
-import { cn } from '@/lib/utils';
+import { cn, currencyFormat } from '@/lib/utils';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { TableRow, TableCell } from '../ui/table';
 import { ActionsDropdown } from './ActionsDropdown';
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 interface RowProps {
 	finance: Finance;
@@ -39,10 +39,7 @@ export const Row = ({ finance }: RowProps) => {
 				)}
 			>
 				{finance.type === 'PROFIT' ? '+ ' : '- '}
-				{finance.amount.toLocaleString('pt-BR', {
-					style: 'currency',
-					currency: 'BRL',
-				})}
+				{currencyFormat(finance.amount)}
 			</TableCell>
 			<TableCell className='text-center'>{finance.date}</TableCell>
 			<TableCell className='grid place-items-center'>
