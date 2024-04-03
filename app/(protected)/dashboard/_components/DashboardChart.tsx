@@ -13,22 +13,37 @@ import {
 	ChartOptions,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { FinanceType } from '@prisma/client';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
+import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface DashboardChartProps {
-	title: string;
 	labels: string[];
-	dataset: number[];
-	datasetLabel: string;
-	color: string;
+	datasets: number[][];
+	datasetsLabels: string[];
+	colors: string[];
+	sheets: ({
+		finances: {
+			amount: number;
+			type: FinanceType;
+		}[];
+	} & {
+		id: string;
+		name: string;
+		userId: string;
+		totalAmount: number;
+		order: number;
+	})[];
 }
 
-export const DashboardChart = ({ title, labels, datasetLabel, dataset, color }: DashboardChartProps) => {
+export const DashboardChart = ({ labels, datasetsLabels, datasets, colors, sheets }: DashboardChartProps) => {
 	const isDark = useIsDarkTheme();
+
+	const width = useScreenWidth();
 
 	const options: ChartOptions<'line'> = {
 		responsive: true,
@@ -36,10 +51,6 @@ export const DashboardChart = ({ title, labels, datasetLabel, dataset, color }: 
 		plugins: {
 			legend: {
 				position: 'bottom' as const,
-			},
-			title: {
-				display: true,
-				text: title,
 			},
 		},
 		scales: {
@@ -69,21 +80,60 @@ export const DashboardChart = ({ title, labels, datasetLabel, dataset, color }: 
 
 	const data: ChartData<'line'> = {
 		labels,
-		datasets: [
-			{
-				label: datasetLabel,
-				data: dataset,
-				borderColor: color,
-				backgroundColor: color,
-			},
-		],
+		datasets: datasets.map((dataset, i) => ({
+			data: dataset,
+			label: datasetsLabels[i],
+			backgroundColor: colors[i],
+			borderColor: colors[i],
+		})),
 	};
 
+	if (datasetsLabels.length === 0) {
+		return (
+			<p className={cn('font-semibold', isDark ? 'text-white' : 'text-black')}>
+				Oops... Você ainda não possui planilhas
+			</p>
+		);
+	}
+
 	return (
-		<Line
-			options={options}
-			data={data}
-			className={cn('w-max h-auto')}
-		/>
+		<div
+			className={cn(
+				'flex flex-col justify-center items-center w-full rounded-xl border p-4',
+				isDark ? 'border-neutral-700' : 'border-neutral-300'
+			)}
+		>
+			<h1 className={cn('pb-4 text-lg font-bold', isDark ? 'text-neutral-300' : 'text-neutral-700')}>
+				GANHO, GASTO E SALDO MENSAL
+			</h1>
+			{width >= 640 ? (
+				<Line
+					options={options}
+					data={data}
+					className={cn('w-full')}
+				/>
+			) : (
+				<div className='w-full'>
+					{sheets.map((sheet, i) => (
+						<div
+							key={sheet.id}
+							className={cn(
+								'w-full bg-transparent border-t p-4 space-y-2',
+								isDark ? 'text-white border-neutral-700' : 'border-neutral-300'
+							)}
+						>
+							<div className='w-full'>
+								<p className='uppercase font-bold text-sm'>{sheet.name}</p>
+							</div>
+							<div className='flex items-center justify-between'>
+								<p className={cn(isDark ? 'text-green-400' : 'text-green-700')}>{datasets[0][i]}</p>
+								<p className={cn(isDark ? 'text-red-400' : 'text-red-700')}>{datasets[1][i]}</p>
+								<p className={cn()}>{datasets[2][i]}</p>
+							</div>
+						</div>
+					))}
+				</div>
+			)}
+		</div>
 	);
 };
