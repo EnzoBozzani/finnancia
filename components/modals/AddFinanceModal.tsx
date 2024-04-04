@@ -49,6 +49,7 @@ export const AddFinanceModal = () => {
 			currentDate.getMonth() === newSheetDate.getMonth() &&
 			currentDate.getFullYear() === newSheetDate.getFullYear();
 		setDate(sheetMonthIsTheCurrentMonth ? currentDate : newSheetDate);
+		setType('PROFIT');
 	}, [isOpen, setDate]);
 
 	const onSubmit = async (formData: FormData) => {

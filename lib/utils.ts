@@ -19,10 +19,6 @@ interface SheetWithFinances extends Sheet {
 	finances: Finance[];
 }
 
-interface SheetData {
-	sheetData: SheetWithFinances;
-}
-
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
@@ -94,7 +90,7 @@ export function getSheetTimeSinceJanuary1970(sheet: { order: number; name: strin
 export const currencyFormat = (value: number) =>
 	Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }).format(value);
 
-export function organizeInGroupsOf8({ sheetData }: SheetData) {
+export function organizeInGroupsOf8(sheetData: SheetWithFinances) {
 	let idCounter = 0;
 	while (sheetData.finances.length % 8 !== 0) {
 		sheetData.finances.push({

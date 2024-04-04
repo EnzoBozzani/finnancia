@@ -2,14 +2,14 @@
 
 import { Finance, Sheet } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, currencyFormat, organizeInGroupsOf8 } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { Row } from './Row';
-import { useEffect, useState } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { Pagination } from './Pagination';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -24,7 +24,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 
 	const router = useRouter();
 
-	const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8({ sheetData });
+	const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8(sheetData);
 
 	const [selectedGroup, setSelectedGroup] = useState<{ number: number; finances: Finance[] }>({
 		number: 0,
@@ -33,11 +33,11 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	const [numberOfGroups, setNumberOfGroups] = useState(numberOfGroupsOf8);
 
 	useEffect(() => {
-		const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8({ sheetData });
-		setSelectedGroup({ number: 0, finances: financesInGroupsOf8[0] });
+		const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8(sheetData);
+		setSelectedGroup((current) => ({ number: current.number, finances: financesInGroupsOf8[current.number] }));
 		setNumberOfGroups(numberOfGroupsOf8);
 		router.refresh();
-	}, [sheetData, setSelectedGroup, setNumberOfGroups]);
+	}, [sheetData]);
 
 	return (
 		<div className='hidden lg:block'>
@@ -126,41 +126,12 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					</TableFooter>
 				</Table>
 			</div>
-			<div className={cn('flex items-center justify-center mb-4', isDark ? 'text-white' : 'text-black')}>
-				<ChevronLeftIcon
-					className={cn(
-						'w-10 h-10',
-						selectedGroup.number === 0
-							? cn('cursor-default', isDark ? 'text-neutral-700' : 'text-neutral-300')
-							: 'cursor-pointer'
-					)}
-					onClick={() =>
-						setSelectedGroup((current) =>
-							current.number === 0
-								? current
-								: { finances: financesInGroupsOf8[current.number - 1], number: current.number - 1 }
-						)
-					}
-				/>
-				<div className={cn('border rounded-[100%]', isDark ? 'border-neutral-700' : 'border-neutral-300')}>
-					<p className='p-4 text-3xl font-bold'>{selectedGroup.number + 1}</p>
-				</div>
-				<ChevronRightIcon
-					className={cn(
-						'w-10 h-10',
-						selectedGroup.number === numberOfGroups - 1 || numberOfGroups === 0
-							? cn('cursor-default', isDark ? 'text-neutral-700' : 'text-neutral-300')
-							: 'cursor-pointer'
-					)}
-					onClick={() =>
-						setSelectedGroup((current) =>
-							current.number === numberOfGroups - 1 || numberOfGroups === 0
-								? current
-								: { finances: financesInGroupsOf8[current.number + 1], number: current.number + 1 }
-						)
-					}
-				/>
-			</div>
+			<Pagination
+				financesInGroupsOf8={financesInGroupsOf8}
+				numberOfGroups={numberOfGroups}
+				selectedGroup={selectedGroup}
+				setSelectedGroup={setSelectedGroup}
+			/>
 		</div>
 	);
 };
