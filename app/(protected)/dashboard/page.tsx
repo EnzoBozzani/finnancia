@@ -2,9 +2,10 @@ import { Metadata } from 'next';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { getSheetTimeSinceJanuary1970 } from '@/lib/utils';
+import { filterSheetData } from '@/lib/utils';
 
 import { DashboardChart } from './_components/DashboardChart';
+import { AnalysisCard } from './_components/AnalysisCard';
 
 export const metadata: Metadata = {
 	title: 'Painel',
@@ -20,32 +21,16 @@ const DashboardPage = async () => {
 		},
 	});
 
-	const lastSixSheets = sheets
-		.filter((sheet) => getSheetTimeSinceJanuary1970(sheet) < new Date().valueOf())
-		.sort((sheetA, sheetB) => getSheetTimeSinceJanuary1970(sheetA) - getSheetTimeSinceJanuary1970(sheetB))
-		.slice(-6);
-
-	const sheetsNames: string[] = [];
-	const sheetsTotalExpenses: number[] = [];
-	const sheetsTotalProfit: number[] = [];
-	const sheetsTotalAmount: number[] = [];
-
-	lastSixSheets.forEach((sheet) => {
-		sheetsNames.push(sheet.name);
-		sheetsTotalExpenses.push(
-			sheet.finances.reduce(
-				(current, finance) => (finance.type === 'EXPENSE' ? current + finance.amount : current),
-				0
-			)
-		);
-		sheetsTotalProfit.push(
-			sheet.finances.reduce(
-				(current, finance) => (finance.type === 'PROFIT' ? current + finance.amount : current),
-				0
-			)
-		);
-		sheetsTotalAmount.push(sheet.totalAmount);
-	});
+	const {
+		sheetsNames,
+		sheetsTotalAmount,
+		sheetsTotalExpenses,
+		sheetsTotalProfit,
+		lastSixSheets,
+		mediumAmount,
+		mediumExpense,
+		mediumProfit,
+	} = filterSheetData(sheets);
 
 	return (
 		<main className='flex-1'>
@@ -56,6 +41,13 @@ const DashboardPage = async () => {
 					mensais
 				</p>
 			</div>
+			<section className='w-[95%] mx-auto grid grid-cols-1 md:grid-cols-2'>
+				<AnalysisCard
+					title='Lucro médio'
+					textColor='green-600'
+					value={mediumProfit}
+				/>
+			</section>
 			<section className='w-[95%] mx-auto'>
 				<DashboardChart
 					colors={['#0284c7', '#16a34a', '#dc2626']}

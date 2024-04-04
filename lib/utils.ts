@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { Finance, Sheet } from '@prisma/client';
+import { $Enums, Finance, Sheet } from '@prisma/client';
 
 import { Month, monthNameToMonthNumber } from '@/constants/months';
 
@@ -90,7 +90,7 @@ export function getSheetTimeSinceJanuary1970(sheet: { order: number; name: strin
 export const currencyFormat = (value: number) =>
 	Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }).format(value);
 
-export function organizeInGroupsOf8(sheetData: SheetWithFinances) {
+export function splitFinancesInGroupsOf8(sheetData: SheetWithFinances) {
 	let idCounter = 0;
 	while (sheetData.finances.length % 8 !== 0) {
 		sheetData.finances.push({
@@ -118,4 +118,78 @@ export function organizeInGroupsOf8(sheetData: SheetWithFinances) {
 	}
 
 	return { financesInGroupsOf8, numberOfGroupsOf8 };
+}
+
+export function filterSheetData(
+	sheets: ({
+		finances: {
+			amount: number;
+			type: $Enums.FinanceType;
+		}[];
+	} & {
+		id: string;
+		name: string;
+		userId: string;
+		totalAmount: number;
+		order: number;
+	})[]
+) {
+	let totalAmountInAllSheets = 0;
+	let totalProfitInAllSheets = 0;
+	let totalExpenseInAllSheets = 0;
+	for (let i = 0; i < sheets.length; i++) {
+		totalAmountInAllSheets += sheets[i].totalAmount;
+		totalExpenseInAllSheets = sheets[i].finances.reduce(
+			(current, finance) => (finance.type === 'EXPENSE' ? current + finance.amount : current),
+			0
+		);
+		totalProfitInAllSheets = sheets[i].finances.reduce(
+			(current, finance) => (finance.type === 'PROFIT' ? current + finance.amount : current),
+			0
+		);
+	}
+
+	console.log(totalAmountInAllSheets, totalProfitInAllSheets, totalExpenseInAllSheets);
+
+	let mediumAmount = totalAmountInAllSheets / sheets.length;
+	let mediumProfit = totalProfitInAllSheets / sheets.length;
+	let mediumExpense = totalExpenseInAllSheets / sheets.length;
+
+	const lastSixSheets = sheets
+		.filter((sheet) => getSheetTimeSinceJanuary1970(sheet) < new Date().valueOf())
+		.sort((sheetA, sheetB) => getSheetTimeSinceJanuary1970(sheetA) - getSheetTimeSinceJanuary1970(sheetB))
+		.slice(-6);
+
+	const sheetsNames: string[] = [];
+	const sheetsTotalExpenses: number[] = [];
+	const sheetsTotalProfit: number[] = [];
+	const sheetsTotalAmount: number[] = [];
+
+	lastSixSheets.forEach((sheet) => {
+		sheetsNames.push(sheet.name);
+		sheetsTotalExpenses.push(
+			sheet.finances.reduce(
+				(current, finance) => (finance.type === 'EXPENSE' ? current + finance.amount : current),
+				0
+			)
+		);
+		sheetsTotalProfit.push(
+			sheet.finances.reduce(
+				(current, finance) => (finance.type === 'PROFIT' ? current + finance.amount : current),
+				0
+			)
+		);
+		sheetsTotalAmount.push(sheet.totalAmount);
+	});
+
+	return {
+		sheetsNames,
+		sheetsTotalExpenses,
+		sheetsTotalProfit,
+		sheetsTotalAmount,
+		lastSixSheets,
+		mediumAmount,
+		mediumExpense,
+		mediumProfit,
+	};
 }

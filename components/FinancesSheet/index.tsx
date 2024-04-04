@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { cn, currencyFormat, organizeInGroupsOf8 } from '@/lib/utils';
+import { cn, currencyFormat, splitFinancesInGroupsOf8 } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { Row } from './Row';
@@ -24,7 +24,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 
 	const router = useRouter();
 
-	const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8(sheetData);
+	const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
 
 	const [selectedGroup, setSelectedGroup] = useState<{ number: number; finances: Finance[] }>({
 		number: 0,
@@ -33,7 +33,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	const [numberOfGroups, setNumberOfGroups] = useState(numberOfGroupsOf8);
 
 	useEffect(() => {
-		const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8(sheetData);
+		const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
 		setSelectedGroup((current) => ({ number: current.number, finances: financesInGroupsOf8[current.number] }));
 		setNumberOfGroups(numberOfGroupsOf8);
 		router.refresh();
@@ -42,7 +42,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	return (
 		<div className='hidden lg:block'>
 			<h1 className='font-semibold text-center mb-6 text-3xl text-green-600'>{sheetData.name}</h1>
-			<div className={cn('max-w-screen-xl w-[95%] mx-auto mb-4')}>
+			<div className={cn('max-w-screen-xl w-[95%] mx-auto')}>
 				<Table className='text-lg'>
 					<TableHeader className='py-4'>
 						<TableRow
