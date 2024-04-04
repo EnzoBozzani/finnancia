@@ -88,11 +88,31 @@ export const DashboardChart = ({ labels, datasetsLabels, datasets, colors, sheet
 		})),
 	};
 
-	if (datasetsLabels.length === 0) {
+	if (sheets.length === 0) {
 		return (
-			<p className={cn('font-semibold', isDark ? 'text-white' : 'text-black')}>
-				Oops... Você ainda não possui planilhas
-			</p>
+			<div
+				className={cn(
+					'flex flex-col justify-center items-center w-full rounded-xl border p-4',
+					isDark ? 'border-neutral-700' : 'border-neutral-300'
+				)}
+			>
+				<h1
+					className={cn(
+						'pb-4 text-lg font-bold text-center',
+						isDark ? 'text-neutral-300' : 'text-neutral-700'
+					)}
+				>
+					GANHO, GASTO E SALDO MENSAL
+				</h1>
+				<div
+					className={cn(
+						'w-full bg-transparent border-t p-4 pt-8 space-y-2 flex justify-center items-center',
+						isDark ? 'text-neutral-300 border-neutral-700' : 'border-neutral-300 text-neutral-700'
+					)}
+				>
+					Oops... Parece que você ainda não tem nenhuma planilha!
+				</div>
+			</div>
 		);
 	}
 
@@ -103,7 +123,7 @@ export const DashboardChart = ({ labels, datasetsLabels, datasets, colors, sheet
 				isDark ? 'border-neutral-700' : 'border-neutral-300'
 			)}
 		>
-			<h1 className={cn('pb-4 text-lg font-bold', isDark ? 'text-neutral-300' : 'text-neutral-700')}>
+			<h1 className={cn('pb-4 text-lg font-bold text-center', isDark ? 'text-neutral-300' : 'text-neutral-700')}>
 				GANHO, GASTO E SALDO MENSAL
 			</h1>
 			{width >= 640 ? (
@@ -127,13 +147,13 @@ export const DashboardChart = ({ labels, datasetsLabels, datasets, colors, sheet
 							</div>
 							<div className='flex items-center justify-between font-semibold text-xs'>
 								<p className={cn(isDark ? 'text-green-400' : 'text-green-700')}>
-									+ {currencyFormat(datasets[1][i])}
+									+ {currencyFormat(datasets[1].at(-1 * (i + 1))!)}
 								</p>
 								<p className={cn(isDark ? 'text-red-400' : 'text-red-700')}>
-									- {currencyFormat(datasets[2][i])}
+									- {currencyFormat(datasets[2].at(-1 * (i + 1))!)}
 								</p>
 								<p className={cn(isDark ? 'text-sky-400' : 'text-sky-700')}>
-									{currencyFormat(datasets[0][i])}
+									{currencyFormat(datasets[0].at(-1 * (i + 1))!)}
 								</p>
 							</div>
 						</div>
