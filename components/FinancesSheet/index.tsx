@@ -16,6 +16,8 @@ import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { Row } from './Row';
+import { useEffect, useState } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -27,6 +29,28 @@ interface FinancesSheetProps {
 
 export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	const isDark = useIsDarkTheme();
+
+	//tranformar isso num util com a filtragem de dados
+	const numberOfGroupsOf8 = Math.ceil(sheetData.finances.length / 8);
+	const financesInGroupsOf8: Finance[][] = [];
+
+	let previous = 0;
+
+	for (let i = 1; i <= numberOfGroupsOf8; i++) {
+		financesInGroupsOf8.push(
+			sheetData.finances.slice(previous, i * 8 > sheetData.finances.length ? sheetData.finances.length : i * 8)
+		);
+		previous = i * 8;
+	}
+
+	const [selectedGroup, setSelectedGroup] = useState<{ number: number; finances: Finance[] }>({
+		number: 0,
+		finances: financesInGroupsOf8[0],
+	});
+
+	useEffect(() => {
+		console.log(selectedGroup);
+	}, [selectedGroup]);
 
 	return (
 		<div className='hidden lg:block'>
@@ -78,7 +102,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 							</>
 						) : (
 							<>
-								{sheetData.finances.map((finance) => (
+								{selectedGroup.finances.map((finance) => (
 									<Row
 										key={finance.id}
 										finance={finance}
@@ -114,6 +138,27 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 						</TableRow>
 					</TableFooter>
 				</Table>
+			</div>
+			<div className='text-white flex'>
+				<ChevronLeftIcon
+					onClick={() =>
+						setSelectedGroup((current) =>
+							current.number === 0
+								? current
+								: { finances: financesInGroupsOf8[current.number - 1], number: current.number - 1 }
+						)
+					}
+				/>
+				{selectedGroup.number}
+				<ChevronRightIcon
+					onClick={() =>
+						setSelectedGroup((current) =>
+							current.number === numberOfGroupsOf8 - 1
+								? current
+								: { finances: financesInGroupsOf8[current.number + 1], number: current.number + 1 }
+						)
+					}
+				/>
 			</div>
 		</div>
 	);
