@@ -60,7 +60,7 @@ export const AddFinanceModal = () => {
 
 		let dateFormatted;
 
-		if (width <= 700) {
+		if (width <= 768) {
 			const dateInMobile = formData.get('date') as string;
 
 			if (!dateInMobile || dateInMobile === '') {
@@ -146,7 +146,7 @@ export const AddFinanceModal = () => {
 			>
 				<DialogContent
 					className={cn(
-						'sm:max-w-[425px] border-none outline-none',
+						'md:max-w-[765px] border-none outline-none',
 						isDark ? 'bg-neutral-900 text-white' : 'bg-white'
 					)}
 				>
@@ -154,83 +154,152 @@ export const AddFinanceModal = () => {
 						action={onSubmit}
 						className='space-y-4'
 					>
-						<h3 className='text-center text-xl font-semibold'>Adicionar finança</h3>
-						<FormGroup
-							id='title'
-							label='Título:'
-							placeholder='Ida ao mercado'
-						/>
-						<FormGroup
-							id='amount'
-							label='Quantia:'
-							mask='R$ #.##0,00'
-							placeholder='R$ XXX,XX'
-						/>
-						<div className='flex items-center gap-x-2'>
-							<Label
-								htmlFor='type'
-								className='text-lg'
-							>
-								Tipo:
-							</Label>
-							<RadioGroup
-								defaultValue='PROFIT'
-								id='type'
-								className='w-full flex items-center justify-center gap-x-6'
-								onValueChange={(ev: 'EXPENSE' | 'PROFIT') => setType(ev)}
-							>
-								<div className='flex items-center space-x-2'>
-									<RadioGroupItem
-										value='PROFIT'
-										id='profit'
-										className={cn('w-6 h-6', isDark && 'odd:odd:text-white border border-white')}
-									/>
-									<Label
-										htmlFor='profit'
-										className='text-base text-green-500'
-									>
-										Ganho
-									</Label>
-								</div>
-								<div className='flex items-center space-x-2'>
-									<RadioGroupItem
-										value='EXPENSE'
-										id='expense'
-										className={cn('w-6 h-6', isDark && 'odd:odd:text-white border border-white')}
-									/>
-									<Label
-										htmlFor='expense'
-										className='text-base text-red-500'
-									>
-										Despesa
-									</Label>
-								</div>
-							</RadioGroup>
-						</div>
-						{width >= 1024 ? (
-							<div>
-								<Label className='text-lg'>Dia:</Label>
-								<Calendar
-									fromMonth={date}
-									toMonth={date}
-									month={date}
-									disableNavigation
-									lang='pt'
-									mode='single'
-									selected={date}
-									onSelect={setDate}
-									className={cn(
-										'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
-										isDark && 'border-neutral-600'
-									)}
-									modifiersStyles={{
-										selected: {
-											backgroundColor: '#16a34a',
-										},
-									}}
+						<div className='hidden md:grid grid-cols-2'>
+							<div className='flex flex-col gap-y-8'>
+								<FormGroup
+									id='title'
+									label='Título:'
+									placeholder='Ida ao mercado'
 								/>
+								<FormGroup
+									id='amount'
+									label='Quantia:'
+									mask='R$ #.##0,00'
+									placeholder='R$ XXX,XX'
+								/>
+								<div className='flex items-center gap-x-2'>
+									<Label
+										htmlFor='type'
+										className='text-lg'
+									>
+										Tipo:
+									</Label>
+									<RadioGroup
+										defaultValue='PROFIT'
+										id='type'
+										className='w-full flex items-center justify-center gap-x-6'
+										onValueChange={(ev: 'EXPENSE' | 'PROFIT') => setType(ev)}
+									>
+										<div className='flex items-center space-x-2'>
+											<RadioGroupItem
+												value='PROFIT'
+												id='profit'
+												className={cn(
+													'w-6 h-6',
+													isDark && 'odd:odd:text-white border border-white'
+												)}
+											/>
+											<Label
+												htmlFor='profit'
+												className='text-base text-green-500'
+											>
+												Ganho
+											</Label>
+										</div>
+										<div className='flex items-center space-x-2'>
+											<RadioGroupItem
+												value='EXPENSE'
+												id='expense'
+												className={cn(
+													'w-6 h-6',
+													isDark && 'odd:odd:text-white border border-white'
+												)}
+											/>
+											<Label
+												htmlFor='expense'
+												className='text-base text-red-500'
+											>
+												Despesa
+											</Label>
+										</div>
+									</RadioGroup>
+								</div>
 							</div>
-						) : (
+							<div className='flex flex-col justify-center items-center'>
+								<div>
+									<Label className='text-lg'>Dia:</Label>
+									<Calendar
+										fromMonth={date}
+										toMonth={date}
+										month={date}
+										disableNavigation
+										lang='pt'
+										mode='single'
+										selected={date}
+										onSelect={setDate}
+										className={cn(
+											'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
+											isDark && 'border-neutral-600'
+										)}
+										modifiersStyles={{
+											selected: {
+												backgroundColor: '#16a34a',
+											},
+										}}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className='block md:hidden space-y-4'>
+							<h3 className='text-center text-xl font-semibold'>Adicionar finança</h3>
+							<FormGroup
+								id='title'
+								label='Título:'
+								placeholder='Ida ao mercado'
+							/>
+							<FormGroup
+								id='amount'
+								label='Quantia:'
+								mask='R$ #.##0,00'
+								placeholder='R$ XXX,XX'
+							/>
+							<div className='flex items-center gap-x-2'>
+								<Label
+									htmlFor='type'
+									className='text-lg'
+								>
+									Tipo:
+								</Label>
+								<RadioGroup
+									defaultValue='PROFIT'
+									id='type'
+									className='w-full flex items-center justify-center gap-x-6'
+									onValueChange={(ev: 'EXPENSE' | 'PROFIT') => setType(ev)}
+								>
+									<div className='flex items-center space-x-2'>
+										<RadioGroupItem
+											value='PROFIT'
+											id='profit'
+											className={cn(
+												'w-6 h-6',
+												isDark && 'odd:odd:text-white border border-white'
+											)}
+										/>
+										<Label
+											htmlFor='profit'
+											className='text-base text-green-500'
+										>
+											Ganho
+										</Label>
+									</div>
+									<div className='flex items-center space-x-2'>
+										<RadioGroupItem
+											value='EXPENSE'
+											id='expense'
+											className={cn(
+												'w-6 h-6',
+												isDark && 'odd:odd:text-white border border-white'
+											)}
+										/>
+										<Label
+											htmlFor='expense'
+											className='text-base text-red-500'
+										>
+											Despesa
+										</Label>
+									</div>
+								</RadioGroup>
+							</div>
 							<FormGroup
 								id='date'
 								label='Dia:'
@@ -242,7 +311,7 @@ export const AddFinanceModal = () => {
 								mask={'dd'}
 								className='flex items-center justify-center gap-x-4 space-y-0 odd:w-[95px] even:flex even:items-center'
 							/>
-						)}
+						</div>
 						<FormMessage
 							message={message}
 							type='error'
