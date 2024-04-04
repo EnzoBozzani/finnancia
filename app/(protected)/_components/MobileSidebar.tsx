@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -27,8 +27,6 @@ import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
-import { ThemeSwitch } from './ThemeSwitch';
-
 type SheetMonth = {
 	name: string;
 	id: string;
@@ -41,8 +39,6 @@ type Year = {
 };
 
 export const MobileSidebar = () => {
-	const router = useRouter();
-
 	const currentUser = useCurrentUser();
 
 	const isOpen = useSidebar((state) => state.isOpen);
@@ -102,7 +98,7 @@ export const MobileSidebar = () => {
 			>
 				<SheetContent
 					side={'left'}
-					className={cn('p-0 border-none block lg:hidden', isDark && 'bg-neutral-900 text-neutral-100')}
+					className={cn('p-0 border-none block lg:hidden', isDark && 'bg-neutral-950 text-white')}
 				>
 					{isLoading ? (
 						<>
@@ -128,15 +124,20 @@ export const MobileSidebar = () => {
 										open={isSelectOpen}
 										onOpenChange={setIsSelectOpen}
 										onValueChange={(value) => {
-											router.push(`/dashboard/${value}`);
 											onClose();
+											redirect(`/dashboard/${value}`);
 										}}
 									>
-										<SelectTrigger className='w-[95%] text-lg py-6'>
+										<SelectTrigger
+											className={cn('w-[95%] text-lg py-6', isDark && 'border-neutral-800')}
+										>
 											<SelectValue placeholder='Selecionar planilha' />
 										</SelectTrigger>
 										<SelectContent
-											className={cn('h-[200px]', isDark ? 'bg-neutral-900 text-neutral-100' : '')}
+											className={cn(
+												'h-[200px]',
+												isDark && 'bg-neutral-950 border-neutral-800 text-neutral-100'
+											)}
 										>
 											{sheets.map((year, index: number) => (
 												<SelectGroup key={year.order + '-' + index}>
@@ -150,7 +151,7 @@ export const MobileSidebar = () => {
 															className={cn(
 																'cursor-pointer',
 																isDark
-																	? 'focus:bg-neutral-800 focus:text-neutral-100'
+																	? 'focus:bg-neutral-900 focus:text-neutral-100'
 																	: ''
 															)}
 														>
@@ -167,7 +168,7 @@ export const MobileSidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
 										>
 											<MdDashboardCustomize className='w-8 h-8 mr-2' />
@@ -176,7 +177,7 @@ export const MobileSidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
 										>
 											<PlusIcon className='w-8 h-8 mr-2' />
@@ -185,7 +186,7 @@ export const MobileSidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
 										>
 											<CiCreditCard1 className='w-8 h-8 mr-2' />
@@ -194,7 +195,7 @@ export const MobileSidebar = () => {
 										<div
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
 										>
 											<CiSettings className='w-8 h-8 mr-2' />
@@ -207,9 +208,8 @@ export const MobileSidebar = () => {
 											href={'/dashboard'}
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
-											onClick={() => onClose()}
 										>
 											<MdDashboardCustomize className='w-8 h-8 mr-2' />
 											Painel
@@ -218,10 +218,9 @@ export const MobileSidebar = () => {
 											role='button'
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
 											onClick={() => {
-												onClose();
 												onOpenSheetModal();
 											}}
 										>
@@ -232,9 +231,8 @@ export const MobileSidebar = () => {
 											href={'/billing'}
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
-											onClick={() => onClose()}
 										>
 											<CiCreditCard1 className='w-8 h-8 mr-2' />
 											Planos
@@ -243,9 +241,8 @@ export const MobileSidebar = () => {
 											href={'/settings'}
 											className={cn(
 												'p-3 flex items-center',
-												isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+												isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 											)}
-											onClick={() => onClose()}
 										>
 											<CiSettings className='w-8 h-8 mr-2' />
 											Configurações

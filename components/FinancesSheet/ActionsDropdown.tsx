@@ -38,9 +38,9 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 					className={cn('w-8 h-8 lg:w-12 lg:h-12', isDark ? 'text-neutral-100' : 'text-neutral-800 ')}
 				/>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className={cn('-mt-4', isDark && 'bg-neutral-950 text-white')}>
+			<DropdownMenuContent className={cn('-mt-4', isDark && 'bg-neutral-950 text-white border-neutral-700')}>
 				<DropdownMenuLabel className='text-center'>Ações</DropdownMenuLabel>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator className={cn(isDark && 'bg-neutral-700')} />
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => {

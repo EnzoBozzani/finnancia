@@ -49,9 +49,9 @@ export const UserButton = ({ user }: UserButtonProps) => {
 					/>
 				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className={cn('w-56', isDark ? 'bg-neutral-950 text-neutral-100' : '')}>
+			<DropdownMenuContent className={cn('w-56', isDark && 'bg-neutral-950 border-neutral-700 text-neutral-100')}>
 				<DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator className={cn(isDark && 'bg-neutral-700')} />
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => setIsOpen(false)}
@@ -66,7 +66,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
 						<Link href={'/settings'}>Configurações</Link>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
-				<DropdownMenuSeparator />
+				<DropdownMenuSeparator className={cn(isDark && 'bg-neutral-700')} />
 				<DropdownMenuItem
 					className={cn('cursor-pointer', isDark ? 'focus:bg-neutral-800 focus:text-white' : '')}
 					onClick={() => signOut()}

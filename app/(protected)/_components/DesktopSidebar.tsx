@@ -5,7 +5,7 @@ import { PlusIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { CiCreditCard1, CiSettings } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Loader } from '@/components/Loader';
@@ -36,8 +36,6 @@ type Year = {
 };
 
 export const DesktopSidebar = () => {
-	const router = useRouter();
-
 	const currentUser = useCurrentUser();
 
 	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
@@ -96,14 +94,17 @@ export const DesktopSidebar = () => {
 								open={isSelectOpen}
 								onOpenChange={setIsSelectOpen}
 								onValueChange={(value) => {
-									router.push(`/dashboard/${value}`);
+									redirect(`/dashboard/${value}`);
 								}}
 							>
-								<SelectTrigger className='w-[95%] text-lg py-6'>
+								<SelectTrigger className={cn('w-[95%] text-lg py-6', isDark && 'border-neutral-800')}>
 									<SelectValue placeholder='Selecionar planilha' />
 								</SelectTrigger>
 								<SelectContent
-									className={cn('h-[200px]', isDark ? 'bg-neutral-900 text-neutral-100' : '')}
+									className={cn(
+										'h-[200px]',
+										isDark && 'bg-neutral-950 border-neutral-800 text-neutral-100'
+									)}
 								>
 									{sheets.map((year, index: number) => (
 										<SelectGroup key={year.order + '-' + index}>
@@ -116,7 +117,7 @@ export const DesktopSidebar = () => {
 													value={sheet.id}
 													className={cn(
 														'cursor-pointer',
-														isDark ? 'focus:bg-neutral-800 focus:text-neutral-100' : ''
+														isDark ? 'focus:bg-neutral-900 focus:text-neutral-100' : ''
 													)}
 												>
 													{sheet.name}
@@ -132,7 +133,7 @@ export const DesktopSidebar = () => {
 								<div
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 								>
 									<MdDashboardCustomize className='w-8 h-8 mr-2' />
@@ -141,7 +142,7 @@ export const DesktopSidebar = () => {
 								<div
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 								>
 									<PlusIcon className='w-8 h-8 mr-2' />
@@ -150,7 +151,7 @@ export const DesktopSidebar = () => {
 								<div
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 								>
 									<CiCreditCard1 className='w-8 h-8 mr-2' />
@@ -159,7 +160,7 @@ export const DesktopSidebar = () => {
 								<div
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 								>
 									<CiSettings className='w-8 h-8 mr-2' />
@@ -172,7 +173,7 @@ export const DesktopSidebar = () => {
 									href={'/dashboard'}
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 								>
 									<MdDashboardCustomize className='w-8 h-8 mr-2' />
@@ -182,7 +183,7 @@ export const DesktopSidebar = () => {
 									role='button'
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 									onClick={() => {
 										onOpenSheetModal();
@@ -195,7 +196,7 @@ export const DesktopSidebar = () => {
 									href={'/billing'}
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 								>
 									<CiCreditCard1 className='w-8 h-8 mr-2' />
@@ -205,7 +206,7 @@ export const DesktopSidebar = () => {
 									href={'/settings'}
 									className={cn(
 										'p-3 flex items-center',
-										isDark ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 								>
 									<CiSettings className='w-8 h-8 mr-2' />
