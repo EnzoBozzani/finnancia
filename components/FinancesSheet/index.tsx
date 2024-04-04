@@ -1,18 +1,10 @@
 'use client';
 
 import { Finance, Sheet } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
-import {
-	Table,
-	TableBody,
-	TableCaption,
-	TableCell,
-	TableFooter,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/ui/table';
-import { cn, currencyFormat } from '@/lib/utils';
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { cn, currencyFormat, organizeInGroupsOf8 } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { Row } from './Row';
@@ -30,32 +22,27 @@ interface FinancesSheetProps {
 export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	const isDark = useIsDarkTheme();
 
-	//tranformar isso num util com a filtragem de dados
-	const numberOfGroupsOf8 = Math.ceil(sheetData.finances.length / 8);
-	const financesInGroupsOf8: Finance[][] = [];
+	const router = useRouter();
 
-	let previous = 0;
-
-	for (let i = 1; i <= numberOfGroupsOf8; i++) {
-		financesInGroupsOf8.push(
-			sheetData.finances.slice(previous, i * 8 > sheetData.finances.length ? sheetData.finances.length : i * 8)
-		);
-		previous = i * 8;
-	}
+	const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8({ sheetData });
 
 	const [selectedGroup, setSelectedGroup] = useState<{ number: number; finances: Finance[] }>({
 		number: 0,
 		finances: financesInGroupsOf8[0],
 	});
+	const [numberOfGroups, setNumberOfGroups] = useState(numberOfGroupsOf8);
 
 	useEffect(() => {
-		console.log(selectedGroup);
-	}, [selectedGroup]);
+		const { financesInGroupsOf8, numberOfGroupsOf8 } = organizeInGroupsOf8({ sheetData });
+		setSelectedGroup({ number: 0, finances: financesInGroupsOf8[0] });
+		setNumberOfGroups(numberOfGroupsOf8);
+		router.refresh();
+	}, [sheetData, setSelectedGroup, setNumberOfGroups]);
 
 	return (
 		<div className='hidden lg:block'>
 			<h1 className='font-semibold text-center mb-6 text-3xl text-green-600'>{sheetData.name}</h1>
-			<div className={cn('max-w-screen-xl w-[95%] mx-auto mb-12')}>
+			<div className={cn('max-w-screen-xl w-[95%] mx-auto mb-4')}>
 				<Table className='text-lg'>
 					<TableHeader className='py-4'>
 						<TableRow
@@ -86,15 +73,15 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 							overflowY: 'scroll',
 						}}
 					>
-						{sheetData.finances.length === 0 ? (
+						{!selectedGroup.finances || selectedGroup.finances.length === 0 ? (
 							<>
 								<TableRow>
 									<TableCell
+										colSpan={4}
 										className={cn(
-											'text-center font-semibold py-6',
+											'text-center font-semibold h-[520px]',
 											isDark ? 'bg-neutral-950 text-white' : 'bg-white'
 										)}
-										colSpan={4}
 									>
 										Nenhuma finança encontrada nessa planilha
 									</TableCell>
@@ -139,8 +126,14 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					</TableFooter>
 				</Table>
 			</div>
-			<div className='text-white flex'>
+			<div className={cn('flex items-center justify-center mb-4', isDark ? 'text-white' : 'text-black')}>
 				<ChevronLeftIcon
+					className={cn(
+						'w-10 h-10',
+						selectedGroup.number === 0
+							? cn('cursor-default', isDark ? 'text-neutral-700' : 'text-neutral-300')
+							: 'cursor-pointer'
+					)}
 					onClick={() =>
 						setSelectedGroup((current) =>
 							current.number === 0
@@ -149,11 +142,19 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 						)
 					}
 				/>
-				{selectedGroup.number}
+				<div className={cn('border rounded-[100%]', isDark ? 'border-neutral-700' : 'border-neutral-300')}>
+					<p className='p-4 text-3xl font-bold'>{selectedGroup.number + 1}</p>
+				</div>
 				<ChevronRightIcon
+					className={cn(
+						'w-10 h-10',
+						selectedGroup.number === numberOfGroups - 1 || numberOfGroups === 0
+							? cn('cursor-default', isDark ? 'text-neutral-700' : 'text-neutral-300')
+							: 'cursor-pointer'
+					)}
 					onClick={() =>
 						setSelectedGroup((current) =>
-							current.number === numberOfGroupsOf8 - 1
+							current.number === numberOfGroups - 1 || numberOfGroups === 0
 								? current
 								: { finances: financesInGroupsOf8[current.number + 1], number: current.number + 1 }
 						)

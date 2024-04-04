@@ -9,6 +9,7 @@ import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
 import { cn, sheetNameToDate } from '@/lib/utils';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { FormGroup } from '../FormGroup';
 import { FormMessage } from '../FormMessage';
@@ -17,7 +18,6 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 export const AddFinanceModal = () => {
 	const currentDate = new Date();

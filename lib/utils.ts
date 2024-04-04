@@ -1,8 +1,8 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { Finance, Sheet } from '@prisma/client';
 
 import { Month, monthNameToMonthNumber } from '@/constants/months';
-import { number } from 'zod';
 
 type SheetMonth = {
 	name: string;
@@ -14,6 +14,14 @@ type Year = {
 	order: number;
 	sheets: SheetMonth[];
 };
+
+interface SheetWithFinances extends Sheet {
+	finances: Finance[];
+}
+
+interface SheetData {
+	sheetData: SheetWithFinances;
+}
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -85,3 +93,33 @@ export function getSheetTimeSinceJanuary1970(sheet: { order: number; name: strin
 
 export const currencyFormat = (value: number) =>
 	Intl.NumberFormat('pt-br', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }).format(value);
+
+export function organizeInGroupsOf8({ sheetData }: SheetData) {
+	let idCounter = 0;
+	while (sheetData.finances.length % 8 !== 0) {
+		sheetData.finances.push({
+			id: `fake-id-${idCounter}`,
+			amount: 0,
+			date: '',
+			order: 0,
+			sheetId: sheetData.id,
+			title: '',
+			type: 'EXPENSE',
+		});
+		idCounter++;
+	}
+
+	const numberOfGroupsOf8 = Math.ceil(sheetData.finances.length / 8);
+	const financesInGroupsOf8: Finance[][] = [];
+
+	let previous = 0;
+
+	for (let i = 1; i <= numberOfGroupsOf8; i++) {
+		financesInGroupsOf8.push(
+			sheetData.finances.slice(previous, i * 8 > sheetData.finances.length ? sheetData.finances.length : i * 8)
+		);
+		previous = i * 8;
+	}
+
+	return { financesInGroupsOf8, numberOfGroupsOf8 };
+}

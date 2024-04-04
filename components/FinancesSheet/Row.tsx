@@ -15,9 +15,37 @@ interface RowProps {
 export const Row = ({ finance }: RowProps) => {
 	const isDark = useIsDarkTheme();
 
+	if (finance.id.startsWith('fake-id')) {
+		return (
+			<TableRow
+				className={cn(
+					'outline-none border-b h-[65px]',
+					isDark
+						? 'bg-neutral-950 text-white hover:bg-neutral-950 border-neutral-700'
+						: 'bg-white text-black hover:bg-white border-neutral-300'
+				)}
+			>
+				<TableCell className='text-center'></TableCell>
+				<TableCell
+					className={cn(
+						'text-center font-semibold',
+						finance.type === 'PROFIT'
+							? isDark
+								? 'text-green-400'
+								: 'text-green-700'
+							: isDark
+							? 'text-red-400'
+							: 'text-red-700'
+					)}
+				></TableCell>
+				<TableCell className='text-center'></TableCell>
+				<TableCell className='grid place-items-center'></TableCell>
+			</TableRow>
+		);
+	}
+
 	return (
 		<TableRow
-			key={finance.id}
 			className={cn(
 				'outline-none border-b',
 				isDark
