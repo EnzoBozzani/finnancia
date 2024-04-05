@@ -47,7 +47,7 @@ export const EditFinanceModal = () => {
 
 		let dateFormatted;
 
-		if (width <= 700) {
+		if (width <= 768) {
 			const dateInMobile = formData.get('date') as string;
 
 			if (!dateInMobile || dateInMobile === '') {
@@ -128,54 +128,73 @@ export const EditFinanceModal = () => {
 			>
 				<DialogContent
 					className={cn(
-						'sm:max-w-[425px] border-none outline-none',
+						'sm:max-w-[765px] border-none outline-none',
 						isDark ? 'bg-neutral-900 text-white' : 'bg-white'
 					)}
 				>
 					<form
 						action={onSubmit}
-						className='space-y-3'
+						className='space-y-4'
 					>
-						<h3 className='text-center text-xl font-semibold'>
-							Editar {finance.type === 'PROFIT' ? 'Ganho' : 'Despesa'}
-						</h3>
-						<FormGroup
-							id='title'
-							label='Título'
-							initialValue={finance.title}
-						/>
-						<FormGroup
-							id='amount'
-							label='Quantia'
-							mask='R$ #.##0,00'
-							initialValue={currencyFormat(finance.amount)}
-						/>
-						{width >= 1024 ? (
-							!!date && (
+						<div className='hidden md:grid grid-cols-2'>
+							<div className='flex flex-col gap-y-6'>
+								<h3 className='text-center text-xl font-semibold'>
+									Editar {finance.type === 'PROFIT' ? 'Ganho' : 'Despesa'}
+								</h3>
+								<FormGroup
+									id='title'
+									label='Título'
+									initialValue={finance.title}
+								/>
+								<FormGroup
+									id='amount'
+									label='Quantia'
+									mask='R$ #.##0,00'
+									initialValue={currencyFormat(finance.amount)}
+								/>
+							</div>
+							<div className='flex flex-col justify-center items-center'>
 								<div>
-									<Label className='text-lg text-center'>Dia:</Label>
-									<Calendar
-										month={date}
-										fromMonth={date}
-										toMonth={date}
-										disableNavigation
-										lang='pt'
-										mode='single'
-										selected={date}
-										onSelect={setDate}
-										modifiersStyles={{
-											selected: {
-												backgroundColor: '#16a34a',
-											},
-										}}
-										className={cn(
-											'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
-											isDark && 'border-neutral-600'
-										)}
-									/>
+									<div>
+										<Label className='text-lg text-center'>Dia:</Label>
+										<Calendar
+											month={date}
+											fromMonth={date}
+											toMonth={date}
+											disableNavigation
+											lang='pt'
+											mode='single'
+											selected={date}
+											onSelect={setDate}
+											modifiersStyles={{
+												selected: {
+													backgroundColor: '#16a34a',
+												},
+											}}
+											className={cn(
+												'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
+												isDark && 'border-neutral-600'
+											)}
+										/>
+									</div>
 								</div>
-							)
-						) : (
+							</div>
+						</div>
+						<div className='block md:hidden space-y-4'>
+							<h3 className='text-center text-xl font-semibold'>
+								Editar {finance.type === 'PROFIT' ? 'Ganho' : 'Despesa'}
+							</h3>
+							<FormGroup
+								id='title'
+								label='Título'
+								initialValue={finance.title}
+							/>
+							<FormGroup
+								id='amount'
+								label='Quantia'
+								mask='R$ #.##0,00'
+								initialValue={currencyFormat(finance.amount)}
+							/>
 							<FormGroup
 								id='date'
 								label='Dia:'
@@ -186,9 +205,9 @@ export const EditFinanceModal = () => {
 								initialValue={financeDate.getDate().toLocaleString('pt-BR', {
 									minimumIntegerDigits: 2,
 								})}
-								className='flex items-center justify-center gap-x-4 space-y-0 odd:w-[95px] even:flex even:items-center'
+								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
 							/>
-						)}
+						</div>
 						<FormMessage
 							message={message}
 							type='error'

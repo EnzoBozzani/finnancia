@@ -155,7 +155,8 @@ export const AddFinanceModal = () => {
 						className='space-y-4'
 					>
 						<div className='hidden md:grid grid-cols-2'>
-							<div className='flex flex-col gap-y-8'>
+							<div className='flex flex-col gap-y-6'>
+								<h3 className='text-center text-xl font-semibold'>Adicionar finança</h3>
 								<FormGroup
 									id='title'
 									label='Título:'
