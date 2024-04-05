@@ -6,7 +6,6 @@ import { filterSheetData } from '@/lib/utils';
 
 import { DashboardChart } from './_components/DashboardChart';
 import { AnalysisCard } from './_components/AnalysisCard';
-import { generateResponseFromPrompt } from '@/lib/ai';
 
 export const metadata: Metadata = {
 	title: 'Painel',
@@ -31,9 +30,10 @@ const DashboardPage = async () => {
 		mediumAmount,
 		mediumExpense,
 		mediumProfit,
+		currentMonthSheetTotalAmount,
+		currentMonthSheetTotalExpense,
+		currentMonthSheetTotalProfit,
 	} = filterSheetData(sheets);
-
-	// const res = await generateResponseFromPrompt('Como me manter saudável financeiramente?');
 
 	return (
 		<main className='flex-1'>
@@ -44,11 +44,18 @@ const DashboardPage = async () => {
 					mensais
 				</p>
 			</div>
-			<section className='w-[95%] mx-auto grid grid-cols-1 md:grid-cols-2'>
+			<section className='w-[95%] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mb-8'>
 				<AnalysisCard
-					title='Lucro médio'
-					textColor='green-600'
+					title='Ganho'
+					textColor='green'
 					value={mediumProfit}
+					currentMonthSheetValue={currentMonthSheetTotalProfit}
+				/>
+				<AnalysisCard
+					title='Gasto'
+					textColor='red'
+					value={mediumExpense}
+					currentMonthSheetValue={currentMonthSheetTotalExpense}
 				/>
 			</section>
 			<section className='w-[95%] mx-auto'>

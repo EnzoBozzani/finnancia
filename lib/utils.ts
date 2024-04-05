@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { $Enums, Finance, Sheet } from '@prisma/client';
 
-import { Month, monthNameToMonthNumber } from '@/constants/months';
+import { Month, monthNameToMonthNumber, months } from '@/constants/months';
 
 type SheetMonth = {
 	name: string;
@@ -32,6 +32,14 @@ export function sheetNameToDate(sheetName: string | null) {
 	const sheetDate = new Date(+sheetYear, sheetMonthNumber - 1, 1);
 
 	return sheetDate;
+}
+
+export function dateToSheetName(date: Date) {
+	const monthNumber = date.getMonth();
+
+	const monthName = months[monthNumber];
+
+	return `${monthName}/${date.getFullYear()}`;
 }
 
 export function financeStringToDate(financeString: string | undefined) {
@@ -134,22 +142,35 @@ export function filterSheetData(
 		order: number;
 	})[]
 ) {
+	const currentMonthSheetName = dateToSheetName(new Date());
+
 	let totalAmountInAllSheets = 0;
 	let totalProfitInAllSheets = 0;
 	let totalExpenseInAllSheets = 0;
+
+	let currentMonthSheetTotalAmount = 0;
+	let currentMonthSheetTotalProfit = 0;
+	let currentMonthSheetTotalExpense = 0;
+
 	for (let i = 0; i < sheets.length; i++) {
 		totalAmountInAllSheets += sheets[i].totalAmount;
-		totalExpenseInAllSheets = sheets[i].finances.reduce(
-			(current, finance) => (finance.type === 'EXPENSE' ? current + finance.amount : current),
-			0
-		);
-		totalProfitInAllSheets = sheets[i].finances.reduce(
-			(current, finance) => (finance.type === 'PROFIT' ? current + finance.amount : current),
-			0
-		);
-	}
 
-	console.log(totalAmountInAllSheets, totalProfitInAllSheets, totalExpenseInAllSheets);
+		if (sheets[i].name === currentMonthSheetName) {
+			currentMonthSheetTotalAmount = sheets[i].totalAmount;
+		}
+
+		for (let j = 0; j < sheets[i].finances.length; j++) {
+			sheets[i].finances[j].type === 'PROFIT'
+				? (totalProfitInAllSheets += sheets[i].finances[j].amount)
+				: (totalExpenseInAllSheets += sheets[i].finances[j].amount);
+
+			if (sheets[i].name === currentMonthSheetName) {
+				sheets[i].finances[j].type === 'PROFIT'
+					? (currentMonthSheetTotalProfit += sheets[i].finances[j].amount)
+					: (currentMonthSheetTotalExpense += sheets[i].finances[j].amount);
+			}
+		}
+	}
 
 	let mediumAmount = totalAmountInAllSheets / sheets.length;
 	let mediumProfit = totalProfitInAllSheets / sheets.length;
@@ -191,5 +212,8 @@ export function filterSheetData(
 		mediumAmount,
 		mediumExpense,
 		mediumProfit,
+		currentMonthSheetTotalAmount,
+		currentMonthSheetTotalExpense,
+		currentMonthSheetTotalProfit,
 	};
 }
