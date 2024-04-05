@@ -6,6 +6,7 @@ import { filterSheetData } from '@/lib/utils';
 
 import { DashboardChart } from './_components/DashboardChart';
 import { AnalysisCard } from './_components/AnalysisCard';
+import { generateResponseFromPrompt } from '@/lib/ai';
 
 export const metadata: Metadata = {
 	title: 'Painel',
@@ -31,6 +32,8 @@ const DashboardPage = async () => {
 		mediumExpense,
 		mediumProfit,
 	} = filterSheetData(sheets);
+
+	// const res = await generateResponseFromPrompt('Como me manter saudável financeiramente?');
 
 	return (
 		<main className='flex-1'>
