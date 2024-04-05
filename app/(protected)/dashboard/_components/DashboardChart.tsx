@@ -123,9 +123,10 @@ export const DashboardChart = ({ labels, datasetsLabels, datasets, colors, sheet
 				isDark ? 'border-neutral-700' : 'border-neutral-300'
 			)}
 		>
-			<h1 className={cn('pb-4 text-lg font-bold text-center', isDark ? 'text-neutral-300' : 'text-neutral-700')}>
+			<h1 className={cn('text-lg font-bold text-center', isDark ? 'text-neutral-300' : 'text-neutral-700')}>
 				GANHO, GASTO E SALDO MENSAL
 			</h1>
+			<p className='text-neutral-500 text-sm pb-4'>(últimas 6 planilhas)</p>
 			{width >= 640 ? (
 				<Line
 					options={options}

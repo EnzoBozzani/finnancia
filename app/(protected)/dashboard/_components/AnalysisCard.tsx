@@ -2,34 +2,72 @@
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn, currencyFormat } from '@/lib/utils';
+import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 
 interface AnalysisCardProps {
 	title: string;
-	value: number;
+	medium: number;
 	textColor: 'green' | 'red' | 'sky';
 	currentMonthSheetValue: number;
 }
 
-export const AnalysisCard = ({ title, value, textColor, currentMonthSheetValue }: AnalysisCardProps) => {
+export const AnalysisCard = ({ title, medium, textColor, currentMonthSheetValue }: AnalysisCardProps) => {
 	const isDark = useIsDarkTheme();
 
-	const diff = value - currentMonthSheetValue;
-	const increasedOrDecreased = diff > 0 ? 'increased' : diff === 0 ? 'equal' : 'decreased';
+	const diff = medium - currentMonthSheetValue;
+	const increasedOrDecreased = diff > 0 ? 'decreased' : diff === 0 ? 'equal' : 'increased';
+
+	const porcentageColor =
+		increasedOrDecreased === 'equal'
+			? 'text-neutral-500'
+			: increasedOrDecreased === 'decreased'
+			? textColor === 'red'
+				? 'text-green-500'
+				: 'text-red-500'
+			: textColor === 'red'
+			? 'text-red-500'
+			: 'text-green-500';
+
+	const porcentage = (100 * diff) / medium;
 
 	return (
 		<div
 			className={cn(
-				'bg-transparent border rounded-xl p-4 space-y-8',
-				isDark ? `border-neutral-700 text-${textColor}-400` : `border-neutral-300 text-${textColor}-700`
+				'border rounded-xl p-4 space-y-4 md:space-y-8',
+				isDark
+					? `bg-neutral-900 border-neutral-700 text-${textColor}-400`
+					: `bg-neutral-100 border-neutral-300 text-${textColor}-700`
 			)}
 		>
-			<div className='flex items-center gap-x-2'>
+			<div className='flex items-center justify-center md:justify-start gap-x-2'>
 				<h1 className={cn('font-black text-xl uppercase', isDark ? 'text-white' : 'text-black')}>{title}</h1>
 				<span className='text-neutral-500 text-sm'>(esse mês)</span>
 			</div>
-			<div className='text-6xl font-bold'>{currencyFormat(currentMonthSheetValue)}</div>
-			<div>
-				<p>{value}</p>
+			<div className='text-4xl md:text-6xl text-center md:text-start font-bold'>
+				{currencyFormat(currentMonthSheetValue)}
+			</div>
+			<div className='text-xs md:text-base flex items-center gap-x-4 justify-center md:justify-between'>
+				<div className={cn('flex items-center', porcentageColor)}>
+					{porcentageColor === 'text-green-500' ? (
+						<ArrowUpIcon className=' w-8 h-8' />
+					) : porcentageColor === 'text-red-500' ? (
+						<ArrowDownIcon className=' w-8 h-8' />
+					) : (
+						'-'
+					)}
+					<p className='mr-2'>
+						{porcentage.toLocaleString('pt-BR', {
+							maximumFractionDigits: 2,
+							minimumIntegerDigits: 2,
+						})}
+						%
+					</p>
+					<span className={cn(isDark ? 'text-white' : 'text-black')}>vs média mensal</span>
+				</div>
+				<div className='hidden text-sm text-neutral-500 lg:flex flex-col items-center'>
+					<p className={cn(isDark ? 'text-white' : 'text-black')}>{currencyFormat(medium)}</p>
+					<p>(média mensal)</p>
+				</div>
 			</div>
 		</div>
 	);

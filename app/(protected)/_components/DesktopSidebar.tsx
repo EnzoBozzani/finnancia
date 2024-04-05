@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { PlusIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { CiCreditCard1, CiSettings } from 'react-icons/ci';
+import { SiCircuitverse } from 'react-icons/si';
 import { MdDashboardCustomize } from 'react-icons/md';
 import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
@@ -166,6 +167,15 @@ export const DesktopSidebar = () => {
 									<CiSettings className='w-8 h-8 mr-2' />
 									Configurações
 								</div>
+								<div
+									className={cn(
+										'p-3 flex items-center',
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+									)}
+								>
+									<SiCircuitverse className='w-8 h-8 mr-2' />
+									FinnancIA
+								</div>
 							</>
 						) : (
 							<>
@@ -211,6 +221,16 @@ export const DesktopSidebar = () => {
 								>
 									<CiSettings className='w-8 h-8 mr-2' />
 									Configurações
+								</Link>
+								<Link
+									href={'/ai'}
+									className={cn(
+										'p-3 flex items-center',
+										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
+									)}
+								>
+									<SiCircuitverse className='w-8 h-8 mr-2' />
+									FinnancIA
 								</Link>
 							</>
 						)}

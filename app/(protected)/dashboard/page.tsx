@@ -48,17 +48,17 @@ const DashboardPage = async () => {
 				<AnalysisCard
 					title='Ganho'
 					textColor='green'
-					value={mediumProfit}
+					medium={mediumProfit}
 					currentMonthSheetValue={currentMonthSheetTotalProfit}
 				/>
 				<AnalysisCard
 					title='Gasto'
 					textColor='red'
-					value={mediumExpense}
+					medium={mediumExpense}
 					currentMonthSheetValue={currentMonthSheetTotalExpense}
 				/>
 			</section>
-			<section className='w-[95%] mx-auto'>
+			<section className='w-[95%] mx-auto mb-8'>
 				<DashboardChart
 					colors={['#0284c7', '#16a34a', '#dc2626']}
 					datasets={[sheetsTotalAmount, sheetsTotalProfit, sheetsTotalExpenses]}
