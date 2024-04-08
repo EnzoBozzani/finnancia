@@ -57,6 +57,11 @@ const DashboardPage = async () => {
 					medium={mediumExpense}
 					currentMonthSheetValue={currentMonthSheetTotalExpense}
 				/>
+				<AnalysisCard
+					isAmountCard
+					medium={mediumAmount}
+					currentMonthSheetValue={currentMonthSheetTotalAmount}
+				/>
 			</section>
 			<section className='w-[95%] mx-auto mb-8'>
 				<DashboardChart

@@ -3,6 +3,7 @@
 import { Finance, Sheet } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { IoTrashOutline } from 'react-icons/io5';
 
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, currencyFormat, splitFinancesInGroupsOf8 } from '@/lib/utils';
@@ -41,7 +42,12 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 
 	return (
 		<div className='hidden lg:block'>
-			<h1 className='font-semibold text-center mb-6 text-3xl text-green-600'>{sheetData.name}</h1>
+			<h1 className='font-semibold mb-6 text-3xl text-green-600 flex items-center justify-center gap-x-2'>
+				{sheetData.name}
+				<button onClick={() => {}}>
+					<IoTrashOutline className='w-8 h-8 -mt-2 text-neutral-700 hover:text-red-500' />
+				</button>
+			</h1>
 			<div className={cn('max-w-screen-xl w-[95%] mx-auto')}>
 				<Table className='text-lg'>
 					<TableHeader className='py-4'>
