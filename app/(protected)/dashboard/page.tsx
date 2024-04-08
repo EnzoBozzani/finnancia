@@ -58,7 +58,8 @@ const DashboardPage = async () => {
 					currentMonthSheetValue={currentMonthSheetTotalExpense}
 				/>
 				<AnalysisCard
-					isAmountCard
+					title='Saldo'
+					textColor='sky'
 					medium={mediumAmount}
 					currentMonthSheetValue={currentMonthSheetTotalAmount}
 				/>
