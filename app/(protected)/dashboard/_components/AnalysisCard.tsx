@@ -36,7 +36,7 @@ export const AnalysisCard = ({
 			? 'text-red-500'
 			: 'text-green-500';
 
-	const porcentage = (100 * diff) / (medium || 1);
+	const porcentage = Math.abs((100 * diff) / (medium || 1));
 
 	if (isAmountCard) {
 		return (
@@ -63,6 +63,7 @@ export const AnalysisCard = ({
 							<ArrowDownIcon className=' w-8 h-8' />
 						) : null}
 						<p className='mr-2'>
+							~{' '}
 							{porcentage.toLocaleString('pt-BR', {
 								maximumFractionDigits: 2,
 							})}
@@ -98,11 +99,20 @@ export const AnalysisCard = ({
 			<div className='text-xs md:text-base flex items-center gap-x-4 justify-center md:justify-between'>
 				<div className={cn('flex items-center', porcentageColor)}>
 					{porcentageColor === 'text-green-500' ? (
-						<ArrowUpIcon className=' w-8 h-8' />
+						textColor === 'red' ? (
+							<ArrowDownIcon className='w-8 h-8' />
+						) : (
+							<ArrowUpIcon className=' w-8 h-8' />
+						)
 					) : porcentageColor === 'text-red-500' ? (
-						<ArrowDownIcon className=' w-8 h-8' />
+						textColor === 'red' ? (
+							<ArrowUpIcon className='w-8 h-8' />
+						) : (
+							<ArrowDownIcon className=' w-8 h-8' />
+						)
 					) : null}
 					<p className='mr-2'>
+						~{' '}
 						{porcentage.toLocaleString('pt-BR', {
 							maximumFractionDigits: 2,
 						})}

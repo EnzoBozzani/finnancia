@@ -11,6 +11,7 @@ import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { Row } from './Row';
 import { Pagination } from './Pagination';
+import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -33,6 +34,8 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	});
 	const [numberOfGroups, setNumberOfGroups] = useState(numberOfGroupsOf8);
 
+	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
+
 	useEffect(() => {
 		const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
 		setSelectedGroup((current) => ({ number: current.number, finances: financesInGroupsOf8[current.number] }));
@@ -44,8 +47,14 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		<div className='hidden lg:block'>
 			<h1 className='font-semibold mb-6 text-3xl text-green-600 flex items-center justify-center gap-x-2'>
 				{sheetData.name}
-				<button onClick={() => {}}>
-					<IoTrashOutline className='w-8 h-8 -mt-2 text-neutral-700 hover:text-red-500' />
+				<button
+					onClick={() => {
+						onOpenDeleteSheetModal(sheetData);
+					}}
+				>
+					<IoTrashOutline
+						className={cn('w-8 h-8 hover:text-red-500', isDark ? 'text-neutral-700' : 'text-neutral-300')}
+					/>
 				</button>
 			</h1>
 			<div className={cn('max-w-screen-xl w-[95%] mx-auto')}>

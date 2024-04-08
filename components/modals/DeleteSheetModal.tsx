@@ -1,11 +1,12 @@
 'use client';
 
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
 import { cn } from '@/lib/utils';
+import { sheetsService } from '@/services/sheetsService';
 
 import { SubmitButton } from '../SubmitButton';
 import { Dialog, DialogContent } from '../ui/dialog';
@@ -20,17 +21,19 @@ export const DeleteSheetModal = () => {
 	const sheet = useDeleteSheetModal((state) => state.sheet);
 
 	const onSubmit = async () => {
-		// if (!sheet?.id) return;
-		// const res = await sheetssService.deleteSheet(sheet.id);
-		// if (res.error) {
-		// 	onClose();
-		// 	router.refresh();
-		// 	toast.error('Algo deu errado!');
-		// }
-		// if (res.success) {
-		// 	onClose();
-		// 	redirect("/dashboard")
-		// }
+		if (!sheet?.id) return;
+
+		const res = await sheetsService.deleteSheet(sheet.id);
+
+		if (res.error) {
+			onClose();
+			router.refresh();
+			toast.error('Algo deu errado!');
+		}
+		if (res.success) {
+			onClose();
+			redirect('/dashboard');
+		}
 	};
 
 	return (
