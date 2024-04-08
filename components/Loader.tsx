@@ -20,6 +20,7 @@ export const Loader: React.FC = () => {
 					hideFully
 					className='w-fit'
 					logoColor='text-green-700'
+					isNotLink
 				/>
 			</div>
 		</div>

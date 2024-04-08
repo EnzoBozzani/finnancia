@@ -93,7 +93,9 @@ export const DesktopSidebar = () => {
 						<div className='my-12 flex justify-center items-center'>
 							<Select
 								open={isSelectOpen}
-								onOpenChange={setIsSelectOpen}
+								onOpenChange={() => {
+									sheets.length === 0 ? onOpenSheetModal() : setIsSelectOpen((current) => !current);
+								}}
 								onValueChange={(value) => {
 									redirect(`/dashboard/${value}`);
 								}}

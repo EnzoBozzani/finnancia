@@ -172,9 +172,9 @@ export function filterSheetData(
 		}
 	}
 
-	let mediumAmount = totalAmountInAllSheets / sheets.length;
-	let mediumProfit = totalProfitInAllSheets / sheets.length;
-	let mediumExpense = totalExpenseInAllSheets / sheets.length;
+	let mediumAmount = totalAmountInAllSheets / (sheets.length || 1);
+	let mediumProfit = totalProfitInAllSheets / (sheets.length || 1);
+	let mediumExpense = totalExpenseInAllSheets / (sheets.length || 1);
 
 	const lastSixSheets = sheets
 		.filter((sheet) => getSheetTimeSinceJanuary1970(sheet) < new Date().valueOf())

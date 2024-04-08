@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -12,13 +12,12 @@ import { cn } from '@/lib/utils';
 import { FormMessage } from '../FormMessage';
 import { FormGroup } from '../FormGroup';
 import { SubmitButton } from '../SubmitButton';
+import { revalidatePath } from 'next/cache';
 
 export const AddSheetModal = () => {
 	const currentDate = new Date();
 
 	const isDark = useIsDarkTheme();
-
-	const router = useRouter();
 
 	const isOpen = useAddSheetModal((state) => state.isOpen);
 	const onClose = useAddSheetModal((state) => state.onClose);
@@ -59,7 +58,8 @@ export const AddSheetModal = () => {
 
 		if (res.success) {
 			onClose();
-			router.push(`/dashboard/${res.sheetId}`);
+			location.reload();
+			redirect(`/dashboard/${res.sheetId}`);
 		}
 	};
 

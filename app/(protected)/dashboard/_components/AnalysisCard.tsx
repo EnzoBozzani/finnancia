@@ -1,8 +1,10 @@
 'use client';
 
+import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from '@radix-ui/react-icons';
+import { LuEqual } from 'react-icons/lu';
+
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn, currencyFormat } from '@/lib/utils';
-import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 
 interface AnalysisCardProps {
 	title: string;
@@ -28,7 +30,7 @@ export const AnalysisCard = ({ title, medium, textColor, currentMonthSheetValue 
 			? 'text-red-500'
 			: 'text-green-500';
 
-	const porcentage = (100 * diff) / medium;
+	const porcentage = (100 * diff) / (medium || 1);
 
 	return (
 		<div
@@ -52,13 +54,10 @@ export const AnalysisCard = ({ title, medium, textColor, currentMonthSheetValue 
 						<ArrowUpIcon className=' w-8 h-8' />
 					) : porcentageColor === 'text-red-500' ? (
 						<ArrowDownIcon className=' w-8 h-8' />
-					) : (
-						'-'
-					)}
+					) : null}
 					<p className='mr-2'>
 						{porcentage.toLocaleString('pt-BR', {
 							maximumFractionDigits: 2,
-							minimumIntegerDigits: 2,
 						})}
 						%
 					</p>
