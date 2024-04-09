@@ -34,10 +34,6 @@ interface FinancesData {
 export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	const isDark = useIsDarkTheme();
 
-	const router = useRouter();
-
-	// const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
-
 	const [selectedPage, setSelectedPage] = useState(0);
 	const [financesData, setFinancesData] = useState<FinancesData>({
 		finances: sheetData.finances,
@@ -46,20 +42,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	});
 	const [isLoading, setIsLoading] = useState(false);
 
-	// const [selectedGroup, setSelectedGroup] = useState<{ number: number; finances: Finance[] }>({
-	// 	number: 0,
-	// 	finances: financesInGroupsOf8[0],
-	// });
-	// const [numberOfGroups, setNumberOfGroups] = useState(numberOfGroupsOf8);
-
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
-
-	// useEffect(() => {
-	// 	const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
-	// 	setSelectedGroup((current) => ({ number: current.number, finances: financesInGroupsOf8[current.number] }));
-	// 	setNumberOfGroups(numberOfGroupsOf8);
-	// 	router.refresh();
-	// }, [sheetData]);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -94,11 +77,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 			setIsLoading(false);
 		};
 		fetchData();
-	}, [selectedPage]);
-
-	useEffect(() => {
-		router.refresh();
-	}, []);
+	}, [selectedPage, sheetData]);
 
 	return (
 		<div className='hidden lg:block'>
