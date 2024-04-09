@@ -46,6 +46,18 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 }
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+	const searchParams = req.nextUrl.searchParams;
+	const page = searchParams.get('page');
+
+	if (!page || isNaN(Number(page))) {
+		return NextResponse.json(
+			{
+				error: 'Bad request!',
+			},
+			{ status: 400 }
+		);
+	}
+
 	const user = await currentUser();
 
 	if (!user) {
@@ -75,6 +87,15 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 					error: 'Sheet not found!',
 				},
 				{ status: 404 }
+			);
+		}
+
+		if (Number(page) > Math.ceil(sheet.financesCount / 8)) {
+			return NextResponse.json(
+				{
+					error: 'Bad request - Page not found!',
+				},
+				{ status: 400 }
 			);
 		}
 

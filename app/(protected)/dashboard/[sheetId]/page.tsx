@@ -31,6 +31,8 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 				orderBy: {
 					order: 'asc',
 				},
+				take: 8,
+				skip: 0,
 			},
 		},
 	});

@@ -47,6 +47,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			where: { id: params.id, userId: user.id },
 			select: {
 				totalAmount: true,
+				financesCount: true,
 			},
 		});
 
@@ -74,6 +75,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			where: { id: params.id },
 			data: {
 				totalAmount: type === 'PROFIT' ? sheet.totalAmount + amount : sheet.totalAmount - amount,
+				financesCount: sheet.financesCount + 1,
 			},
 		});
 

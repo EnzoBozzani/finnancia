@@ -33,7 +33,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 		const sheet = await db.sheet.findUnique({
 			where: { id: financeToBeDeleted?.sheetId, userId: user.id },
-			select: { id: true, totalAmount: true },
+			select: { id: true, totalAmount: true, financesCount: true },
 		});
 
 		if (!sheet) {
@@ -56,6 +56,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 					financeToBeDeleted.type === 'PROFIT'
 						? sheet.totalAmount - financeToBeDeleted.amount
 						: sheet.totalAmount + financeToBeDeleted.amount,
+				financesCount: sheet.financesCount - 1,
 			},
 		});
 

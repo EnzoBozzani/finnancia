@@ -10,8 +10,8 @@ export const sheetsService = {
 
 		return res.json();
 	},
-	async getSheetById(sheetId: string) {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}`, {
+	async getSheetById(sheetId: string, page: number) {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}&page=${page}`, {
 			method: 'GET',
 			headers: {
 				Accept: 'application/json',
@@ -33,7 +33,7 @@ export const sheetsService = {
 
 		return res.json();
 	},
-	async deleteSheet(sheetId: string){
+	async deleteSheet(sheetId: string) {
 		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}`, {
 			method: 'DELETE',
 			headers: {
@@ -43,5 +43,5 @@ export const sheetsService = {
 		});
 
 		return res.json();
-	}
+	},
 };

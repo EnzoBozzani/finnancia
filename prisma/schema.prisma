@@ -65,6 +65,7 @@ model Sheet {
 	userId String
 	totalAmount Float
   order Int
+  financesCount Int @default(0)
 
   finances Finance[]
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
