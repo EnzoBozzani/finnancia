@@ -11,7 +11,7 @@ export const sheetsService = {
 		return res.json();
 	},
 	async getSheetById(sheetId: string, page: number) {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}&page=${page}`, {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}?page=${page}`, {
 			method: 'GET',
 			headers: {
 				Accept: 'application/json',

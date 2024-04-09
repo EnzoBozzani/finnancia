@@ -77,6 +77,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 					orderBy: {
 						order: 'asc',
 					},
+					take: 8,
+					skip: Number(page) * 8,
 				},
 			},
 		});
@@ -87,15 +89,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 					error: 'Sheet not found!',
 				},
 				{ status: 404 }
-			);
-		}
-
-		if (Number(page) > Math.ceil(sheet.financesCount / 8)) {
-			return NextResponse.json(
-				{
-					error: 'Bad request - Page not found!',
-				},
-				{ status: 400 }
 			);
 		}
 

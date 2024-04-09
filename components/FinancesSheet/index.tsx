@@ -12,6 +12,10 @@ import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { Row } from './Row';
 import { Pagination } from './Pagination';
 import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
+import { sheetsService } from '@/services/sheetsService';
+import { toast } from 'sonner';
+import { Loader } from '../Loader';
+import { financesService } from '@/services/financesService';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -21,27 +25,80 @@ interface FinancesSheetProps {
 	sheetData: SheetWithFinances;
 }
 
+interface FinancesData {
+	finances: Finance[];
+	financesCount: number;
+	sheetId: string;
+}
+
 export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	const isDark = useIsDarkTheme();
 
 	const router = useRouter();
 
-	const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
+	// const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
 
-	const [selectedGroup, setSelectedGroup] = useState<{ number: number; finances: Finance[] }>({
-		number: 0,
-		finances: financesInGroupsOf8[0],
+	const [selectedPage, setSelectedPage] = useState(0);
+	const [financesData, setFinancesData] = useState<FinancesData>({
+		finances: sheetData.finances,
+		financesCount: sheetData.financesCount,
+		sheetId: sheetData.id,
 	});
-	const [numberOfGroups, setNumberOfGroups] = useState(numberOfGroupsOf8);
+	const [isLoading, setIsLoading] = useState(false);
+
+	// const [selectedGroup, setSelectedGroup] = useState<{ number: number; finances: Finance[] }>({
+	// 	number: 0,
+	// 	finances: financesInGroupsOf8[0],
+	// });
+	// const [numberOfGroups, setNumberOfGroups] = useState(numberOfGroupsOf8);
 
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
 
+	// useEffect(() => {
+	// 	const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
+	// 	setSelectedGroup((current) => ({ number: current.number, finances: financesInGroupsOf8[current.number] }));
+	// 	setNumberOfGroups(numberOfGroupsOf8);
+	// 	router.refresh();
+	// }, [sheetData]);
+
 	useEffect(() => {
-		const { financesInGroupsOf8, numberOfGroupsOf8 } = splitFinancesInGroupsOf8(sheetData);
-		setSelectedGroup((current) => ({ number: current.number, finances: financesInGroupsOf8[current.number] }));
-		setNumberOfGroups(numberOfGroupsOf8);
+		const fetchData = async () => {
+			setIsLoading(true);
+			const res = await financesService.getPaginatedFinances(sheetData.id, selectedPage);
+
+			if (res.error || res.sheetId !== sheetData.id) {
+				toast.error('Algo deu errado!');
+				setIsLoading(false);
+				return;
+			}
+
+			setFinancesData(() => {
+				let idCounter = 0;
+
+				while (res.finances.length < 8 && res.finances.length > 0) {
+					res.finances.push({
+						id: `fake-id-${idCounter}`,
+						amount: 0,
+						date: '',
+						order: 0,
+						sheetId: sheetData.id,
+						title: '',
+						type: 'EXPENSE',
+					});
+					idCounter++;
+				}
+
+				return res;
+			});
+
+			setIsLoading(false);
+		};
+		fetchData();
+	}, [selectedPage]);
+
+	useEffect(() => {
 		router.refresh();
-	}, [sheetData]);
+	}, []);
 
 	return (
 		<div className='hidden lg:block'>
@@ -88,7 +145,23 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 							overflowY: 'scroll',
 						}}
 					>
-						{!selectedGroup.finances || selectedGroup.finances.length === 0 ? (
+						{isLoading ? (
+							<>
+								<TableRow>
+									<TableCell
+										colSpan={4}
+										className={cn(
+											'text-center font-semibold h-[520px]',
+											isDark ? 'bg-neutral-950 text-white' : 'bg-white'
+										)}
+									>
+										<div className='flex items-center justify-center'>
+											<Loader />
+										</div>
+									</TableCell>
+								</TableRow>
+							</>
+						) : !financesData.finances || financesData.finances.length === 0 ? (
 							<>
 								<TableRow>
 									<TableCell
@@ -104,7 +177,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 							</>
 						) : (
 							<>
-								{selectedGroup.finances.map((finance) => (
+								{financesData.finances.map((finance) => (
 									<Row
 										key={finance.id}
 										finance={finance}
@@ -142,10 +215,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 				</Table>
 			</div>
 			<Pagination
-				financesInGroupsOf8={financesInGroupsOf8}
-				numberOfGroups={numberOfGroups}
-				selectedGroup={selectedGroup}
-				setSelectedGroup={setSelectedGroup}
+				numberOfGroups={Math.ceil(financesData.financesCount / 8)}
+				selectedPage={selectedPage}
+				setSelectedPage={setSelectedPage}
 			/>
 		</div>
 	);
