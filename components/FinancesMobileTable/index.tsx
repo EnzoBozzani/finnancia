@@ -75,7 +75,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 				</button>
 			</h1>
 			{isLoading ? (
-				<div className='flex items-center justify-center my-24 h-[750px]'>
+				<div className='flex items-center justify-center my-24'>
 					<Loader />
 				</div>
 			) : financesData.finances.length === 0 ? (

@@ -34,6 +34,7 @@ export const EditFinanceModal = () => {
 	const financeDate = financeStringToDate(finance?.date);
 
 	useEffect(() => {
+		const financeDate = financeStringToDate(finance?.date);
 		setDate(financeDate);
 	}, [isOpen]);
 
@@ -136,8 +137,53 @@ export const EditFinanceModal = () => {
 						action={onSubmit}
 						className='space-y-4'
 					>
-						<div className='hidden md:grid grid-cols-2'>
-							<div className='flex flex-col gap-y-6'>
+						{width >= 768 ? (
+							<div className='grid grid-cols-2'>
+								<div className='flex flex-col gap-y-6'>
+									<h3 className='text-center text-xl font-semibold'>
+										Editar {finance.type === 'PROFIT' ? 'Ganho' : 'Despesa'}
+									</h3>
+									<FormGroup
+										id='title'
+										label='Título'
+										initialValue={finance.title}
+									/>
+									<FormGroup
+										id='amount'
+										label='Quantia'
+										mask='R$ #.##0,00'
+										initialValue={currencyFormat(finance.amount)}
+									/>
+								</div>
+								<div className='flex flex-col justify-center items-center'>
+									<div>
+										<div>
+											<Label className='text-lg text-center'>Dia:</Label>
+											<Calendar
+												month={date}
+												fromMonth={date}
+												toMonth={date}
+												disableNavigation
+												lang='pt'
+												mode='single'
+												selected={date}
+												onSelect={setDate}
+												modifiersStyles={{
+													selected: {
+														backgroundColor: '#16a34a',
+													},
+												}}
+												className={cn(
+													'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
+													isDark && 'border-neutral-600'
+												)}
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						) : (
+							<div className='space-y-4'>
 								<h3 className='text-center text-xl font-semibold'>
 									Editar {finance.type === 'PROFIT' ? 'Ganho' : 'Despesa'}
 								</h3>
@@ -152,62 +198,20 @@ export const EditFinanceModal = () => {
 									mask='R$ #.##0,00'
 									initialValue={currencyFormat(finance.amount)}
 								/>
+								<FormGroup
+									id='date'
+									label='Dia:'
+									placeholder={`${financeDate.getDate().toLocaleString('pt-BR', {
+										minimumIntegerDigits: 2,
+									})}`}
+									mask={'dd'}
+									initialValue={financeDate.getDate().toLocaleString('pt-BR', {
+										minimumIntegerDigits: 2,
+									})}
+									className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
+								/>
 							</div>
-							<div className='flex flex-col justify-center items-center'>
-								<div>
-									<div>
-										<Label className='text-lg text-center'>Dia:</Label>
-										<Calendar
-											month={date}
-											fromMonth={date}
-											toMonth={date}
-											disableNavigation
-											lang='pt'
-											mode='single'
-											selected={date}
-											onSelect={setDate}
-											modifiersStyles={{
-												selected: {
-													backgroundColor: '#16a34a',
-												},
-											}}
-											className={cn(
-												'mx-auto w-fit flex justify-center items-center rounded-md border shadow',
-												isDark && 'border-neutral-600'
-											)}
-										/>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className='block md:hidden space-y-4'>
-							<h3 className='text-center text-xl font-semibold'>
-								Editar {finance.type === 'PROFIT' ? 'Ganho' : 'Despesa'}
-							</h3>
-							<FormGroup
-								id='title'
-								label='Título'
-								initialValue={finance.title}
-							/>
-							<FormGroup
-								id='amount'
-								label='Quantia'
-								mask='R$ #.##0,00'
-								initialValue={currencyFormat(finance.amount)}
-							/>
-							<FormGroup
-								id='date'
-								label='Dia:'
-								placeholder={`${financeDate.getDate().toLocaleString('pt-BR', {
-									minimumIntegerDigits: 2,
-								})}`}
-								mask={'dd'}
-								initialValue={financeDate.getDate().toLocaleString('pt-BR', {
-									minimumIntegerDigits: 2,
-								})}
-								className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
-							/>
-						</div>
+						)}
 						<FormMessage
 							message={message}
 							type='error'

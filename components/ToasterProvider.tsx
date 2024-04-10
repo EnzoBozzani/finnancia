@@ -12,7 +12,7 @@ export const ToasterProvider = () => {
 			duration={2000}
 			toastOptions={{
 				style: {
-					backgroundColor: isDark ? '#000' : '#fff',
+					backgroundColor: isDark ? '#262626' : '#e5e5e5',
 					color: isDark ? '#fff' : '#000',
 					border: 'none',
 				},
