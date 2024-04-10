@@ -2,12 +2,17 @@
 
 import { Finance, Sheet } from '@prisma/client';
 import { IoTrashOutline } from 'react-icons/io5';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
+import { financesService } from '@/services/financesService';
 import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
 import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { FinancesMobileRow } from './FinancesMobileRow';
+import { Loader } from '../Loader';
+import { Pagination } from '../FinancesSheet/Pagination';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -17,10 +22,43 @@ interface FinancesMobileTableProps {
 	sheetData: SheetWithFinances;
 }
 
+interface FinancesData {
+	finances: Finance[];
+	financesCount: number;
+	sheetId: string;
+}
+
 export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => {
 	const isDark = useIsDarkTheme();
 
+	const [selectedPage, setSelectedPage] = useState(0);
+	const [financesData, setFinancesData] = useState<FinancesData>({
+		finances: sheetData.finances,
+		financesCount: sheetData.financesCount,
+		sheetId: sheetData.id,
+	});
+	const [isLoading, setIsLoading] = useState(false);
+
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			setIsLoading(true);
+
+			const res = await financesService.getPaginatedFinances(sheetData.id, selectedPage);
+
+			if (res.error || res.sheetId !== sheetData.id) {
+				toast.error('Algo deu errado!');
+				setIsLoading(false);
+				return;
+			}
+
+			setFinancesData(res);
+
+			setIsLoading(false);
+		};
+		fetchData();
+	}, [selectedPage, sheetData]);
 
 	return (
 		<section className='block lg:hidden mb-6'>
@@ -36,7 +74,11 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 					/>
 				</button>
 			</h1>
-			{sheetData.finances.length === 0 ? (
+			{isLoading ? (
+				<div className='flex items-center justify-center my-24 h-[750px]'>
+					<Loader />
+				</div>
+			) : financesData.finances.length === 0 ? (
 				<>
 					<div
 						className={cn(
@@ -51,7 +93,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 				</>
 			) : (
 				<>
-					{sheetData.finances.map((finance) => (
+					{financesData.finances.map((finance) => (
 						<FinancesMobileRow
 							finance={finance}
 							key={finance.id}
@@ -81,6 +123,11 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 					{currencyFormat(sheetData.totalAmount)}
 				</p>
 			</div>
+			<Pagination
+				numberOfGroups={Math.ceil(financesData.financesCount / 8)}
+				selectedPage={selectedPage}
+				setSelectedPage={setSelectedPage}
+			/>
 		</section>
 	);
 };
