@@ -152,8 +152,14 @@ export function filterSheetData(
 	let currentMonthSheetTotalProfit = 0;
 	let currentMonthSheetTotalExpense = 0;
 
+	let positiveSheets = 0;
+	let neutralSheets = 0;
+	let negativeSheets = 0;
+
 	for (let i = 0; i < sheets.length; i++) {
 		totalAmountInAllSheets += sheets[i].totalAmount;
+
+		sheets[i].totalAmount > 0 ? positiveSheets++ : sheets[i].totalAmount === 0 ? neutralSheets++ : negativeSheets++;
 
 		if (sheets[i].name === currentMonthSheetName) {
 			currentMonthSheetTotalAmount = sheets[i].totalAmount;
@@ -215,5 +221,8 @@ export function filterSheetData(
 		currentMonthSheetTotalAmount,
 		currentMonthSheetTotalExpense,
 		currentMonthSheetTotalProfit,
+		positiveSheets,
+		negativeSheets,
+		neutralSheets,
 	};
 }

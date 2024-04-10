@@ -33,6 +33,9 @@ const DashboardPage = async () => {
 		currentMonthSheetTotalAmount,
 		currentMonthSheetTotalExpense,
 		currentMonthSheetTotalProfit,
+		positiveSheets,
+		negativeSheets,
+		neutralSheets,
 	} = filterSheetData(sheets);
 
 	return (
@@ -62,6 +65,14 @@ const DashboardPage = async () => {
 					textColor='sky'
 					medium={mediumAmount}
 					currentMonthSheetValue={currentMonthSheetTotalAmount}
+				/>
+				<AnalysisCard
+					lastCard
+					medium={0}
+					title='Número de planilhas'
+					textColor='neutral'
+					currentMonthSheetValue={sheets.length}
+					nSheets={[positiveSheets, negativeSheets, neutralSheets]}
 				/>
 			</section>
 			<section className='w-[95%] mx-auto mb-8'>

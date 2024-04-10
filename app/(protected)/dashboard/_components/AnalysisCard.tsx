@@ -8,12 +8,64 @@ import { cn, currencyFormat } from '@/lib/utils';
 interface AnalysisCardProps {
 	title: string;
 	medium: number;
-	textColor: 'green' | 'red' | 'sky';
+	textColor: 'green' | 'red' | 'sky' | 'neutral';
 	currentMonthSheetValue: number;
+	lastCard?: boolean;
+	nSheets?: [number, number, number];
 }
 
-export const AnalysisCard = ({ title, medium, textColor, currentMonthSheetValue }: AnalysisCardProps) => {
+export const AnalysisCard = ({
+	title,
+	medium,
+	textColor,
+	currentMonthSheetValue,
+	lastCard = false,
+	nSheets,
+}: AnalysisCardProps) => {
 	const isDark = useIsDarkTheme();
+
+	if (lastCard && nSheets) {
+		return (
+			<div
+				className={cn(
+					'border rounded-xl p-4 space-y-4 md:space-y-8',
+					isDark
+						? `bg-neutral-900 border-neutral-700 text-white`
+						: `bg-neutral-100 border-neutral-300 text-black`
+				)}
+			>
+				<div className='flex items-center justify-center md:justify-start gap-x-2'>
+					<h1 className={cn('font-black text-xl uppercase', isDark ? 'text-white' : 'text-black')}>
+						{title}
+					</h1>
+					<span className='text-neutral-500 text-sm'>(total)</span>
+				</div>
+				<div className='text-4xl md:text-6xl text-center md:text-start font-bold overflow-scroll'>
+					{currentMonthSheetValue} planilhas
+				</div>
+				<div className='flex items-center justify-center gap-x-2'>
+					<div className='hidden text-sm text-neutral-500 md:flex flex-col items-center'>
+						<p className={cn('text-center font-bold', isDark ? 'text-green-400' : 'text-green-700')}>
+							{nSheets[0]}
+						</p>
+						<p className='text-center'>(saldo positivo)</p>
+					</div>
+					<div className='hidden text-sm text-neutral-500 md:flex flex-col items-center'>
+						<p className={cn('text-center font-bold', isDark ? 'text-red-400' : 'text-red-700')}>
+							{nSheets[1]}
+						</p>
+						<p className='text-center'>(saldo negativo)</p>
+					</div>
+					<div className='hidden text-sm text-neutral-500 md:flex flex-col items-center'>
+						<p className={cn('text-center font-bold', isDark ? 'text-white' : 'text-black')}>
+							{nSheets[2]}
+						</p>
+						<p className='text-center'>(saldo neutro)</p>
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	const diff = medium - currentMonthSheetValue;
 	const increasedOrDecreased = diff > 0 ? 'decreased' : diff === 0 ? 'equal' : 'increased';

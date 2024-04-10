@@ -1,7 +1,9 @@
 'use client';
 
 import { Finance, Sheet } from '@prisma/client';
+import { IoTrashOutline } from 'react-icons/io5';
 
+import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
 import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
@@ -18,9 +20,22 @@ interface FinancesMobileTableProps {
 export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => {
 	const isDark = useIsDarkTheme();
 
+	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
+
 	return (
 		<section className='block lg:hidden mb-6'>
-			<h1 className='font-semibold text-center mb-6 text-2xl text-green-600'>{sheetData.name}</h1>
+			<h1 className='font-semibold text-center mb-6 text-2xl text-green-600 flex items-center justify-center gap-x-2'>
+				{sheetData.name}
+				<button
+					onClick={() => {
+						onOpenDeleteSheetModal(sheetData);
+					}}
+				>
+					<IoTrashOutline
+						className={cn('w-8 h-8 hover:text-red-500', isDark ? 'text-neutral-700' : 'text-neutral-300')}
+					/>
+				</button>
+			</h1>
 			{sheetData.finances.length === 0 ? (
 				<>
 					<div
