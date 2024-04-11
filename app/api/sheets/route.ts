@@ -55,6 +55,11 @@ export async function POST(req: NextRequest) {
 	}
 
 	const { month, year } = result.data;
+	const currentDate = new Date();
+
+	if (year < currentDate.getFullYear() - 5 || year > currentDate.getFullYear() + 1 || month < 1 || month > 12) {
+		return NextResponse.json({ error: 'Invalid year or month!' }, { status: 400 });
+	}
 
 	const user = await currentUser();
 

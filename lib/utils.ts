@@ -73,7 +73,7 @@ export function orderYearsForSelectSheet(res: any[]) {
 		})
 	);
 
-	orderedYears.sort((a, b) => a.order - b.order);
+	orderedYears.sort((a, b) => b.order - a.order);
 
 	res.forEach((sheet: SheetMonth) => {
 		const yearNumber = Number(sheet.name.split('/')[1]);
@@ -82,7 +82,7 @@ export function orderYearsForSelectSheet(res: any[]) {
 	});
 
 	orderedYears.forEach((year) => {
-		year.sheets.sort((a, b) => a.order - b.order);
+		year.sheets.sort((a, b) => b.order - a.order);
 	});
 
 	return orderedYears;
