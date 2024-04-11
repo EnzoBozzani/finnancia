@@ -31,15 +31,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
 	const { amount, date, title, type } = result.data;
 
-	if (type !== 'EXPENSE' && type !== 'PROFIT') {
-		return NextResponse.json(
-			{
-				error: 'Valores inválidos!',
-			},
-			{ status: 400 }
-		);
-	}
-
 	const order = Number(date.slice(0, 2));
 
 	try {

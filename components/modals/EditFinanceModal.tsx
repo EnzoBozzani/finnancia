@@ -17,6 +17,7 @@ import { Calendar } from '../ui/calendar';
 import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
 export const EditFinanceModal = () => {
 	const router = useRouter();
@@ -29,6 +30,7 @@ export const EditFinanceModal = () => {
 	const width = useScreenWidth();
 
 	const [date, setDate] = useState<Date | undefined>(undefined);
+	const [type, setType] = useState<'PROFIT' | 'EXPENSE'>(finance?.type || 'EXPENSE');
 	const [message, setMessage] = useState<string | null>(null);
 
 	const financeDate = financeStringToDate(finance?.date);
@@ -36,6 +38,7 @@ export const EditFinanceModal = () => {
 	useEffect(() => {
 		const financeDate = financeStringToDate(finance?.date);
 		setDate(financeDate);
+		setType(finance?.type || 'EXPENSE');
 	}, [isOpen]);
 
 	if (!finance) return null;
@@ -90,7 +93,15 @@ export const EditFinanceModal = () => {
 			}/${date.getFullYear()}`;
 		}
 
-		if (!title || !amount || title === '' || amount === '' || !dateFormatted) {
+		if (
+			!title ||
+			!amount ||
+			title === '' ||
+			amount === '' ||
+			!dateFormatted ||
+			!type ||
+			(type !== 'PROFIT' && type !== 'EXPENSE')
+		) {
 			setMessage('Todos os campos são obrigatórios!');
 			return;
 		}
@@ -102,7 +113,12 @@ export const EditFinanceModal = () => {
 			return;
 		}
 
-		if (title === finance.title && Number(amountFormatted) === finance.amount && dateFormatted === finance.date) {
+		if (
+			title === finance.title &&
+			Number(amountFormatted) === finance.amount &&
+			dateFormatted === finance.date &&
+			type === finance.type
+		) {
 			onClose();
 			return;
 		}
@@ -111,6 +127,7 @@ export const EditFinanceModal = () => {
 			title,
 			amount: +amountFormatted,
 			date: dateFormatted,
+			type,
 		});
 
 		if (res.success) {
@@ -157,6 +174,54 @@ export const EditFinanceModal = () => {
 										mask='R$ #.##0,00'
 										initialValue={currencyFormat(finance.amount)}
 									/>
+									<div className='flex items-center gap-x-2'>
+										<Label
+											htmlFor='type'
+											className='text-lg'
+										>
+											Tipo:
+										</Label>
+										<RadioGroup
+											id='type'
+											className='w-full flex items-center justify-center gap-x-6'
+											onValueChange={(ev: 'EXPENSE' | 'PROFIT') => setType(ev)}
+										>
+											<div className='flex items-center space-x-2'>
+												<RadioGroupItem
+													value='PROFIT'
+													id='profit'
+													className={cn(
+														'w-6 h-6',
+														isDark && 'odd:odd:text-white border border-white'
+													)}
+													checked={type === 'PROFIT'}
+												/>
+												<Label
+													htmlFor='profit'
+													className='text-base text-green-500'
+												>
+													Ganho
+												</Label>
+											</div>
+											<div className='flex items-center space-x-2'>
+												<RadioGroupItem
+													value='EXPENSE'
+													id='expense'
+													className={cn(
+														'w-6 h-6',
+														isDark && 'odd:odd:text-white border border-white'
+													)}
+													checked={type === 'EXPENSE'}
+												/>
+												<Label
+													htmlFor='expense'
+													className='text-base text-red-500'
+												>
+													Despesa
+												</Label>
+											</div>
+										</RadioGroup>
+									</div>
 								</div>
 								<div className='flex flex-col justify-center items-center'>
 									<div>
@@ -201,6 +266,54 @@ export const EditFinanceModal = () => {
 									mask='R$ #.##0,00'
 									initialValue={currencyFormat(finance.amount)}
 								/>
+								<div className='flex items-center gap-x-2'>
+									<Label
+										htmlFor='type'
+										className='text-lg'
+									>
+										Tipo:
+									</Label>
+									<RadioGroup
+										id='type'
+										className='w-full flex items-center justify-center gap-x-6'
+										onValueChange={(ev: 'EXPENSE' | 'PROFIT') => setType(ev)}
+									>
+										<div className='flex items-center space-x-2'>
+											<RadioGroupItem
+												value='PROFIT'
+												id='profit'
+												className={cn(
+													'w-6 h-6',
+													isDark && 'odd:odd:text-white border border-white'
+												)}
+												checked={type === 'PROFIT'}
+											/>
+											<Label
+												htmlFor='profit'
+												className='text-base text-green-500'
+											>
+												Ganho
+											</Label>
+										</div>
+										<div className='flex items-center space-x-2'>
+											<RadioGroupItem
+												value='EXPENSE'
+												id='expense'
+												className={cn(
+													'w-6 h-6',
+													isDark && 'odd:odd:text-white border border-white'
+												)}
+												checked={type === 'EXPENSE'}
+											/>
+											<Label
+												htmlFor='expense'
+												className='text-base text-red-500'
+											>
+												Despesa
+											</Label>
+										</div>
+									</RadioGroup>
+								</div>
 								<FormGroup
 									id='date'
 									label='Dia:'
@@ -211,7 +324,7 @@ export const EditFinanceModal = () => {
 									initialValue={finance.order.toLocaleString('pt-BR', {
 										minimumIntegerDigits: 2,
 									})}
-									className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'
+									className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center odd:w-[95px] odd:flex odd:items-center'
 								/>
 							</div>
 						)}

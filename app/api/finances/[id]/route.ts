@@ -85,9 +85,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		);
 	}
 
-	const { title, date, amount } = result.data;
+	const { title, date, amount, type } = result.data;
 
-	if (!title && !date && !amount) {
+	if (!title && !date && !amount && !type) {
 		return NextResponse.json(
 			{
 				error: 'Dados inválidos!',
@@ -107,11 +107,18 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		);
 	}
 
-	const valuesToUpdate: { title?: string; date?: string; amount?: number; order?: number } = {};
+	const valuesToUpdate: {
+		title?: string;
+		date?: string;
+		amount?: number;
+		order?: number;
+		type?: 'EXPENSE' | 'PROFIT';
+	} = {};
 
 	if (title) valuesToUpdate['title'] = title;
 	if (date) valuesToUpdate['date'] = date;
 	if (amount) valuesToUpdate['amount'] = amount;
+	if (type) valuesToUpdate['type'] = type;
 
 	try {
 		const financeToBeEdited = await db.finance.findUnique({
@@ -166,15 +173,19 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		});
 
 		if (amount) {
-			await db.sheet.update({
-				where: { id: financeToBeEdited.sheetId, userId: user.id },
-				data: {
-					totalAmount:
-						financeToBeEdited.type === 'PROFIT'
-							? sheet.totalAmount - financeToBeEdited.amount + amount
-							: sheet.totalAmount + financeToBeEdited.amount - amount,
-				},
-			});
+			//TODO: lógica de troca de tipo e etc
+			if (type !== financeToBeEdited.type) {
+				await db.sheet.update({
+					where: { id: financeToBeEdited.sheetId, userId: user.id },
+					data: {
+						totalAmount:
+							financeToBeEdited.type === 'PROFIT'
+								? sheet.totalAmount - financeToBeEdited.amount + amount
+								: sheet.totalAmount + financeToBeEdited.amount - amount,
+					},
+				});
+			} else {
+			}
 		}
 
 		return NextResponse.json(
