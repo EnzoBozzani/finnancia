@@ -30,7 +30,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			);
 		}
 
-		revalidatePath('/dashboard');
+		revalidatePath('/dashboard', 'layout');
 		return NextResponse.json(
 			{
 				success: `Planilha ${sheet.name} deletada com sucesso!`,

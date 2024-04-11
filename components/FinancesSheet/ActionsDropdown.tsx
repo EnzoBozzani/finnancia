@@ -4,6 +4,7 @@ import { RiMoreFill } from 'react-icons/ri';
 import { MdEdit } from 'react-icons/md';
 import { FaTrash } from 'react-icons/fa';
 import { Finance } from '@prisma/client';
+import { IoDuplicate } from 'react-icons/io5';
 
 import { cn } from '@/lib/utils';
 import {
@@ -18,6 +19,9 @@ import {
 import { useEditFinanceModal } from '@/hooks/useEditFinanceModal';
 import { useDeleteFinanceModal } from '@/hooks/useDeleteFinanceModal';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+import { financesService } from '@/services/financesService';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface ActionsDropdownProps {
 	finance: Finance;
@@ -26,6 +30,8 @@ interface ActionsDropdownProps {
 export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 	const onOpenEdit = useEditFinanceModal((state) => state.onOpen);
 	const onOpenDelete = useDeleteFinanceModal((state) => state.onOpen);
+
+	const router = useRouter();
 
 	const isDark = useIsDarkTheme();
 
@@ -42,6 +48,26 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 				<DropdownMenuLabel className='text-center'>Ações</DropdownMenuLabel>
 				<DropdownMenuSeparator className={cn(isDark && 'bg-neutral-700')} />
 				<DropdownMenuGroup>
+					<DropdownMenuItem
+						onClick={async () => {
+							const res = await financesService.createFinance(finance);
+
+							if (res.success) {
+								router.refresh();
+								toast.success(`Finança "${finance.title}" duplicada com sucesso!`);
+							}
+
+							if (res.error) {
+								toast.error('Algo deu errado!');
+							}
+						}}
+						className={cn(
+							'py-3 cursor-pointer flex items-center justify-center',
+							isDark && 'focus:bg-neutral-800 focus:text-white'
+						)}
+					>
+						<IoDuplicate className='w-6 h-6 mr-2' /> Duplicar
+					</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={() => {
 							onOpenEdit(finance);
