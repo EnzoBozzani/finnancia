@@ -165,6 +165,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 			valuesToUpdate['order'] = Number(newOrder);
 		}
 
+		if (type !== financeToBeEdited.type) {
+		}
+
 		await db.finance.update({
 			where: { id: params.id, sheetId: sheet.id },
 			data: {
@@ -172,9 +175,30 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 			},
 		});
 
+		if (!amount && type && type !== financeToBeEdited.type) {
+			await db.sheet.update({
+				where: { id: financeToBeEdited.sheetId, userId: user.id },
+				data: {
+					totalAmount:
+						type === 'PROFIT'
+							? sheet.totalAmount + 2 * financeToBeEdited.amount
+							: sheet.totalAmount - 2 * financeToBeEdited.amount,
+				},
+			});
+		}
+
 		if (amount) {
-			//TODO: lógica de troca de tipo e etc
-			if (type !== financeToBeEdited.type) {
+			if (type && type !== financeToBeEdited.type) {
+				await db.sheet.update({
+					where: { id: financeToBeEdited.sheetId, userId: user.id },
+					data: {
+						totalAmount:
+							type === 'PROFIT'
+								? sheet.totalAmount + financeToBeEdited.amount + amount
+								: sheet.totalAmount - financeToBeEdited.amount - amount,
+					},
+				});
+			} else {
 				await db.sheet.update({
 					where: { id: financeToBeEdited.sheetId, userId: user.id },
 					data: {
@@ -184,7 +208,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 								: sheet.totalAmount + financeToBeEdited.amount - amount,
 					},
 				});
-			} else {
 			}
 		}
 
