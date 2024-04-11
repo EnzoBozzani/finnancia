@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { cn, currencyFormat, financeStringToDate } from '@/lib/utils';
+import { dayExistsInMonth, cn, currencyFormat, financeStringToDate } from '@/lib/utils';
 import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
 import { useEditFinanceModal } from '@/hooks/useEditFinanceModal';
@@ -63,7 +63,10 @@ export const EditFinanceModal = () => {
 
 			const day = Number(dateInMobile);
 
-			if (isNaN(day)) {
+			if (
+				isNaN(day) ||
+				!dayExistsInMonth(`${day}/${months[financeDate.getMonth()]}/${financeDate.getFullYear()}`)
+			) {
 				setMessage('Dia inválido!');
 				return;
 			}
@@ -201,11 +204,11 @@ export const EditFinanceModal = () => {
 								<FormGroup
 									id='date'
 									label='Dia:'
-									placeholder={`${financeDate.getDate().toLocaleString('pt-BR', {
+									placeholder={`${finance.order.toLocaleString('pt-BR', {
 										minimumIntegerDigits: 2,
 									})}`}
 									mask={'dd'}
-									initialValue={financeDate.getDate().toLocaleString('pt-BR', {
+									initialValue={finance.order.toLocaleString('pt-BR', {
 										minimumIntegerDigits: 2,
 									})}
 									className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center'

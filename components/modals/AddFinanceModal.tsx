@@ -8,7 +8,7 @@ import { useAddFinanceModal } from '@/hooks/useAddFinanceModal';
 import { financesService } from '@/services/financesService';
 import { months } from '@/constants/months';
 import { useScreenWidth } from '@/hooks/useScreenWidth';
-import { cn, sheetNameToDate } from '@/lib/utils';
+import { cn, dayExistsInMonth, sheetNameToDate } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { FormGroup } from '../FormGroup';
@@ -58,8 +58,6 @@ export const AddFinanceModal = () => {
 		const title = formData.get('title') as string;
 		const amount = formData.get('amount') as string;
 
-		console.log(title, amount);
-
 		let dateFormatted;
 
 		if (width <= 768) {
@@ -77,7 +75,7 @@ export const AddFinanceModal = () => {
 
 			const day = Number(dateInMobile);
 
-			if (isNaN(day)) {
+			if (isNaN(day) || !dayExistsInMonth(`${day}/${months[sheetDate.getMonth()]}/${sheetDate.getFullYear()}`)) {
 				setMessage('Dia inválido!');
 				return;
 			}

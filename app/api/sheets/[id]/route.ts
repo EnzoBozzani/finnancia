@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
 	const user = await currentUser();
@@ -29,6 +30,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			);
 		}
 
+		revalidatePath('/dashboard');
 		return NextResponse.json(
 			{
 				success: `Planilha ${sheet.name} deletada com sucesso!`,

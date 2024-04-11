@@ -43,18 +43,15 @@ export function dateToSheetName(date: Date) {
 }
 
 export function financeStringToDate(financeString: string | undefined) {
-	const financeDateArr = financeString?.split('/');
+	if (!financeString) return new Date(1970, 0, 1);
 
-	const financeDay = (Number(financeDateArr && financeDateArr[0]) + 1)?.toLocaleString('pt-BR', {
-		minimumIntegerDigits: 2,
-	});
-	//@ts-ignore
-	const financeMonth = monthNameToMonthNumber[financeDateArr && financeDateArr[1]]?.toLocaleString('pt-BR', {
-		minimumIntegerDigits: 2,
-	});
-	const financeYear = Number(financeDateArr && financeDateArr[2]);
+	const financeDateArr = financeString.split('/');
 
-	const financeDate = new Date(`${financeYear}-${financeMonth}-${financeDay}`);
+	const financeDay = Number(financeDateArr[0]);
+	const financeMonth = Number(monthNameToMonthNumber[financeDateArr[1] as Month]);
+	const financeYear = Number(financeDateArr[2]);
+
+	const financeDate = new Date(financeYear, financeMonth - 1, financeDay);
 
 	return financeDate;
 }
@@ -225,4 +222,33 @@ export function filterSheetData(
 		negativeSheets,
 		neutralSheets,
 	};
+}
+
+export function dayExistsInMonth(financeDate: string | undefined) {
+	if (!financeDate) return false;
+
+	const dateArr = financeDate.split('/');
+
+	const day = Number(dateArr[0]);
+	const monthNumber = monthNameToMonthNumber[dateArr[1] as Month];
+	const year = Number(dateArr[2]);
+
+	if (day > 30 && (monthNumber === 4 || monthNumber === 6 || monthNumber === 9 || monthNumber === 11)) {
+		return false;
+	}
+
+	if (monthNumber === 2) {
+		const isLeapYear =
+			(year % 4 === 0 && year % 100 !== 0) || (year % 4 === 0 && year % 100 === 0 && year % 400 === 0);
+
+		if (!isLeapYear && day > 28) {
+			return false;
+		}
+
+		if (isLeapYear && day > 29) {
+			return false;
+		}
+	}
+
+	return true;
 }
