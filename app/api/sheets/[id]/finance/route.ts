@@ -89,6 +89,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
 	const searchParams = req.nextUrl.searchParams;
 	const page = searchParams.get('page');
+	const title = searchParams.get('title');
 
 	if (!page || isNaN(Number(page))) {
 		return NextResponse.json(
@@ -125,8 +126,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			);
 		}
 
+		const financesCount = await db.finance.count({
+			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
+		});
+
 		const finances = await db.finance.findMany({
-			where: { sheetId: sheet.id },
+			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
 			take: 8,
 			skip: Number(page) * 8,
 			orderBy: {
@@ -136,7 +141,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 		return NextResponse.json({
 			finances,
-			financesCount: sheet.financesCount,
+			financesCount,
 			sheetId: sheet.id,
 		});
 	} catch (error) {

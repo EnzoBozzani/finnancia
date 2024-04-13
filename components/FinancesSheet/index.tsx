@@ -2,8 +2,8 @@
 
 import { Finance, Sheet } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { IoTrashOutline } from 'react-icons/io5';
+import { ElementRef, useEffect, useRef, useState } from 'react';
+import { IoSearch, IoTrashOutline } from 'react-icons/io5';
 
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, currencyFormat, splitFinancesInGroupsOf8 } from '@/lib/utils';
@@ -16,6 +16,7 @@ import { sheetsService } from '@/services/sheetsService';
 import { toast } from 'sonner';
 import { Loader } from '../Loader';
 import { financesService } from '@/services/financesService';
+import { Input } from '../ui/input';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -41,58 +42,96 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		sheetId: sheetData.id,
 	});
 	const [isLoading, setIsLoading] = useState(false);
+	const filterRef = useRef<HTMLInputElement | null>(null);
 
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			setIsLoading(true);
-			const res = await financesService.getPaginatedFinances(sheetData.id, selectedPage);
+	const fetchData = async (filter: string) => {
+		setIsLoading(true);
+		const res = await financesService.getPaginatedFinances(sheetData.id, selectedPage, filter);
 
-			if (res.error || res.sheetId !== sheetData.id) {
-				toast.error('Algo deu errado!');
-				setIsLoading(false);
-				return;
+		if (res.error || res.sheetId !== sheetData.id) {
+			toast.error('Algo deu errado!');
+			setIsLoading(false);
+			return;
+		}
+
+		setFinancesData(() => {
+			let idCounter = 0;
+
+			while (res.finances.length < 8 && res.finances.length > 0) {
+				res.finances.push({
+					id: `fake-id-${idCounter}`,
+					amount: 0,
+					date: '',
+					order: 0,
+					sheetId: sheetData.id,
+					title: '',
+					type: 'EXPENSE',
+				});
+				idCounter++;
 			}
 
-			setFinancesData(() => {
-				let idCounter = 0;
+			return res;
+		});
 
-				while (res.finances.length < 8 && res.finances.length > 0) {
-					res.finances.push({
-						id: `fake-id-${idCounter}`,
-						amount: 0,
-						date: '',
-						order: 0,
-						sheetId: sheetData.id,
-						title: '',
-						type: 'EXPENSE',
-					});
-					idCounter++;
-				}
+		setIsLoading(false);
+	};
 
-				return res;
-			});
-
-			setIsLoading(false);
-		};
-		fetchData();
+	useEffect(() => {
+		fetchData('');
 	}, [selectedPage, sheetData]);
+
+	const onSubmit = (formData: FormData) => {
+		const filter = formData.get('filter') as string;
+
+		if (!filterRef.current) return;
+
+		fetchData(filter);
+
+		filterRef.current.value = '';
+	};
 
 	return (
 		<div className='hidden lg:block'>
-			<h1 className='font-semibold mb-6 text-3xl text-green-600 flex items-center justify-center gap-x-2'>
-				{sheetData.name}
-				<button
-					onClick={() => {
-						onOpenDeleteSheetModal(sheetData);
-					}}
+			<div className='flex items-center justify-between mb-6'>
+				<div></div>
+				<h1 className='font-semibold text-3xl text-green-600 flex items-center justify-center gap-x-2'>
+					{sheetData.name}
+					<button
+						onClick={() => {
+							onOpenDeleteSheetModal(sheetData);
+						}}
+					>
+						<IoTrashOutline
+							className={cn(
+								'w-8 h-8 hover:text-red-500',
+								isDark ? 'text-neutral-700' : 'text-neutral-300'
+							)}
+						/>
+					</button>
+				</h1>
+				<form
+					action={onSubmit}
+					className={cn('flex items-center', isDark ? 'text-white' : 'text-black')}
 				>
-					<IoTrashOutline
-						className={cn('w-8 h-8 hover:text-red-500', isDark ? 'text-neutral-700' : 'text-neutral-300')}
+					<input
+						id='filter'
+						name='filter'
+						className={cn(
+							'bg-transparent w-[130px] border-b-2 p-2 outline-none focus:border-noe focus:outline-none text-sm',
+							isDark
+								? 'border-b-neutral-700 placeholder:text-neutrao-300'
+								: 'border-b-neutral-300 placeholder:text-neutral-700'
+						)}
+						placeholder='Filtrar'
+						ref={filterRef}
 					/>
-				</button>
-			</h1>
+					<button type='submit'>
+						<IoSearch className={cn('w-6 h-6 hover:opacity-50')} />
+					</button>
+				</form>
+			</div>
 			<div className={cn('max-w-screen-xl w-[95%] mx-auto')}>
 				<Table className='text-lg'>
 					<TableHeader className='py-4'>

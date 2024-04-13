@@ -6,7 +6,6 @@ import { filterSheetData } from '@/lib/utils';
 
 import { DashboardChart } from './_components/DashboardChart';
 import { AnalysisCard } from './_components/AnalysisCard';
-import { BankCard } from './_components/BankCard';
 
 export const metadata: Metadata = {
 	title: 'Painel',
@@ -83,24 +82,6 @@ const DashboardPage = async () => {
 					datasetsLabels={['Saldo', 'Ganho', 'Gasto']}
 					labels={sheetsNames}
 					sheets={lastSixSheets.reverse()}
-				/>
-			</section>
-			<section className='w-[95%] mx-auto mb-8 flex flex-wrap gap-4'>
-				<BankCard
-					imageSrc='/bb.png'
-					bankName='Banco do Brasil'
-				/>
-				<BankCard
-					imageSrc='/bradesco.png'
-					bankName='Bradesco'
-				/>
-				<BankCard
-					imageSrc='/inter.png'
-					bankName='Banco Inter'
-				/>
-				<BankCard
-					imageSrc='/nu.webp'
-					bankName='Nubank'
 				/>
 			</section>
 		</main>

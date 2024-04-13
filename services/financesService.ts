@@ -54,14 +54,17 @@ export const financesService = {
 		return res.json();
 	},
 
-	async getPaginatedFinances(sheetId: string, page: number) {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}/finance?page=${page}`, {
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-			},
-		});
+	async getPaginatedFinances(sheetId: string, page: number, title: string) {
+		const res = await fetch(
+			`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}/finance?page=${page}&title=${title}`,
+			{
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+			}
+		);
 
 		return res.json();
 	},
