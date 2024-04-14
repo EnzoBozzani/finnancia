@@ -273,6 +273,20 @@ export const MobileSidebar = () => {
 										</Link>
 									</>
 								)}
+								<div className='flex items-center justify-center my-6 gap-x-1'>
+									Precisa de suporte?
+									<Link
+										href={'/help'}
+										className={cn(
+											'underline',
+											isDark
+												? 'text-neutral-600 hover:text-neutral-400'
+												: 'text-neutral-400 hover:text-neutral-600'
+										)}
+									>
+										Clique aqui
+									</Link>
+								</div>
 							</div>
 						</>
 					)}
