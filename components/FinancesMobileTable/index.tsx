@@ -1,8 +1,8 @@
 'use client';
 
 import { Finance, Sheet } from '@prisma/client';
-import { IoTrashOutline } from 'react-icons/io5';
-import { useEffect, useState } from 'react';
+import { IoSearch, IoTrashOutline } from 'react-icons/io5';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import { financesService } from '@/services/financesService';
@@ -38,42 +38,78 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 		sheetId: sheetData.id,
 	});
 	const [isLoading, setIsLoading] = useState(false);
+	const filterRef = useRef<HTMLInputElement | null>(null);
 
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
 
-	useEffect(() => {
-		const fetchData = async () => {
-			setIsLoading(true);
+	const fetchData = async (filter: string) => {
+		setIsLoading(true);
+		const res = await financesService.getPaginatedFinances(sheetData.id, selectedPage, filter);
 
-			const res = await financesService.getPaginatedFinances(sheetData.id, selectedPage);
-
-			if (res.error || res.sheetId !== sheetData.id) {
-				toast.error('Algo deu errado!');
-				setIsLoading(false);
-				return;
-			}
-
-			setFinancesData(res);
-
+		if (res.error || res.sheetId !== sheetData.id) {
+			toast.error('Algo deu errado!');
 			setIsLoading(false);
-		};
-		fetchData();
+			return;
+		}
+
+		setFinancesData(res);
+
+		setIsLoading(false);
+	};
+
+	useEffect(() => {
+		fetchData('');
 	}, [selectedPage, sheetData]);
+
+	const onSubmit = (formData: FormData) => {
+		const filter = formData.get('filter') as string;
+
+		if (!filterRef.current) return;
+
+		fetchData(filter);
+
+		filterRef.current.value = '';
+	};
 
 	return (
 		<section className='block lg:hidden mb-6'>
-			<h1 className='font-semibold text-center mb-6 text-2xl text-green-600 flex items-center justify-center gap-x-2'>
-				{sheetData.name}
-				<button
-					onClick={() => {
-						onOpenDeleteSheetModal(sheetData);
-					}}
+			<div className='max-w-screen-xl w-[95%] mx-auto flex flex-col items-center justify-center gap-y-3 mb-6'>
+				<h1 className='font-semibold text-3xl text-green-600 flex items-center justify-center gap-x-2'>
+					{sheetData.name}
+					<button
+						onClick={() => {
+							onOpenDeleteSheetModal(sheetData);
+						}}
+					>
+						<IoTrashOutline
+							className={cn(
+								'w-8 h-8 hover:text-red-500',
+								isDark ? 'text-neutral-700' : 'text-neutral-300'
+							)}
+						/>
+					</button>
+				</h1>
+				<form
+					action={onSubmit}
+					className={cn('flex items-center', isDark ? 'text-white' : 'text-black')}
 				>
-					<IoTrashOutline
-						className={cn('w-8 h-8 hover:text-red-500', isDark ? 'text-neutral-700' : 'text-neutral-300')}
+					<input
+						id='filter'
+						name='filter'
+						className={cn(
+							'bg-transparent w-[160px] border-b-2 p-2 outline-none focus:border-noe focus:outline-none text-sm',
+							isDark
+								? 'border-b-neutral-700 placeholder:text-neutrao-300'
+								: 'border-b-neutral-300 placeholder:text-neutral-700'
+						)}
+						placeholder='Filtrar por título'
+						ref={filterRef}
 					/>
-				</button>
-			</h1>
+					<button type='submit'>
+						<IoSearch className={cn('w-6 h-6 hover:opacity-50')} />
+					</button>
+				</form>
+			</div>
 			{isLoading ? (
 				<div className='flex items-center justify-center my-24'>
 					<Loader />

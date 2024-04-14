@@ -1,22 +1,19 @@
 'use client';
 
 import { Finance, Sheet } from '@prisma/client';
-import { useRouter } from 'next/navigation';
-import { ElementRef, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoSearch, IoTrashOutline } from 'react-icons/io5';
+import { toast } from 'sonner';
 
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { cn, currencyFormat, splitFinancesInGroupsOf8 } from '@/lib/utils';
+import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
+import { financesService } from '@/services/financesService';
 
 import { Row } from './Row';
 import { Pagination } from './Pagination';
-import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
-import { sheetsService } from '@/services/sheetsService';
-import { toast } from 'sonner';
 import { Loader } from '../Loader';
-import { financesService } from '@/services/financesService';
-import { Input } from '../ui/input';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -94,8 +91,8 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 
 	return (
 		<div className='hidden lg:block'>
-			<div className='flex items-center justify-between mb-6'>
-				<div></div>
+			<div className='max-w-screen-xl w-[95%] mx-auto flex items-center justify-between mb-6'>
+				<div className='w-[154px]'></div>
 				<h1 className='font-semibold text-3xl text-green-600 flex items-center justify-center gap-x-2'>
 					{sheetData.name}
 					<button
@@ -124,7 +121,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 								? 'border-b-neutral-700 placeholder:text-neutrao-300'
 								: 'border-b-neutral-300 placeholder:text-neutral-700'
 						)}
-						placeholder='Filtrar'
+						placeholder='Filtrar por título'
 						ref={filterRef}
 					/>
 					<button type='submit'>
