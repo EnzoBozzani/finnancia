@@ -14,6 +14,7 @@ import { financesService } from '@/services/financesService';
 import { Row } from './Row';
 import { Pagination } from './Pagination';
 import { Loader } from '../Loader';
+import { Skeleton } from '../ui/skeleton';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -162,19 +163,30 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					>
 						{isLoading ? (
 							<>
-								<TableRow>
-									<TableCell
-										colSpan={4}
+								{[0, 1, 2, 3, 4, 5, 6, 7].map((value) => (
+									<TableRow
 										className={cn(
-											'text-center font-semibold h-[520px]',
-											isDark ? 'bg-neutral-950 text-white' : 'bg-white'
+											'outline-none border-b h-[65px]',
+											isDark
+												? 'bg-neutral-950 text-white hover:bg-neutral-950 border-neutral-700'
+												: 'bg-white text-black hover:bg-white border-neutral-300'
 										)}
+										key={value}
 									>
-										<div className='flex items-center justify-center'>
-											<Loader />
-										</div>
-									</TableCell>
-								</TableRow>
+										<TableCell>
+											<Skeleton className='w-[60%] h-[40px]' />
+										</TableCell>
+										<TableCell>
+											<Skeleton className='w-[60%] h-[40px]' />
+										</TableCell>
+										<TableCell>
+											<Skeleton className='w-[60%] h-[40px]' />
+										</TableCell>
+										<TableCell>
+											<Skeleton className='w-[60%] h-[40px]' />
+										</TableCell>
+									</TableRow>
+								))}
 							</>
 						) : !financesData.finances || financesData.finances.length === 0 ? (
 							<>
