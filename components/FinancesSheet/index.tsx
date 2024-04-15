@@ -86,8 +86,6 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		if (!filterRef.current) return;
 
 		fetchData(filter);
-
-		filterRef.current.value = '';
 	};
 
 	return (
@@ -173,17 +171,17 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 										)}
 										key={value}
 									>
-										<TableCell>
-											<Skeleton className='w-[60%] h-[40px]' />
+										<TableCell className='w-[40%]'>
+											<Skeleton className='w-[60%] h-[40px] mx-auto' />
 										</TableCell>
 										<TableCell>
-											<Skeleton className='w-[60%] h-[40px]' />
+											<Skeleton className='w-[60%] h-[40px] mx-auto' />
 										</TableCell>
 										<TableCell>
-											<Skeleton className='w-[60%] h-[40px]' />
+											<Skeleton className='w-[60%] h-[40px] mx-auto' />
 										</TableCell>
 										<TableCell>
-											<Skeleton className='w-[60%] h-[40px]' />
+											<Skeleton className='w-12 h-12 rounded-full mx-auto' />
 										</TableCell>
 									</TableRow>
 								))}

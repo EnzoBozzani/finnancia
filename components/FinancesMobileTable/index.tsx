@@ -13,6 +13,8 @@ import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { FinancesMobileRow } from './FinancesMobileRow';
 import { Loader } from '../Loader';
 import { Pagination } from '../FinancesSheet/Pagination';
+import { TableCell, TableRow } from '../ui/table';
+import { Skeleton } from '../ui/skeleton';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -67,8 +69,6 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 		if (!filterRef.current) return;
 
 		fetchData(filter);
-
-		filterRef.current.value = '';
 	};
 
 	return (
@@ -111,9 +111,28 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 				</form>
 			</div>
 			{isLoading ? (
-				<div className='flex items-center justify-center my-24'>
-					<Loader />
-				</div>
+				<>
+					{[0, 1, 2, 3, 4, 5, 6, 7].map((value) => (
+						<div
+							className={cn(
+								'h-[93px] w-full grid grid-cols-2 gap-x-2 p-4 border-b',
+								isDark
+									? 'bg-neutral-950 text-white border-neutral-700'
+									: 'bg-white text-black border-neutral-300'
+							)}
+							key={value}
+						>
+							<div className='flex flex-col items-start justify-center gap-y-2'>
+								<Skeleton className='w-[70%] h-[30px]' />
+								<Skeleton className='w-[30%] h-[20px]' />
+							</div>
+							<div className='flex flex-col items-end justify-center gap-y-2'>
+								<Skeleton className='w-[40%] h-[30px]' />
+								<Skeleton className='w-8 h-8 rounded-full' />
+							</div>
+						</div>
+					))}
+				</>
 			) : financesData.finances.length === 0 ? (
 				<>
 					<div
