@@ -40,6 +40,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		sheetId: sheetData.id,
 	});
 	const [isLoading, setIsLoading] = useState(false);
+	const [isMouseDown, setIsMouseDown] = useState(false);
+	const [initialMousePosition, setInitialMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+	const [finalMousePosition, setFinalMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 	const filterRef = useRef<HTMLInputElement | null>(null);
 
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
@@ -128,7 +131,34 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					</button>
 				</form>
 			</div>
-			<div className={cn('max-w-screen-xl w-[95%] mx-auto')}>
+			<div
+				className={cn('max-w-screen-xl w-[95%] mx-auto')}
+				onMouseDown={(ev) => {
+					setIsMouseDown(true);
+					setInitialMousePosition({ x: ev.pageX, y: ev.pageY });
+				}}
+				onMouseUp={(ev) => {
+					setIsMouseDown(false);
+					setFinalMousePosition({ x: ev.pageX, y: ev.pageY });
+					if (
+						initialMousePosition.x - finalMousePosition.x > 30 &&
+						Math.abs(initialMousePosition.y - finalMousePosition.y) < 50
+					) {
+						setSelectedPage((current) =>
+							current === Math.ceil(financesData.financesCount / 8) - 1 ||
+							Math.ceil(financesData.financesCount / 8) === 0
+								? current
+								: current + 1
+						);
+					}
+					if (
+						finalMousePosition.x - initialMousePosition.x > 30 &&
+						Math.abs(initialMousePosition.y - finalMousePosition.y) < 50
+					) {
+						setSelectedPage((current) => (current === 0 ? current : current - 1));
+					}
+				}}
+			>
 				<Table className='text-lg'>
 					<TableHeader className='py-4'>
 						<TableRow
