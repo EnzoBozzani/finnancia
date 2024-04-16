@@ -5,6 +5,7 @@
 * {
 	min-width: none;
 	font: inherit;
+	user-select: none;
 }
 
 *,

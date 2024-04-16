@@ -11,9 +11,9 @@ export const AddFinanceButton = ({ sheetMonth }: { sheetMonth: string }) => {
 		<div
 			role='button'
 			onClick={() => onOpen(sheetMonth)}
-			className='cursor-pointer p-4 fixed bottom-6 right-6 rounded-full bg-green-600 hover:bg-green-700 text-white'
+			className='cursor-pointer p-4 fixed bottom-6 right-2 md:right-6 rounded-full bg-green-600 hover:bg-green-700 text-white'
 		>
-			<PlusIcon className='h-10 w-10' />
+			<PlusIcon className='h-8 w-8 sm:h-10 sm:w-10' />
 		</div>
 	);
 };

@@ -45,7 +45,7 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 		<main className='flex-1'>
 			<FinancesSheet sheetData={sheetData} />
 			<FinancesMobileTable sheetData={sheetData} />
-			<footer className='mx-auto w-[95%] flex items-center justify-center pb-6'>
+			<footer className='mx-auto w-[95%] flex items-center justify-start lg:justify-center pb-8'>
 				<ExportXLSX sheetId={sheetData.id} />
 			</footer>
 			<AddFinanceButton sheetMonth={sheetData.name} />

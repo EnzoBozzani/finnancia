@@ -13,7 +13,6 @@ import { financesService } from '@/services/financesService';
 
 import { Row } from './Row';
 import { Pagination } from './Pagination';
-import { Loader } from '../Loader';
 import { Skeleton } from '../ui/skeleton';
 
 interface SheetWithFinances extends Sheet {
@@ -182,7 +181,6 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					</TableHeader>
 					<TableBody
 						style={{
-							maxHeight: '300px',
 							overflowY: 'scroll',
 						}}
 					>

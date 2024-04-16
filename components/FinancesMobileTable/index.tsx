@@ -212,6 +212,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 				numberOfGroups={Math.ceil(financesData.financesCount / 8)}
 				selectedPage={selectedPage}
 				setSelectedPage={setSelectedPage}
+				isMobile
 			/>
 		</section>
 	);

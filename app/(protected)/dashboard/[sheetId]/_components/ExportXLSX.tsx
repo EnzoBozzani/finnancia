@@ -31,17 +31,17 @@ export const SubmitButton = () => {
 			<Button
 				size={'lg'}
 				type='submit'
-				className={cn('text-lg')}
+				className={cn('text-lg py-[25px] px-2')}
 				disabled={pending}
 			>
 				{pending ? (
 					<>
-						<VscLoading className='animate-spin mr-2' /> Exportando
+						<VscLoading className='animate-spin sm:mr-2' /> <p className='hidden sm:block'>Exportando</p>
 					</>
 				) : (
 					<>
-						<PiMicrosoftExcelLogoFill className='w-8 h-8 mr-2' />
-						Exportar
+						<PiMicrosoftExcelLogoFill className='w-12 h-12 sm:mr-2' />
+						<p className='hidden sm:block'>Exportar</p>
 					</>
 				)}
 			</Button>
