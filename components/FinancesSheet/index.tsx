@@ -40,7 +40,6 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		sheetId: sheetData.id,
 	});
 	const [isLoading, setIsLoading] = useState(false);
-	const [isMouseDown, setIsMouseDown] = useState(false);
 	const [initialMousePosition, setInitialMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 	const [finalMousePosition, setFinalMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 	const filterRef = useRef<HTMLInputElement | null>(null);
@@ -134,11 +133,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 			<div
 				className={cn('max-w-screen-xl w-[95%] mx-auto')}
 				onMouseDown={(ev) => {
-					setIsMouseDown(true);
 					setInitialMousePosition({ x: ev.pageX, y: ev.pageY });
 				}}
 				onMouseUp={(ev) => {
-					setIsMouseDown(false);
 					setFinalMousePosition({ x: ev.pageX, y: ev.pageY });
 					if (
 						initialMousePosition.x - finalMousePosition.x > 30 &&

@@ -40,6 +40,8 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 		sheetId: sheetData.id,
 	});
 	const [isLoading, setIsLoading] = useState(false);
+	const [initialMousePosition, setInitialMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+	const [finalMousePosition, setFinalMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 	const filterRef = useRef<HTMLInputElement | null>(null);
 
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
@@ -110,52 +112,80 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 					</button>
 				</form>
 			</div>
-			{isLoading ? (
-				<>
-					{[0, 1, 2, 3, 4, 5, 6, 7].map((value) => (
+			<div
+				onTouchStart={(ev) => {
+					const touch = ev.touches[0] || ev.changedTouches[0];
+					setInitialMousePosition({ x: touch.pageX, y: touch.pageY });
+				}}
+				onTouchEnd={(ev) => {
+					const touch = ev.touches[0] || ev.changedTouches[0];
+					setFinalMousePosition({ x: touch.pageX, y: touch.pageY });
+					if (
+						initialMousePosition.x - finalMousePosition.x > 30 &&
+						Math.abs(initialMousePosition.y - finalMousePosition.y) < 50
+					) {
+						setSelectedPage((current) =>
+							current === Math.ceil(financesData.financesCount / 8) - 1 ||
+							Math.ceil(financesData.financesCount / 8) === 0
+								? current
+								: current + 1
+						);
+					}
+					if (
+						finalMousePosition.x - initialMousePosition.x > 30 &&
+						Math.abs(initialMousePosition.y - finalMousePosition.y) < 50
+					) {
+						setSelectedPage((current) => (current === 0 ? current : current - 1));
+					}
+				}}
+			>
+				{isLoading ? (
+					<>
+						{[0, 1, 2, 3, 4, 5, 6, 7].map((value) => (
+							<div
+								className={cn(
+									'h-[93px] w-full grid grid-cols-2 gap-x-2 p-4 border-b',
+									isDark
+										? 'bg-neutral-950 text-white border-neutral-700'
+										: 'bg-white text-black border-neutral-300'
+								)}
+								key={value}
+							>
+								<div className='flex flex-col items-start justify-center gap-y-2'>
+									<Skeleton className='w-[70%] h-[30px]' />
+									<Skeleton className='w-[30%] h-[20px]' />
+								</div>
+								<div className='flex flex-col items-end justify-center gap-y-2'>
+									<Skeleton className='w-[40%] h-[30px]' />
+									<Skeleton className='w-8 h-8 rounded-full' />
+								</div>
+							</div>
+						))}
+					</>
+				) : financesData.finances.length === 0 ? (
+					<>
 						<div
 							className={cn(
-								'h-[93px] w-full grid grid-cols-2 gap-x-2 p-4 border-b',
+								'w-full p-4 bg-white border-b text-center font-semibold',
 								isDark
 									? 'bg-neutral-950 text-white border-neutral-700'
 									: 'bg-white text-black border-neutral-300'
 							)}
-							key={value}
 						>
-							<div className='flex flex-col items-start justify-center gap-y-2'>
-								<Skeleton className='w-[70%] h-[30px]' />
-								<Skeleton className='w-[30%] h-[20px]' />
-							</div>
-							<div className='flex flex-col items-end justify-center gap-y-2'>
-								<Skeleton className='w-[40%] h-[30px]' />
-								<Skeleton className='w-8 h-8 rounded-full' />
-							</div>
+							Nenhuma finança encontrada
 						</div>
-					))}
-				</>
-			) : financesData.finances.length === 0 ? (
-				<>
-					<div
-						className={cn(
-							'w-full p-4 bg-white border-b text-center font-semibold',
-							isDark
-								? 'bg-neutral-950 text-white border-neutral-700'
-								: 'bg-white text-black border-neutral-300'
-						)}
-					>
-						Nenhuma finança encontrada
-					</div>
-				</>
-			) : (
-				<>
-					{financesData.finances.map((finance) => (
-						<FinancesMobileRow
-							finance={finance}
-							key={finance.id}
-						/>
-					))}
-				</>
-			)}
+					</>
+				) : (
+					<>
+						{financesData.finances.map((finance) => (
+							<FinancesMobileRow
+								finance={finance}
+								key={finance.id}
+							/>
+						))}
+					</>
+				)}
+			</div>
 			<div
 				className={cn(
 					'w-full grid grid-cols-2 gap-x-2 p-4',
