@@ -48,18 +48,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 }
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-	const searchParams = req.nextUrl.searchParams;
-	const page = searchParams.get('page');
-
-	if (!page || isNaN(Number(page))) {
-		return NextResponse.json(
-			{
-				error: 'Bad request!',
-			},
-			{ status: 400 }
-		);
-	}
-
 	const user = await currentUser();
 
 	if (!user) {
@@ -79,8 +67,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 					orderBy: {
 						order: 'asc',
 					},
-					take: 8,
-					skip: Number(page) * 8,
 				},
 			},
 		});

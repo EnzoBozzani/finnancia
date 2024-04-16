@@ -4,26 +4,62 @@ import { PiMicrosoftExcelLogoFill } from 'react-icons/pi';
 import * as xlsx from 'xlsx';
 import { saveAs } from 'file-saver';
 import { Finance, Sheet } from '@prisma/client';
+import { useFormStatus } from 'react-dom';
+import { VscLoading } from 'react-icons/vsc';
 import { toast } from 'sonner';
 
-import { currencyFormat } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { currencyFormat, cn } from '@/lib/utils';
+import { sheetsService } from '@/services/sheetsService';
+interface ExportXLSXProps {
+	sheetId: string;
+}
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
 }
 
-interface ExportXLSXProps {
-	sheetData: SheetWithFinances;
+interface SheetResponse {
+	sheet: SheetWithFinances;
 }
 
-export const ExportXLSX = ({ sheetData }: ExportXLSXProps) => {
-	const onDownload = () => {
+export const SubmitButton = () => {
+	const { pending } = useFormStatus();
+
+	return (
+		<div className='flex justify-center items-center'>
+			<Button
+				size={'lg'}
+				type='submit'
+				className={cn('text-lg')}
+				disabled={pending}
+			>
+				{pending ? (
+					<>
+						<VscLoading className='animate-spin mr-2' /> Exportando
+					</>
+				) : (
+					<>
+						<PiMicrosoftExcelLogoFill className='w-8 h-8 mr-2' />
+						Exportar
+					</>
+				)}
+			</Button>
+		</div>
+	);
+};
+
+export const ExportXLSX = ({ sheetId }: ExportXLSXProps) => {
+	const onDownload = async () => {
+		const { sheet: sheetData }: SheetResponse = await sheetsService.getSheetById(sheetId);
+
 		if (sheetData.finances.length === 0) {
 			toast.error('Não é possível exportar uma planilha vazia!');
 			return;
 		}
 
 		const data = [['Título', 'Tipo', 'Quantia', 'Data']];
+
 		sheetData.finances.forEach((finance) => {
 			data.push([
 				finance.title,
@@ -32,22 +68,18 @@ export const ExportXLSX = ({ sheetData }: ExportXLSXProps) => {
 				finance.date.replaceAll('/', '-'),
 			]);
 		});
+		data.push(['Saldo total:', '', '', currencyFormat(sheetData.totalAmount)]);
 
 		const sheet = xlsx.utils.aoa_to_sheet(data);
 		const workbook = xlsx.utils.book_new();
-
 		xlsx.utils.book_append_sheet(workbook, sheet, sheetData.name.replaceAll('/', '-'));
-
 		const buffer = xlsx.write(workbook, { type: 'buffer', bookType: 'xlsx' });
 		saveAs(new Blob([buffer]), `${sheetData.name.replaceAll('/', '-')}.xlsx`);
 	};
 
 	return (
-		<button
-			onClick={() => onDownload()}
-			className='bg-green-700 text-lg hover:bg-green-800 rounded-lg text-white flex items-center gap-x-2 px-4 py-2'
-		>
-			Exportar <PiMicrosoftExcelLogoFill className='w-8 h-8' />
-		</button>
+		<form action={onDownload}>
+			<SubmitButton />
+		</form>
 	);
 };
