@@ -124,6 +124,7 @@ export const MobileSidebar = () => {
 											: setIsSelectOpen((current) => !current);
 									}}
 									onValueChange={(value) => {
+										onClose();
 										redirect(`/dashboard/${value}`);
 									}}
 								>

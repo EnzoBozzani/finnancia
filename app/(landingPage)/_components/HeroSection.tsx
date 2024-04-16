@@ -28,12 +28,14 @@ export const HeroSection = () => {
 					<div className='px-4 md:px-12 py-12 flex items-center justify-center'>
 						<div className='space-y-8'>
 							<h1 className='text-3xl md:text-5xl font-semibold text-center lg:text-start'>
-								Controle suas finanças com <span className='text-green-700'>Finnancia</span>
+								Assuma o controle da sua vida financeira com{' '}
+								<span className='text-green-700 font-bold'>Finnancia</span>
 							</h1>
 							<p className='text-sm md:text-base text-center lg:text-justify'>
-								Centralize finanças, registre gastos detalhados e navegue intuitivamente entre as
-								planilhas de cada mês. Finnancia simplifica o controle financeiro, tornando a gestão
-								mensal fácil e eficiente. Experimente agora!
+								Utilizando o poder da inteligência artificial combinado com um estilo único de gestão e
+								análise de dados, Finnancia simplifica o jeito que você maneja suas finanças. Gerencie
+								gastos e ganhos, receba análises de seus dados e interaja diretamente com uma IA
+								especializada em controle de finanças. Experimente agora!
 							</p>
 							<div className='flex items-center justify-center lg:block'>
 								<Button
