@@ -1,5 +1,6 @@
-import { CiCreditCard1 } from 'react-icons/ci';
-import { MdCalendarMonth, MdOutlineManageSearch } from 'react-icons/md';
+import { IoStatsChart } from 'react-icons/io5';
+import { MdOutlineManageSearch } from 'react-icons/md';
+import { SiCircuitverse } from 'react-icons/si';
 
 export const IconsWithText = () => {
 	return (
@@ -9,38 +10,38 @@ export const IconsWithText = () => {
 					<div className='p-2 rounded-full bg-green-200 border border-neutral-200'>
 						<MdOutlineManageSearch className='w-8 h-8 text-green-700' />
 					</div>
-					<p className='text-sm'>Fácil pesquisa e organização</p>
+					<p className='text-sm'>Gestão simples e prática</p>
 				</div>
 				<div className='flex items-center gap-x-2'>
 					<div className='p-2 rounded-full bg-green-200 border border-neutral-200'>
-						<CiCreditCard1 className='w-8 h-8 text-green-700' />
+						<SiCircuitverse className='w-8 h-8 text-green-700' />
 					</div>
-					<p className='text-sm'>Organize suas finanças</p>
+					<p className='text-sm'>Auxílio de IA no controle financeiro</p>
 				</div>
 				<div className='flex items-center gap-x-2'>
 					<div className='p-2 rounded-full bg-green-200 border border-neutral-200'>
-						<MdCalendarMonth className='w-8 h-8 text-green-700' />
+						<IoStatsChart className='w-8 h-8 text-green-700' />
 					</div>
-					<p className='text-sm'>Controle gastos mensais</p>
+					<p className='text-sm'>Análises completas de seus dados</p>
 				</div>
 			</div>
 			<div className='hidden md:flex items-center gap-x-2'>
 				<div className='p-2 rounded-full bg-green-200 border border-neutral-200'>
 					<MdOutlineManageSearch className='w-8 h-8 text-green-700' />
 				</div>
-				<p className='text-sm'>Fácil pesquisa e organização</p>
+				<p className='text-sm'>Gestão simples e prática</p>
 			</div>
 			<div className='hidden md:flex items-center gap-x-2'>
 				<div className='p-2 rounded-full bg-green-200 border border-neutral-200'>
-					<CiCreditCard1 className='w-8 h-8 text-green-700' />
+					<SiCircuitverse className='w-8 h-8 text-green-700' />
 				</div>
-				<p className='text-sm'>Organize suas finanças</p>
+				<p className='text-sm'>Auxílio de IA no controle financeiro</p>
 			</div>
 			<div className='hidden md:flex items-center gap-x-2'>
 				<div className='p-2 rounded-full bg-green-200 border border-neutral-200'>
-					<MdCalendarMonth className='w-8 h-8 text-green-700' />
+					<IoStatsChart className='w-8 h-8 text-green-700' />
 				</div>
-				<p className='text-sm'>Controle gastos mensais</p>
+				<p className='text-sm'>Análises completas de seus dados</p>
 			</div>
 		</article>
 	);
