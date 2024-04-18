@@ -107,8 +107,8 @@ export const MobileSidebar = () => {
 							Olá{currentUser?.name?.split(' ')[0] ? ', ' + currentUser?.name?.split(' ')[0] : ''}!
 						</SheetTitle>
 						<SheetDescription>
-							Faça o gerenciamento de suas finanças aqui. Navegue entre planilhas, adicione finanças
-							mensais e altere seus dados.
+							Faça o gerenciamento de suas finanças aqui! Navegue entre planilhas, visite o painel, veja
+							os planos, altere configurações e interaja com a FinnancIA.
 						</SheetDescription>
 					</SheetHeader>
 					<div className='mt-12'>
