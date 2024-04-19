@@ -213,6 +213,7 @@ export const MobileSidebar = () => {
 						) : (
 							<>
 								<Link
+									onClick={() => onClose()}
 									href={'/dashboard'}
 									className={cn(
 										'p-3 flex items-center',
@@ -229,6 +230,7 @@ export const MobileSidebar = () => {
 										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 									)}
 									onClick={() => {
+										onClose();
 										onOpenSheetModal();
 									}}
 								>
@@ -236,6 +238,7 @@ export const MobileSidebar = () => {
 									Adicionar planilha
 								</div>
 								<Link
+									onClick={() => onClose()}
 									href={'/billing'}
 									className={cn(
 										'p-3 flex items-center',
@@ -246,6 +249,7 @@ export const MobileSidebar = () => {
 									Planos
 								</Link>
 								<Link
+									onClick={() => onClose()}
 									href={'/settings'}
 									className={cn(
 										'p-3 flex items-center',
@@ -256,6 +260,7 @@ export const MobileSidebar = () => {
 									Configurações
 								</Link>
 								<Link
+									onClick={() => onClose()}
 									href={'/ai'}
 									className={cn(
 										'p-3 flex items-center',
@@ -270,6 +275,7 @@ export const MobileSidebar = () => {
 						<div className='flex items-center justify-center my-6 gap-x-1'>
 							Precisa de suporte?
 							<Link
+								onClick={() => onClose()}
 								href={'/help'}
 								className={cn(
 									'underline',

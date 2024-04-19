@@ -41,7 +41,7 @@ export const AnalysisCard = ({
 					<span className='text-neutral-500 text-sm'>(total)</span>
 				</div>
 				<div className='text-4xl md:text-6xl text-center md:text-start font-bold overflow-scroll'>
-					{currentMonthSheetValue} planilhas
+					{currentMonthSheetValue} {currentMonthSheetValue === 1 ? 'planilha' : 'planilhas'}
 				</div>
 				<div className='flex items-center justify-center gap-x-2'>
 					<div className='hidden text-sm text-neutral-500 md:flex flex-col items-center'>
