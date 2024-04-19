@@ -1,10 +1,13 @@
 'use client';
 
 import { IoSend } from 'react-icons/io5';
+import { useState } from 'react';
 
 import { Textarea } from '@/components/ui/textarea';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
+import { generateResponseFromPrompt } from '@/lib/ai';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface AIChatProps {
 	user: {
@@ -19,12 +22,19 @@ interface AIChatProps {
 export const AIChat = ({ user }: AIChatProps) => {
 	const isDark = useIsDarkTheme();
 
-	const onSubmit = (formData: FormData) => {
+	const [response, setResponse] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
+
+	const onSubmit = async (formData: FormData) => {
+		setIsLoading(true);
 		const text = formData.get('text') as string;
 
 		if (!text || text === '') return;
 
-		console.log(text);
+		const response = await generateResponseFromPrompt(text);
+
+		setResponse(response);
+		setIsLoading(false);
 	};
 
 	return (
@@ -32,12 +42,17 @@ export const AIChat = ({ user }: AIChatProps) => {
 			<h1 className='bg-gradient-to-r from-green-700 via-green-500 to-green-400 inline-block text-transparent bg-clip-text font-bold text-4xl'>
 				Bem vindo, {user.name?.split(' ')[0]}!
 			</h1>
-			<p className={cn('w-full sm:w-[70%] text-xl text-justify text-neutral-500 mb-24')}>
+			<p className={cn('w-full sm:w-[70%] text-xl text-justify text-neutral-500 mb-12')}>
 				Eu sou a FinnancIA, IA especializada em gerenciamento financeiro! Como posso te ajudar?
 			</p>
+			{isLoading ? (
+				<Skeleton className='w-[95%] h-12' />
+			) : (
+				<p className={cn('w-[80%] mx-auto mb-12', isDark ? 'text-white' : 'text-black')}>{response}</p>
+			)}
 			<form
 				action={onSubmit}
-				className='flex items-center mb-4'
+				className='flex items-center mb-4 mx-auto'
 			>
 				<Textarea
 					id='text'
@@ -49,6 +64,9 @@ export const AIChat = ({ user }: AIChatProps) => {
 							? 'bg-neutral-950 text-white focus:bg-neutral-900 focus:border-green-300'
 							: 'bg-white focus:bg-neutral-100 focus:border-green-500 text-black'
 					)}
+					style={{
+						resize: 'none',
+					}}
 				/>
 				<button
 					className='-ms-12 z-50'
