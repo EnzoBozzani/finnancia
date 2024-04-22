@@ -50,9 +50,14 @@ export const AIChat = ({ user }: AIChatProps) => {
 				Eu sou a FinnancIA, IA especializada em gerenciamento financeiro! Como posso te ajudar?
 			</p>
 			{isLoading ? (
-				<Skeleton className='w-[90%] h-12 mx-auto mb-12' />
+				<Skeleton className='w-[90%] h-[300px] mx-auto mb-12' />
 			) : (
-				<div className={cn('w-[90%] mx-auto mb-12 prose lg:prose-xl', isDark && 'prose-invert')}>
+				<div
+					className={cn(
+						'h-[300px] ai-chat overflow-y-scroll w-[95%] pe-4 mx-auto mb-12 prose lg:prose-xl',
+						isDark && 'prose-invert'
+					)}
+				>
 					<Markdown>{response}</Markdown>
 				</div>
 			)}
@@ -65,7 +70,7 @@ export const AIChat = ({ user }: AIChatProps) => {
 					name='text'
 					placeholder='Envie sua pergunta'
 					className={cn(
-						'w-full focus:outline-none resize-none text-lg rounded-xl flex items-center p-4 pe-12 border border-transparent',
+						'w-full focus:outline-none resize-none text-base md:text-lg rounded-xl flex items-center p-4 pe-12 border border-transparent',
 						isDark
 							? 'bg-neutral-900 text-white focus:bg-neutral-800 focus:border-green-300'
 							: 'bg-neutral-100 focus:bg-neutral-200 focus:border-green-500 text-black'
@@ -76,10 +81,12 @@ export const AIChat = ({ user }: AIChatProps) => {
 					className='-ms-12 z-50'
 					type='submit'
 				>
-					<IoSend className={cn('w-6 h-6', isDark ? 'text-neutral-500' : 'text-black')} />
+					<IoSend
+						className={cn('w-6 h-6 hover:text-green-600', isDark ? 'text-neutral-100' : 'text-black')}
+					/>
 				</button>
 			</form>
-			<p className={cn('text-sm text-center', isDark ? 'text-neutral-600' : 'text-neutral-400')}>
+			<p className={cn('text-xs md:text-sm text-center', isDark ? 'text-neutral-600' : 'text-neutral-400')}>
 				A FinnancIA é construída sobre o Gemini, o qual pode apresentar informações imprecisas, inclusive sobre
 				pessoas. Por isso, cheque as respostas.
 			</p>

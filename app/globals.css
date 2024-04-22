@@ -27,6 +27,21 @@ body {
 	min-height: 100dvh;
 }
 
+.ai-chat::-webkit-scrollbar {
+	width: 10px;
+}
+
+.ai-chat::-webkit-scrollbar-track {
+	background: #7373737a;
+	border-radius: 20px;
+}
+
+.ai-chat::-webkit-scrollbar-thumb {
+	background-color: #15803d;
+	border-radius: 20px;
+	border: 3px solid #15803d;
+}
+
 .white-bg {
 	background: linear-gradient(90deg, #cbcbcb31 2%, transparent 10%), linear-gradient(#cbcbcb31 2%, transparent 10%),
 		#fff;
