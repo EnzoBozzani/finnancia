@@ -1,6 +1,7 @@
 import { currentUser } from '@/lib/auth';
 import { Metadata } from 'next';
 import { AIChat } from './_components/AIChat';
+import { db } from '@/lib/db';
 
 export const metadata: Metadata = {
 	title: 'Painel',
@@ -9,9 +10,14 @@ export const metadata: Metadata = {
 const AIPage = async () => {
 	const user = await currentUser();
 
+	const messages = await db.message.findMany({ where: { userId: user.id } });
+
 	return (
 		<main className='flex-1'>
-			<AIChat user={user} />{' '}
+			<AIChat
+				user={user}
+				oldMessages={messages}
+			/>{' '}
 		</main>
 	);
 };

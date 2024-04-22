@@ -1,7 +1,7 @@
 'use client';
 
 import { IoSend } from 'react-icons/io5';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -19,12 +19,13 @@ interface AIChatProps {
 		emailVerified: Date | null;
 		image: string | null;
 	};
+	oldMessages: Message[];
 }
 
-export const AIChat = ({ user }: AIChatProps) => {
+export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 	const isDark = useIsDarkTheme();
 
-	const [messages, setMessages] = useState<Message[]>([]);
+	const [messages, setMessages] = useState<Message[]>(oldMessages);
 	const [isLoading, setIsLoading] = useState(false);
 	const promptRef = useRef<HTMLTextAreaElement>(null);
 
@@ -37,11 +38,12 @@ export const AIChat = ({ user }: AIChatProps) => {
 		const res = await AIService.getChat(text);
 
 		if (res.error) {
-			//tratar erro com sonner
 			return;
 		}
 
-		setMessages(res.messages);
+		console.log(res);
+
+		setMessages((current) => [...current, res.userMessage, res.modelMessage]);
 
 		setIsLoading(false);
 
@@ -61,7 +63,7 @@ export const AIChat = ({ user }: AIChatProps) => {
 			) : (
 				<div
 					className={cn(
-						'h-[300px] ai-chat overflow-y-scroll w-[95%] pe-4 mx-auto mb-12 prose lg:prose-xl',
+						'h-[390px] ai-chat overflow-y-scroll w-[95%] pe-4 mx-auto mb-12 prose lg:prose-xl',
 						isDark && 'prose-invert'
 					)}
 				>

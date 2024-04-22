@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
 		const response = await chatWithAI(prompt, oldMessages, user.name!);
 
-		await db.message.create({
+		const userMessage = await db.message.create({
 			data: {
 				body: prompt,
 				role: 'USER',
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 			},
 		});
 
-		await db.message.create({
+		const modelMessage = await db.message.create({
 			data: {
 				body: response,
 				role: 'MODEL',
@@ -55,12 +55,13 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json(
 			{
-				userMessage: prompt,
-				modelMessage: response,
+				userMessage,
+				modelMessage,
 			},
 			{ status: 200 }
 		);
 	} catch (error) {
+		console.log(error);
 		return NextResponse.json({
 			error: 'Algo deu errado!',
 		});
