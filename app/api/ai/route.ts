@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { currentUser } from '@/lib/auth';
 import { AIPromptSchema } from '@/schemas/AIPromptSchema';
-import { generateResponseFromPrompt } from '@/lib/ai';
+import { chatWithAI, generateResponseFromPrompt } from '@/lib/ai';
+import { db } from '@/lib/db';
 
 export async function POST(req: NextRequest) {
 	const user = await currentUser();
@@ -32,11 +33,30 @@ export async function POST(req: NextRequest) {
 	const { prompt } = validatedField.data;
 
 	try {
-		const response = await generateResponseFromPrompt(prompt);
+		const oldMessages = await db.message.findMany({ where: { userId: user.id } });
+
+		const response = await chatWithAI(prompt, oldMessages, user.name!);
+
+		await db.message.create({
+			data: {
+				body: prompt,
+				role: 'USER',
+				userId: user.id,
+			},
+		});
+
+		await db.message.create({
+			data: {
+				body: response,
+				role: 'MODEL',
+				userId: user.id,
+			},
+		});
 
 		return NextResponse.json(
 			{
-				response,
+				userMessage: prompt,
+				modelMessage: response,
 			},
 			{ status: 200 }
 		);

@@ -18,6 +18,11 @@ enum FinanceType {
   PROFIT
 }
 
+enum MessageRole {
+  USER
+  MODEL
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -26,7 +31,19 @@ model User {
   image         String?
   accounts      Account[]
   sheets        Sheet[]
+  messages      Message[]
 }
+model Message {
+  id        String   @id @default(cuid())
+  role      MessageRole
+  body      String
+
+  userId    String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
 
 model Account {
   id                 String  @id @default(cuid())

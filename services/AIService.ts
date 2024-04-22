@@ -1,5 +1,5 @@
 export const AIService = {
-	async getResponseFromPrompt(prompt: string) {
+	async getChat(prompt: string) {
 		const res = await fetch(`/api/ai`, {
 			method: 'POST',
 			headers: {

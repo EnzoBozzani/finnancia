@@ -1,7 +1,7 @@
 'use client';
 
 import { IoSend } from 'react-icons/io5';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -9,6 +9,7 @@ import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AIService } from '@/services/AIService';
+import { Message } from '@prisma/client';
 
 interface AIChatProps {
 	user: {
@@ -23,7 +24,7 @@ interface AIChatProps {
 export const AIChat = ({ user }: AIChatProps) => {
 	const isDark = useIsDarkTheme();
 
-	const [response, setResponse] = useState('');
+	const [messages, setMessages] = useState<Message[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const promptRef = useRef<HTMLTextAreaElement>(null);
 
@@ -33,9 +34,15 @@ export const AIChat = ({ user }: AIChatProps) => {
 
 		if (!text || text === '' || !promptRef.current) return;
 
-		const res = await AIService.getResponseFromPrompt(text);
+		const res = await AIService.getChat(text);
 
-		setResponse(res.response);
+		if (res.error) {
+			//tratar erro com sonner
+			return;
+		}
+
+		setMessages(res.messages);
+
 		setIsLoading(false);
 
 		promptRef.current.value = '';
@@ -49,7 +56,7 @@ export const AIChat = ({ user }: AIChatProps) => {
 			<p className={cn('w-full sm:w-[70%] text-xl text-justify text-neutral-500 mb-12')}>
 				Eu sou a FinnancIA, IA especializada em gerenciamento financeiro! Como posso te ajudar?
 			</p>
-			{isLoading ? (
+			{isLoading || messages.length === 0 || !messages ? (
 				<Skeleton className='w-[90%] h-[300px] mx-auto mb-12' />
 			) : (
 				<div
@@ -58,7 +65,14 @@ export const AIChat = ({ user }: AIChatProps) => {
 						isDark && 'prose-invert'
 					)}
 				>
-					<Markdown>{response}</Markdown>
+					{messages.map((message) => (
+						<>
+							<Markdown key={message.id}>
+								{(message.role === 'MODEL' ? '**FinnancIA:** ' : `**${user.name?.split(' ')[0]}:** `) +
+									message.body}
+							</Markdown>
+						</>
+					))}
 				</div>
 			)}
 			<form
