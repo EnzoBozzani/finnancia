@@ -1,12 +1,12 @@
 'use client';
 
 import { IoSend } from 'react-icons/io5';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import Markdown from 'react-markdown';
+import TextareaAutosize from 'react-textarea-autosize';
 
-import { Textarea } from '@/components/ui/textarea';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
-import { generateResponseFromPrompt } from '@/lib/ai';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AIService } from '@/services/AIService';
 
@@ -25,21 +25,24 @@ export const AIChat = ({ user }: AIChatProps) => {
 
 	const [response, setResponse] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+	const promptRef = useRef<HTMLTextAreaElement>(null);
 
 	const onSubmit = async (formData: FormData) => {
 		setIsLoading(true);
 		const text = formData.get('text') as string;
 
-		if (!text || text === '') return;
+		if (!text || text === '' || !promptRef.current) return;
 
 		const res = await AIService.getResponseFromPrompt(text);
 
 		setResponse(res.response);
 		setIsLoading(false);
+
+		promptRef.current.value = '';
 	};
 
 	return (
-		<section className={cn('mx-auto w-[95%] rounded-xl p-6', isDark ? 'bg-neutral-800' : 'bg-neutral-200')}>
+		<section className={cn('mx-auto w-[95%] rounded-xl p-6')}>
 			<h1 className='bg-gradient-to-r from-green-700 via-green-500 to-green-400 inline-block text-transparent bg-clip-text font-bold text-4xl'>
 				Bem vindo, {user.name?.split(' ')[0]}!
 			</h1>
@@ -47,27 +50,27 @@ export const AIChat = ({ user }: AIChatProps) => {
 				Eu sou a FinnancIA, IA especializada em gerenciamento financeiro! Como posso te ajudar?
 			</p>
 			{isLoading ? (
-				<Skeleton className='w-[95%] h-12' />
+				<Skeleton className='w-[90%] h-12 mx-auto mb-12' />
 			) : (
-				<p className={cn('w-[80%] mx-auto mb-12', isDark ? 'text-white' : 'text-black')}>{response}</p>
+				<div className={cn('w-[90%] mx-auto mb-12 prose lg:prose-xl', isDark && 'prose-invert')}>
+					<Markdown>{response}</Markdown>
+				</div>
 			)}
 			<form
 				action={onSubmit}
 				className='flex items-center mb-4 mx-auto'
 			>
-				<Textarea
+				<TextareaAutosize
 					id='text'
 					name='text'
 					placeholder='Envie sua pergunta'
 					className={cn(
-						'text-lg rounded-full p-4 border border-transparent',
+						'w-full focus:outline-none resize-none text-lg rounded-xl flex items-center p-4 pe-12 border border-transparent',
 						isDark
-							? 'bg-neutral-950 text-white focus:bg-neutral-900 focus:border-green-300'
-							: 'bg-white focus:bg-neutral-100 focus:border-green-500 text-black'
+							? 'bg-neutral-900 text-white focus:bg-neutral-800 focus:border-green-300'
+							: 'bg-neutral-100 focus:bg-neutral-200 focus:border-green-500 text-black'
 					)}
-					style={{
-						resize: 'none',
-					}}
+					ref={promptRef}
 				/>
 				<button
 					className='-ms-12 z-50'
