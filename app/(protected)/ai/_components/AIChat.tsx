@@ -8,6 +8,7 @@ import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
 import { generateResponseFromPrompt } from '@/lib/ai';
 import { Skeleton } from '@/components/ui/skeleton';
+import { AIService } from '@/services/AIService';
 
 interface AIChatProps {
 	user: {
@@ -31,9 +32,9 @@ export const AIChat = ({ user }: AIChatProps) => {
 
 		if (!text || text === '') return;
 
-		const response = await generateResponseFromPrompt(text);
+		const res = await AIService.getResponseFromPrompt(text);
 
-		setResponse(response);
+		setResponse(res.response);
 		setIsLoading(false);
 	};
 
