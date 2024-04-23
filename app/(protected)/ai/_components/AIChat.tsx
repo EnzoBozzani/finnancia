@@ -1,15 +1,16 @@
 'use client';
 
-import { IoSend } from 'react-icons/io5';
-import { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import TextareaAutosize from 'react-textarea-autosize';
+import { IoSend } from 'react-icons/io5';
+import { useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { Message } from '@prisma/client';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AIService } from '@/services/AIService';
-import { Message } from '@prisma/client';
 
 interface AIChatProps {
 	user: {
@@ -31,6 +32,7 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 
 	const onSubmit = async (formData: FormData) => {
 		setIsLoading(true);
+
 		const text = formData.get('text') as string;
 
 		if (!text || text === '' || !promptRef.current) return;
@@ -38,10 +40,9 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 		const res = await AIService.getChat(text);
 
 		if (res.error) {
+			toast.error('Ocorreu um erro ao enviar a mensagem. Tente novamente mais tarde.');
 			return;
 		}
-
-		console.log(res);
 
 		setMessages((current) => [...current, res.userMessage, res.modelMessage]);
 
@@ -58,8 +59,30 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 			<p className={cn('w-full sm:w-[70%] text-xl text-justify text-neutral-500 mb-12')}>
 				Eu sou a FinnancIA, IA especializada em gerenciamento financeiro! Como posso te ajudar?
 			</p>
-			{isLoading || messages.length === 0 || !messages ? (
-				<Skeleton className='w-[90%] h-[300px] mx-auto mb-12' />
+			{messages.length === 0 || !messages ? (
+				<div
+					className={cn(
+						'h-[390px] ai-chat overflow-y-scroll w-[95%] mx-auto mb-12 flex items-center justify-center flex-wrap gap-4 italic',
+						isDark ? 'text-neutral-200' : 'text-neutral-700'
+					)}
+				>
+					{['Como economizar mais?', 'Como me manter saudável financeiramente?'].map((text) => (
+						<div
+							key={text}
+							className={cn(
+								'cursor-pointer hover:border-green-600 w-[200px] h-[200px] border-2 rounded-xl flex justify-center items-center text-center',
+								isDark ? 'bg-neutral-800/50 border-neutral-700' : 'bg-neutral-200/50 border-neutral-200'
+							)}
+							onClick={() => {
+								if (!promptRef.current) return;
+								promptRef.current.value = text;
+								promptRef.current.focus();
+							}}
+						>
+							{text}
+						</div>
+					))}
+				</div>
 			) : (
 				<div
 					className={cn(
@@ -68,13 +91,18 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 					)}
 				>
 					{messages.map((message) => (
-						<>
-							<Markdown key={message.id}>
-								{(message.role === 'MODEL' ? '**FinnancIA:** ' : `**${user.name?.split(' ')[0]}:** `) +
-									message.body}
-							</Markdown>
-						</>
+						<Markdown key={message.id}>
+							{(message.role === 'MODEL' ? '**FinnancIA:** ' : `**${user.name?.split(' ')[0]}:** `) +
+								message.body}
+						</Markdown>
 					))}
+					{isLoading && (
+						<>
+							<Skeleton className='w-[95%] h-6 mb-4' />
+							<Skeleton className='w-[95%] h-6 mb-4' />
+							<Skeleton className='w-[95%] h-6' />
+						</>
+					)}
 				</div>
 			)}
 			<form
