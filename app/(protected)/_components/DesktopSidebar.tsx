@@ -9,7 +9,6 @@ import { MdDashboardCustomize } from 'react-icons/md';
 import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { Loader } from '@/components/Loader';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
@@ -95,11 +94,17 @@ export const DesktopSidebar = () => {
 						<Select
 							open={isSelectOpen}
 							onOpenChange={() => {
-								sheets.length === 0
-									? isInitialAmountSet
-										? onOpenSheetModal()
-										: onOpenSetAmountModal()
-									: setIsSelectOpen((current) => !current);
+								if (!isInitialAmountSet) {
+									onOpenSetAmountModal();
+									return;
+								}
+
+								if (sheets.length === 0) {
+									onOpenSheetModal();
+									return;
+								}
+
+								setIsSelectOpen((current) => !current);
 							}}
 							onValueChange={(value) => {
 								redirect(`/dashboard/${value}`);

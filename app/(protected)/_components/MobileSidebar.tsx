@@ -23,11 +23,11 @@ import {
 	SelectLabel,
 } from '@/components/ui/select';
 import { sheetsService } from '@/services/sheetsService';
-import { Loader } from '@/components/Loader';
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { cn, orderYearsForSelectSheet } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
 
 type SheetMonth = {
 	name: string;
@@ -49,9 +49,12 @@ export const MobileSidebar = () => {
 
 	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
+	const onOpenSetAmountModal = useSetInitialAmountModal((state) => state.onOpen);
+
 	const isDark = useIsDarkTheme();
 
 	const [sheets, setSheets] = useState<Year[]>([]);
+	const [isInitialAmountSet, setIsInitialAmountSet] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSelectOpen, setIsSelectOpen] = useState(false);
 
@@ -66,6 +69,7 @@ export const MobileSidebar = () => {
 
 			const orderedYears = orderYearsForSelectSheet(res.sheets);
 
+			setIsInitialAmountSet(res.isInitialAmountSet);
 			setSheets(orderedYears);
 
 			setIsLoading(false);
@@ -106,22 +110,32 @@ export const MobileSidebar = () => {
 						<SheetTitle className={isDark ? 'text-neutral-100' : ''}>
 							Olá{currentUser?.name?.split(' ')[0] ? ', ' + currentUser?.name?.split(' ')[0] : ''}!
 						</SheetTitle>
-						<SheetDescription>
+						<SheetDescription className='text-xs'>
 							Faça o gerenciamento de suas finanças aqui! Navegue entre planilhas, visite o painel, veja
 							os planos, altere configurações e interaja com a FinnancIA.
 						</SheetDescription>
 					</SheetHeader>
-					<div className='mt-12'>
-						<div className='my-12 flex justify-center items-center'>
+					<div className='mt-6'>
+						<div className='mb-6 flex justify-center items-center'>
 							{isLoading ? (
 								<Skeleton className='w-[95%] h-[50px] rounded-xl' />
 							) : (
 								<Select
 									open={isSelectOpen}
 									onOpenChange={() => {
-										sheets.length === 0
-											? onOpenSheetModal()
-											: setIsSelectOpen((current) => !current);
+										if (!isInitialAmountSet) {
+											onClose();
+											onOpenSetAmountModal();
+											return;
+										}
+
+										if (sheets.length === 0) {
+											onClose();
+											onOpenSheetModal();
+											return;
+										}
+
+										setIsSelectOpen((current) => !current);
 									}}
 									onValueChange={(value) => {
 										onClose();
@@ -231,7 +245,7 @@ export const MobileSidebar = () => {
 									)}
 									onClick={() => {
 										onClose();
-										onOpenSheetModal();
+										isInitialAmountSet ? onOpenSheetModal() : onOpenSetAmountModal();
 									}}
 								>
 									<PlusIcon className='w-8 h-8 mr-2' />
@@ -272,7 +286,7 @@ export const MobileSidebar = () => {
 								</Link>
 							</>
 						)}
-						<div className='flex items-center justify-center my-6 gap-x-1'>
+						<div className='text-sm flex items-center justify-center flex-wrap my-6 gap-x-1'>
 							Precisa de suporte?
 							<Link
 								onClick={() => onClose()}

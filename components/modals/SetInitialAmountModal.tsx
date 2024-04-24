@@ -10,6 +10,9 @@ import { cn } from '@/lib/utils';
 import { FormGroup } from '../FormGroup';
 import { FormMessage } from '../FormMessage';
 import { SubmitButton } from '../SubmitButton';
+import { usersService } from '@/services/usersService';
+import { toast } from 'sonner';
+import { revalidatePath } from 'next/cache';
 
 export const SetInitialAmountModal = () => {
 	const isDark = useIsDarkTheme();
@@ -19,7 +22,35 @@ export const SetInitialAmountModal = () => {
 
 	const [message, setMessage] = useState<string | null>(null);
 
-	const onSubmit = () => {};
+	const onSubmit = async (formData: FormData) => {
+		const amount = formData.get('amount') as string;
+
+		if (!amount || amount === '') {
+			setMessage('Todos os campos são obrigatórios!');
+			return;
+		}
+
+		const amountFormatted = Number(
+			amount.replace('R$ ', '').replace('R$ ', '').replaceAll('.', '').replace(',', '.')
+		);
+
+		if (isNaN(amountFormatted)) {
+			setMessage('Campo inválido!');
+		}
+
+		const res = await usersService.setInitialAmount(amountFormatted);
+
+		if (res.error) {
+			setMessage('Algo deu errado!');
+		}
+
+		if (res.success) {
+			toast.success('Saldo definido com sucesso!');
+			revalidatePath('/dashboard', 'layout');
+		}
+
+		onClose();
+	};
 
 	return (
 		<Dialog
@@ -43,7 +74,7 @@ export const SetInitialAmountModal = () => {
 						Não é possível alterar o saldo inicial depois!
 					</p>
 					<FormGroup
-						id='date'
+						id='amount'
 						label='Saldo inicial:'
 						mask='R$ #.##0,00'
 						placeholder='R$ XXX,XX'

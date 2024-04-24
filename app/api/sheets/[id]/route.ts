@@ -21,6 +21,27 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			where: { id: params.id, userId: user.id },
 		});
 
+		const dbUser = await db.user.findUnique({
+			where: { id: user.id },
+			select: { totalAmount: true },
+		});
+
+		if (!dbUser) {
+			return NextResponse.json(
+				{
+					error: 'Unauthorized!',
+				},
+				{ status: 401 }
+			);
+		}
+
+		await db.user.update({
+			where: { id: user.id },
+			data: {
+				totalAmount: dbUser.totalAmount - sheet.totalAmount,
+			},
+		});
+
 		if (!sheet) {
 			return NextResponse.json(
 				{

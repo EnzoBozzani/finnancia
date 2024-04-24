@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { CreateFinanceSchema } from '@/schemas/CreateFinanceSchema';
 import { currentUser } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
 	const body = await req.json();
@@ -51,6 +52,17 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			);
 		}
 
+		const dbUser = await db.user.findUnique({ where: { id: user.id }, select: { totalAmount: true } });
+
+		if (!dbUser) {
+			return NextResponse.json(
+				{
+					error: 'Usuário não encontrado!',
+				},
+				{ status: 404 }
+			);
+		}
+
 		await db.finance.create({
 			data: {
 				amount: amount,
@@ -69,6 +81,15 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 				financesCount: sheet.financesCount + 1,
 			},
 		});
+
+		await db.user.update({
+			where: { id: user.id },
+			data: {
+				totalAmount: type === 'PROFIT' ? dbUser.totalAmount + amount : dbUser.totalAmount - amount,
+			},
+		});
+
+		revalidatePath('dashboard', 'layout');
 
 		return NextResponse.json(
 			{
