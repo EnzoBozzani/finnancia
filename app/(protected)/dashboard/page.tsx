@@ -22,8 +22,10 @@ const DashboardPage = async () => {
 		},
 	});
 
-	const dbUser = await db.user.findUnique({ where: { id: user.id }, select: { totalAmount: true } });
-	const userTotalAmount = dbUser?.totalAmount || 0;
+	const dbUser = await db.user.findUnique({
+		where: { id: user.id },
+		select: { totalAmount: true, isInitialAmountSet: true },
+	});
 
 	const {
 		sheetsNames,
@@ -50,7 +52,10 @@ const DashboardPage = async () => {
 					Bem-vindo ao seu painel no Finnancia! Veja análises sobre seus dados e gerencie suas finanças
 				</p>
 			</div>
-			<AmountSection userTotalAmount={userTotalAmount} />
+			<AmountSection
+				userTotalAmount={dbUser?.totalAmount || 0}
+				isInitialAmountSet={dbUser?.isInitialAmountSet || false}
+			/>
 			<section className='w-[95%] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mb-8'>
 				<AnalysisCard
 					title='Ganho'

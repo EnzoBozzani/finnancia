@@ -1,10 +1,20 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
 import { cn, currencyFormat } from '@/lib/utils';
 
-export const AmountSection = ({ userTotalAmount }: { userTotalAmount: number }) => {
+export const AmountSection = ({
+	userTotalAmount,
+	isInitialAmountSet,
+}: {
+	userTotalAmount: number;
+	isInitialAmountSet: boolean;
+}) => {
 	const isDark = useIsDarkTheme();
+
+	const onOpen = useSetInitialAmountModal((state) => state.onOpen);
 
 	const textColor =
 		userTotalAmount > 0
@@ -25,22 +35,24 @@ export const AmountSection = ({ userTotalAmount }: { userTotalAmount: number }) 
 			)}
 		>
 			<p className='text-2xl md:text-4xl font-bold'>SALDO TOTAL</p>
-			<p className={cn('text-4xl sm:text-6xl md:text-8xl font-bold', textColor)}>
-				{currencyFormat(userTotalAmount)}
-			</p>
+			{isInitialAmountSet ? (
+				<p className={cn('text-4xl sm:text-6xl md:text-8xl font-bold', textColor)}>
+					currencyFormat(userTotalAmount)
+				</p>
+			) : (
+				<div className='w-full flex items-center justify-center lg:justify-start'>
+					<Button
+						className='text-lg sm:text-xl md:text-2xl lg:text-4xl p-6 md:p-8 lg:p-12 uppercase'
+						onClick={() => onOpen()}
+					>
+						Definir saldo inicial
+					</Button>
+				</div>
+			)}
+
 			<p className='text-sm sm:text-base'>
-				Saldo total da sua conta, somando os saldos de cada planilhas e com as devidas alterações.
+				Saldo total da sua conta, somando os saldos de cada planilhas e o saldo inicial.
 			</p>
-			<button
-				className={cn(
-					'px-4 py-2 mx-auto border rounded-lg hover:bg-transparent transition duration-200',
-					isDark
-						? `bg-neutral-900 border-neutral-700 text-neutral-400`
-						: `bg-neutral-100 border-neutral-300 text-neutral-700`
-				)}
-			>
-				Alterar
-			</button>
 		</section>
 	);
 };
