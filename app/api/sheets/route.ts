@@ -29,7 +29,14 @@ export async function GET(req: NextRequest) {
 			},
 		});
 
-		return NextResponse.json(sheets, { status: 200 });
+		const dbUser = await db.user.findUnique({
+			where: { id: user.id },
+			select: {
+				isInitialAmountSet: true,
+			},
+		});
+
+		return NextResponse.json({ sheets, isInitialAmountSet: dbUser?.isInitialAmountSet }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json(
 			{

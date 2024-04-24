@@ -1,5 +1,5 @@
 export const sheetsService = {
-	async getUserSheets() {
+	async getUserSheetsAndIsInitialAmountSet() {
 		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets`, {
 			method: 'GET',
 			headers: {

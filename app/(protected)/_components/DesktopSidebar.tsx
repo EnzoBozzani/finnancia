@@ -25,6 +25,7 @@ import {
 import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { sheetsService } from '@/services/sheetsService';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
 
 type SheetMonth = {
 	name: string;
@@ -42,23 +43,27 @@ export const DesktopSidebar = () => {
 
 	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
+	const onOpenSetAmountModal = useSetInitialAmountModal((state) => state.onOpen);
+
 	const isDark = useIsDarkTheme();
 
 	const [sheets, setSheets] = useState<Year[]>([]);
+	const [isInitialAmountSet, setIsInitialAmountSet] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSelectOpen, setIsSelectOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchSheets = async () => {
-			const res = await sheetsService.getUserSheets();
+			const res = await sheetsService.getUserSheetsAndIsInitialAmountSet();
 
 			if (res.error) {
 				toast.error('Algo deu errado!');
 				return;
 			}
 
-			const orderedYears = orderYearsForSelectSheet(res);
+			const orderedYears = orderYearsForSelectSheet(res.sheets);
 
+			setIsInitialAmountSet(res.isInitialAmountSet);
 			setSheets(orderedYears);
 
 			setIsLoading(false);
@@ -90,7 +95,11 @@ export const DesktopSidebar = () => {
 						<Select
 							open={isSelectOpen}
 							onOpenChange={() => {
-								sheets.length === 0 ? onOpenSheetModal() : setIsSelectOpen((current) => !current);
+								sheets.length === 0
+									? isInitialAmountSet
+										? onOpenSheetModal()
+										: onOpenSetAmountModal()
+									: setIsSelectOpen((current) => !current);
 							}}
 							onValueChange={(value) => {
 								redirect(`/dashboard/${value}`);
@@ -195,7 +204,7 @@ export const DesktopSidebar = () => {
 								isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'
 							)}
 							onClick={() => {
-								onOpenSheetModal();
+								isInitialAmountSet ? onOpenSheetModal() : onOpenSetAmountModal();
 							}}
 						>
 							<PlusIcon className='w-8 h-8 mr-2' />

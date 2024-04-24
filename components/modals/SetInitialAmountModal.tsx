@@ -15,7 +15,6 @@ export const SetInitialAmountModal = () => {
 	const isDark = useIsDarkTheme();
 
 	const isOpen = useSetInitialAmountModal((state) => state.isOpen);
-	const onOpen = useSetInitialAmountModal((state) => state.onOpen);
 	const onClose = useSetInitialAmountModal((state) => state.onClose);
 
 	const [message, setMessage] = useState<string | null>(null);
@@ -39,8 +38,9 @@ export const SetInitialAmountModal = () => {
 				>
 					<h3 className='text-center text-xl font-semibold'>Definir saldo</h3>
 					<p className='my-6 text-neutral-500 text-center'>
-						Defina o saldo inicial de sua conta, ou seja, a soma de seu saldo em todas suas contas
-						bancárias. Feito isso, você poderá visualizar sempre o saldo total de suas finanças.
+						Antes de continuar, defina o saldo inicial de sua conta, ou seja, a soma de seu saldo em todas
+						suas contas bancárias. Feito isso, você poderá visualizar sempre o saldo total de suas finanças.
+						Não é possível alterar o saldo inicial depois!
 					</p>
 					<FormGroup
 						id='date'

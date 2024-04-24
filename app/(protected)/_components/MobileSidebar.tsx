@@ -57,14 +57,14 @@ export const MobileSidebar = () => {
 
 	useEffect(() => {
 		const fetchSheets = async () => {
-			const res = await sheetsService.getUserSheets();
+			const res = await sheetsService.getUserSheetsAndIsInitialAmountSet();
 
 			if (res.error) {
 				toast.error('Algo deu errado!');
 				return;
 			}
 
-			const orderedYears = orderYearsForSelectSheet(res);
+			const orderedYears = orderYearsForSelectSheet(res.sheets);
 
 			setSheets(orderedYears);
 
