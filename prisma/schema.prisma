@@ -29,6 +29,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  totalAmount   Float   @default(0)
   accounts      Account[]
   sheets        Sheet[]
   messages      Message[]

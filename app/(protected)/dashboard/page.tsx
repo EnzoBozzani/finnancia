@@ -6,6 +6,7 @@ import { filterSheetData } from '@/lib/utils';
 
 import { DashboardChart } from './_components/DashboardChart';
 import { AnalysisCard } from './_components/AnalysisCard';
+import { AmountSection } from './_components/AmountSection';
 
 export const metadata: Metadata = {
 	title: 'Painel',
@@ -20,6 +21,9 @@ const DashboardPage = async () => {
 			finances: { select: { type: true, amount: true } },
 		},
 	});
+
+	const dbUser = await db.user.findUnique({ where: { id: user.id }, select: { totalAmount: true } });
+	const userTotalAmount = dbUser?.totalAmount || 0;
 
 	const {
 		sheetsNames,
@@ -44,9 +48,9 @@ const DashboardPage = async () => {
 				<h1 className='text-green-600 text-4xl font-bold text-center'>Painel</h1>
 				<p className='text-center text-neutral-500'>
 					Bem-vindo ao seu painel no Finnancia! Veja análises sobre seus dados e gerencie suas finanças
-					mensais
 				</p>
 			</div>
+			<AmountSection userTotalAmount={userTotalAmount} />
 			<section className='w-[95%] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mb-8'>
 				<AnalysisCard
 					title='Ganho'
