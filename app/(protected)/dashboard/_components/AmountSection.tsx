@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
 import { cn, currencyFormat } from '@/lib/utils';
+import { SwitchVisibility } from './SwitchVisibilty';
 
 export const AmountSection = ({
 	userTotalAmount,
@@ -26,7 +27,10 @@ export const AmountSection = ({
 				isDark ? 'text-neutral-100' : 'text-neutral-800'
 			)}
 		>
-			<p className='text-2xl md:text-4xl font-bold'>SALDO TOTAL</p>
+			<div className='flex items-center justify-center lg:justify-start gap-x-4'>
+				<p className='text-2xl md:text-4xl font-bold'>SALDO TOTAL</p>
+				<SwitchVisibility />
+			</div>
 			{isInitialAmountSet ? (
 				<p
 					className={cn(
