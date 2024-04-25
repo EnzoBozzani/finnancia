@@ -62,7 +62,6 @@ export const AddSheetModal = () => {
 
 		if (res.success) {
 			onClose();
-			location.reload();
 			redirect(`/dashboard/${res.sheetId}`);
 		}
 	};

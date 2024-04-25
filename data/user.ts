@@ -21,3 +21,18 @@ export async function getUserById(id: string) {
 		return null;
 	}
 }
+
+export async function getUserTotalAmount(id: string) {
+	try {
+		const dbUser = await db.user.findUnique({
+			where: { id },
+			select: { totalAmount: true },
+		});
+
+		if (!dbUser) return null;
+
+		return dbUser.totalAmount;
+	} catch (error) {
+		return null;
+	}
+}

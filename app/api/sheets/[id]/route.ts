@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { revalidatePath } from 'next/cache';
+import { getUserTotalAmount } from '@/data/user';
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
 	const user = await currentUser();
@@ -21,12 +22,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			where: { id: params.id, userId: user.id },
 		});
 
-		const dbUser = await db.user.findUnique({
-			where: { id: user.id },
-			select: { totalAmount: true },
-		});
+		const userTotalAmount = await getUserTotalAmount(user.id);
 
-		if (!dbUser) {
+		if (!userTotalAmount) {
 			return NextResponse.json(
 				{
 					error: 'Unauthorized!',
@@ -38,7 +36,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		await db.user.update({
 			where: { id: user.id },
 			data: {
-				totalAmount: dbUser.totalAmount - sheet.totalAmount,
+				totalAmount: userTotalAmount - sheet.totalAmount,
 			},
 		});
 
