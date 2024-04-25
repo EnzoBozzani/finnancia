@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
 import { cn, currencyFormat } from '@/lib/utils';
+import { useAmountVisibility } from '@/hooks/useAmountVisibility';
+
 import { SwitchVisibility } from './SwitchVisibilty';
 
 export const AmountSection = ({
@@ -16,6 +18,8 @@ export const AmountSection = ({
 	const isDark = useIsDarkTheme();
 
 	const onOpen = useSetInitialAmountModal((state) => state.onOpen);
+
+	const isVisible = useAmountVisibility((state) => state.isVisible);
 
 	const textColor =
 		userTotalAmount > 0 ? (isDark ? 'text-green-400' : 'text-green-700') : isDark ? 'text-red-400' : 'text-red-700';
@@ -34,8 +38,9 @@ export const AmountSection = ({
 			{isInitialAmountSet ? (
 				<p
 					className={cn(
-						'text-4xl sm:text-6xl md:text-8xl font-bold',
-						userTotalAmount === 0 ? 'text-neutral-500' : textColor
+						'text-4xl sm:text-6xl md:text-8xl font-bold max-w-[800px] break-all',
+						userTotalAmount === 0 ? 'text-neutral-500' : textColor,
+						isVisible && 'line-through text-transparent decoration-neutral-500'
 					)}
 				>
 					{currencyFormat(userTotalAmount)}

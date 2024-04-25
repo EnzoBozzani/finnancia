@@ -47,7 +47,6 @@ const DashboardPage = async () => {
 	return (
 		<main className='flex-1'>
 			<div className='mb-12 px-4'>
-				<h1 className='text-green-600 text-4xl font-bold text-center'>Painel</h1>
 				<p className='text-center text-neutral-500'>
 					Bem-vindo ao seu painel no Finnancia! Veja análises sobre seus dados e gerencie suas finanças
 				</p>

@@ -4,6 +4,7 @@ import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn, currencyFormat } from '@/lib/utils';
+import { useAmountVisibility } from '@/hooks/useAmountVisibility';
 
 interface AnalysisCardProps {
 	title: string;
@@ -23,6 +24,8 @@ export const AnalysisCard = ({
 	nSheets,
 }: AnalysisCardProps) => {
 	const isDark = useIsDarkTheme();
+
+	const isVisible = useAmountVisibility((state) => state.isVisible);
 
 	if (lastCard && nSheets) {
 		return (
@@ -96,7 +99,12 @@ export const AnalysisCard = ({
 				<h1 className={cn('font-black text-xl uppercase', isDark ? 'text-white' : 'text-black')}>{title}</h1>
 				<span className='text-neutral-500 text-sm'>(esse mês)</span>
 			</div>
-			<div className='text-4xl md:text-6xl text-center md:text-start font-bold overflow-scroll'>
+			<div
+				className={cn(
+					'text-4xl md:text-6xl text-center md:text-start font-bold overflow-scroll',
+					isVisible && 'line-through text-transparent decoration-neutral-500'
+				)}
+			>
 				{currencyFormat(currentMonthSheetValue)}
 			</div>
 			<div className='text-xs md:text-base flex items-center gap-x-4 justify-center md:justify-between'>
@@ -123,7 +131,15 @@ export const AnalysisCard = ({
 					<span className={cn(isDark ? 'text-white' : 'text-black')}>vs média mensal</span>
 				</div>
 				<div className='hidden text-sm text-neutral-500 lg:flex flex-col items-center'>
-					<p className={cn('text-center', isDark ? 'text-white' : 'text-black')}>{currencyFormat(medium)}</p>
+					<p
+						className={cn(
+							'text-center',
+							isDark ? 'text-white' : 'text-black',
+							isVisible && 'line-through text-transparent decoration-neutral-500'
+						)}
+					>
+						{currencyFormat(medium)}
+					</p>
 					<p className='text-center'>(média mensal)</p>
 				</div>
 			</div>
