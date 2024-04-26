@@ -152,6 +152,25 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
 		});
 
+		let financesAmount = 0;
+		if (title) {
+			const filteredFinancesProfitAmount = await db.finance.aggregate({
+				where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' }, type: 'PROFIT' },
+				_sum: {
+					amount: true,
+				},
+			});
+			const filteredFinancesExpenseAmount = await db.finance.aggregate({
+				where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' }, type: 'EXPENSE' },
+				_sum: {
+					amount: true,
+				},
+			});
+
+			financesAmount +=
+				(filteredFinancesProfitAmount._sum.amount || 0) - (filteredFinancesExpenseAmount._sum.amount || 0);
+		}
+
 		const finances = await db.finance.findMany({
 			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
 			take: 8,
@@ -165,6 +184,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			finances,
 			financesCount,
 			sheetId: sheet.id,
+			financesAmount,
 		});
 	} catch (error) {
 		return NextResponse.json(

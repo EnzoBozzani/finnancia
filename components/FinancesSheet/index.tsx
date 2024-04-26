@@ -79,15 +79,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		if (filter === '') {
 			setTotalAmount(sheetData.totalAmount);
 		} else {
-			//tentar fazer um endpoint que retorne a soma dos valores filtrados,
-			//acho que da pra fazer a soma pela query mesmo
-			// const amount = sheetData.finances.reduce((acc, finance) => {
-			// 	if (finance.title.toLowerCase().includes(filter.toLowerCase())) {
-			// 		return finance.type === 'EXPENSE' ? acc - finance.amount : acc + finance.amount;
-			// 	}
-			// 	return acc;
-			// }, 0);
-			// setTotalAmount(amount);
+			setTotalAmount(res.financesAmount);
 		}
 
 		setIsLoading(false);
@@ -142,6 +134,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 						)}
 						placeholder='Filtrar por título'
 						ref={filterRef}
+						maxLength={10}
 					/>
 					<button type='submit'>
 						<IoSearch className={cn('w-6 h-6 hover:opacity-50')} />
@@ -264,7 +257,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 									: 'bg-white hover:bg-neutral-100 border-neutral-300'
 							)}
 						>
-							<TableCell colSpan={3}>Saldo total{currentFilter && ` ("${currentFilter}")`}:</TableCell>
+							<TableCell colSpan={3}>
+								Saldo total{currentFilter && ` (Pesquisa: "${currentFilter}")`}:
+							</TableCell>
 							<TableCell
 								className={cn(
 									'text-right font-semibold',
