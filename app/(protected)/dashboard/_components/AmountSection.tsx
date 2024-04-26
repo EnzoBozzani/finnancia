@@ -40,7 +40,7 @@ export const AmountSection = ({
 					className={cn(
 						'text-4xl sm:text-6xl md:text-8xl font-bold max-w-[800px] break-all',
 						userTotalAmount === 0 ? 'text-neutral-500' : textColor,
-						isVisible && 'line-through text-transparent decoration-neutral-500'
+						!isVisible && 'line-through text-transparent decoration-neutral-500'
 					)}
 				>
 					{currencyFormat(userTotalAmount)}

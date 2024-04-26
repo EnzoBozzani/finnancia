@@ -102,7 +102,7 @@ export const AnalysisCard = ({
 			<div
 				className={cn(
 					'text-4xl md:text-6xl text-center md:text-start font-bold overflow-scroll',
-					isVisible && 'line-through text-transparent decoration-neutral-500'
+					!isVisible && 'line-through text-transparent decoration-neutral-500'
 				)}
 			>
 				{currencyFormat(currentMonthSheetValue)}
@@ -135,7 +135,7 @@ export const AnalysisCard = ({
 						className={cn(
 							'text-center',
 							isDark ? 'text-white' : 'text-black',
-							isVisible && 'line-through text-transparent decoration-neutral-500'
+							!isVisible && 'line-through text-transparent decoration-neutral-500'
 						)}
 					>
 						{currencyFormat(medium)}
