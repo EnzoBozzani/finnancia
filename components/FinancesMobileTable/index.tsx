@@ -11,9 +11,7 @@ import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 import { FinancesMobileRow } from './FinancesMobileRow';
-import { Loader } from '../Loader';
 import { Pagination } from '../FinancesSheet/Pagination';
-import { TableCell, TableRow } from '../ui/table';
 import { Skeleton } from '../ui/skeleton';
 
 interface SheetWithFinances extends Sheet {
@@ -42,6 +40,8 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 	const [isLoading, setIsLoading] = useState(false);
 	const [initialMousePosition, setInitialMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 	const [finalMousePosition, setFinalMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+	const [currentFilter, setCurrentFilter] = useState('');
+	const [totalAmount, setTotalAmount] = useState(sheetData.totalAmount);
 	const filterRef = useRef<HTMLInputElement | null>(null);
 
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
@@ -58,11 +58,17 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 
 		setFinancesData(res);
 
+		if (filter === '') {
+			setTotalAmount(sheetData.totalAmount);
+		} else {
+			setTotalAmount(res.financesAmount);
+		}
+
 		setIsLoading(false);
 	};
 
 	useEffect(() => {
-		fetchData('');
+		fetchData(currentFilter);
 	}, [selectedPage, sheetData]);
 
 	const onSubmit = (formData: FormData) => {
@@ -70,6 +76,9 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 
 		if (!filterRef.current) return;
 
+		setCurrentFilter(filter);
+
+		setSelectedPage(0);
 		fetchData(filter);
 	};
 
@@ -106,6 +115,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 						)}
 						placeholder='Filtrar por título'
 						ref={filterRef}
+						maxLength={10}
 					/>
 					<button type='submit'>
 						<IoSearch className={cn('w-6 h-6 hover:opacity-50')} />
@@ -192,11 +202,13 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 					isDark ? 'bg-neutral-950 text-white border-neutral-700' : 'bg-white text-black border-neutral-300'
 				)}
 			>
-				<p className='text-sm font-semibold'>Saldo total:</p>
+				<p className='text-sm font-semibold'>
+					Saldo total{currentFilter && ` (Pesquisa: "${currentFilter}")`}:
+				</p>
 				<p
 					className={cn(
 						'text-red-600 text-sm break-all font-semibold text-end',
-						sheetData.totalAmount >= 0
+						totalAmount >= 0
 							? isDark
 								? 'text-green-400'
 								: 'text-green-700'
@@ -205,7 +217,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 							: 'text-red-700'
 					)}
 				>
-					{currencyFormat(sheetData.totalAmount)}
+					{currencyFormat(totalAmount)}
 				</p>
 			</div>
 			<Pagination
