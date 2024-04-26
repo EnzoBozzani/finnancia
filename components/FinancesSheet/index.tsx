@@ -41,6 +41,8 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [initialMousePosition, setInitialMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 	const [finalMousePosition, setFinalMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+	const [currentFilter, setCurrentFilter] = useState('');
+	const [totalAmount, setTotalAmount] = useState(sheetData.totalAmount);
 	const filterRef = useRef<HTMLInputElement | null>(null);
 
 	const onOpenDeleteSheetModal = useDeleteSheetModal((state) => state.onOpen);
@@ -74,11 +76,25 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 			return res;
 		});
 
+		if (filter === '') {
+			setTotalAmount(sheetData.totalAmount);
+		} else {
+			//tentar fazer um endpoint que retorne a soma dos valores filtrados,
+			//acho que da pra fazer a soma pela query mesmo
+			// const amount = sheetData.finances.reduce((acc, finance) => {
+			// 	if (finance.title.toLowerCase().includes(filter.toLowerCase())) {
+			// 		return finance.type === 'EXPENSE' ? acc - finance.amount : acc + finance.amount;
+			// 	}
+			// 	return acc;
+			// }, 0);
+			// setTotalAmount(amount);
+		}
+
 		setIsLoading(false);
 	};
 
 	useEffect(() => {
-		fetchData('');
+		fetchData(currentFilter);
 	}, [selectedPage, sheetData]);
 
 	const onSubmit = (formData: FormData) => {
@@ -86,6 +102,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 
 		if (!filterRef.current) return;
 
+		setCurrentFilter(filter);
+
+		setSelectedPage(0);
 		fetchData(filter);
 	};
 
@@ -245,11 +264,11 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 									: 'bg-white hover:bg-neutral-100 border-neutral-300'
 							)}
 						>
-							<TableCell colSpan={3}>Saldo total:</TableCell>
+							<TableCell colSpan={3}>Saldo total{currentFilter && ` ("${currentFilter}")`}:</TableCell>
 							<TableCell
 								className={cn(
 									'text-right font-semibold',
-									sheetData.totalAmount >= 0
+									totalAmount >= 0
 										? isDark
 											? 'text-green-400'
 											: 'text-green-700'
@@ -258,7 +277,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 										: 'text-red-700'
 								)}
 							>
-								{currencyFormat(sheetData.totalAmount)}
+								{currencyFormat(totalAmount)}
 							</TableCell>
 						</TableRow>
 					</TableFooter>
