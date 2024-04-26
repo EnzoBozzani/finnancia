@@ -4,6 +4,7 @@ import { Finance, Sheet } from '@prisma/client';
 import { useEffect, useRef, useState } from 'react';
 import { IoSearch, IoTrashOutline } from 'react-icons/io5';
 import { toast } from 'sonner';
+import { IoIosCloseCircleOutline } from 'react-icons/io';
 
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { cn, currencyFormat } from '@/lib/utils';
@@ -123,6 +124,19 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 					action={onSubmit}
 					className={cn('flex items-center', isDark ? 'text-white' : 'text-black')}
 				>
+					<button
+						onClick={() => {
+							if (!filterRef.current || filterRef.current.value === '') return;
+
+							filterRef.current.value = '';
+							setCurrentFilter('');
+							setSelectedPage(0);
+							fetchData('');
+						}}
+						type='button'
+					>
+						<IoIosCloseCircleOutline className={cn('w-6 h-6 hover:opacity-50')} />
+					</button>
 					<input
 						id='filter'
 						name='filter'
