@@ -15,6 +15,7 @@ import { financesService } from '@/services/financesService';
 import { Row } from './Row';
 import { Pagination } from './Pagination';
 import { Skeleton } from '../ui/skeleton';
+import { ExportXLSX } from '@/app/(protected)/dashboard/[sheetId]/_components/ExportXLSX';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -104,7 +105,8 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	return (
 		<div className='hidden lg:block'>
 			<div className='max-w-screen-xl w-[95%] mx-auto flex items-center justify-between mb-6'>
-				<div className='w-[154px]'></div>
+				{/* <div className='w-[154px]'></div> */}
+				<ExportXLSX sheetId={sheetData.id} />
 				<h1 className='font-semibold text-3xl text-green-600 flex items-center justify-center gap-x-2'>
 					{sheetData.name}
 					<button

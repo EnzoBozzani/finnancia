@@ -29,9 +29,8 @@ export const SubmitButton = () => {
 	return (
 		<div className='flex justify-center items-center'>
 			<Button
-				size={'lg'}
 				type='submit'
-				className={cn('text-lg py-[25px] px-2')}
+				className={cn('py-6')}
 				disabled={pending}
 			>
 				{pending ? (
@@ -40,7 +39,7 @@ export const SubmitButton = () => {
 					</>
 				) : (
 					<>
-						<PiMicrosoftExcelLogoFill className='w-12 h-12 sm:mr-2' />
+						<PiMicrosoftExcelLogoFill className='w-8 h-8 sm:mr-2' />
 						<p className='hidden sm:block'>Exportar</p>
 					</>
 				)}
