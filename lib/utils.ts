@@ -252,3 +252,19 @@ export function dayExistsInMonth(financeDate: string | undefined) {
 
 	return true;
 }
+
+export function returnFormattedStringBasedOnDate(createdAt: Date) {
+	const day = createdAt.getDate();
+	const month = createdAt.getMonth() + 1;
+	const year = createdAt.getFullYear();
+
+	const hour = createdAt.getHours();
+	const minute = createdAt.getMinutes();
+	const second = createdAt.getSeconds();
+
+	return `${day.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}/${month.toLocaleString('pt-BR', {
+		minimumIntegerDigits: 2,
+	})}/${year} às ${hour.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}:${minute.toLocaleString('pt-BR', {
+		minimumIntegerDigits: 2,
+	})}:${second.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}`;
+}

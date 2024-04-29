@@ -1,6 +1,7 @@
 'use client';
 
 import Markdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import TextareaAutosize from 'react-textarea-autosize';
 import { IoSend } from 'react-icons/io5';
 import { useEffect, useRef, useState } from 'react';
@@ -10,7 +11,7 @@ import { useFormStatus } from 'react-dom';
 import { VscLoading } from 'react-icons/vsc';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
-import { cn } from '@/lib/utils';
+import { cn, returnFormattedStringBasedOnDate } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AIService } from '@/services/AIService';
 
@@ -117,8 +118,14 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 					)}
 				>
 					{messages.map((message) => (
-						<Markdown key={message.id}>
-							{(message.role === 'MODEL' ? '**FinnancIA:** ' : `**${user.name?.split(' ')[0]}:** `) +
+						<Markdown
+							key={message.id}
+							rehypePlugins={[rehypeRaw]}
+						>
+							{(message.role === 'MODEL' ? `**FinnancIA**  ` : `**${user.name?.split(' ')[0]}**  `) +
+								`<small style="color:grey">${returnFormattedStringBasedOnDate(
+									message.createdAt
+								)}</small><br>` +
 								message.body}
 						</Markdown>
 					))}
