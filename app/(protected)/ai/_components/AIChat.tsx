@@ -3,9 +3,11 @@
 import Markdown from 'react-markdown';
 import TextareaAutosize from 'react-textarea-autosize';
 import { IoSend } from 'react-icons/io5';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Message } from '@prisma/client';
+import { useFormStatus } from 'react-dom';
+import { VscLoading } from 'react-icons/vsc';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
@@ -23,19 +25,39 @@ interface AIChatProps {
 	oldMessages: Message[];
 }
 
+const SubmitButton = () => {
+	const { pending } = useFormStatus();
+
+	const isDark = useIsDarkTheme();
+
+	return (
+		<button
+			className={cn('-ms-12 z-50', isDark ? 'text-neutral-100' : 'text-black')}
+			type='submit'
+			disabled={pending}
+		>
+			{!pending ? (
+				<IoSend className='w-6 h-6 hover:text-green-600' />
+			) : (
+				<VscLoading className='w-8 h-8 animate-spin mr-2' />
+			)}
+		</button>
+	);
+};
+
 export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 	const isDark = useIsDarkTheme();
 
 	const [messages, setMessages] = useState<Message[]>(oldMessages);
-	const [isLoading, setIsLoading] = useState(false);
 	const promptRef = useRef<HTMLTextAreaElement>(null);
+	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const onSubmit = async (formData: FormData) => {
-		setIsLoading(true);
-
 		const text = formData.get('text') as string;
 
 		if (!text || text === '' || !promptRef.current) return;
+
+		promptRef.current.value = '';
 
 		const res = await AIService.getChat(text);
 
@@ -45,11 +67,15 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 		}
 
 		setMessages((current) => [...current, res.userMessage, res.modelMessage]);
-
-		setIsLoading(false);
-
-		promptRef.current.value = '';
 	};
+
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
 
 	return (
 		<section className={cn('mx-auto w-[95%] rounded-xl p-6')}>
@@ -96,13 +122,7 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 								message.body}
 						</Markdown>
 					))}
-					{isLoading && (
-						<>
-							<Skeleton className='w-[95%] h-6 mb-4' />
-							<Skeleton className='w-[95%] h-6 mb-4' />
-							<Skeleton className='w-[95%] h-6' />
-						</>
-					)}
+					<div ref={messagesEndRef} />
 				</div>
 			)}
 			<form
@@ -121,14 +141,7 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 					)}
 					ref={promptRef}
 				/>
-				<button
-					className='-ms-12 z-50'
-					type='submit'
-				>
-					<IoSend
-						className={cn('w-6 h-6 hover:text-green-600', isDark ? 'text-neutral-100' : 'text-black')}
-					/>
-				</button>
+				<SubmitButton />
 			</form>
 			<p className={cn('text-xs md:text-sm text-center', isDark ? 'text-neutral-600' : 'text-neutral-400')}>
 				A FinnancIA é construída sobre o Gemini, o qual pode apresentar informações imprecisas, inclusive sobre
