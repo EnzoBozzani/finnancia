@@ -4,8 +4,8 @@ import { currentUser } from '@/lib/auth';
 import { ToasterProvider } from '@/components/ToasterProvider';
 import { ModalProvider } from '@/components/modals/ModalProvider';
 
-import { DesktopSidebar } from './_components/DesktopSidebar';
 import { Header } from './_components/Header';
+import { Sidebar } from './_components/Sidebar';
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 	const user = await currentUser();
@@ -17,7 +17,9 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 			<div className='min-h-full max-w-[1400px] mx-auto'>
 				<Header user={user} />
 				<div className='flex min-h-full'>
-					<DesktopSidebar />
+					<div className='hidden lg:block'>
+						<Sidebar />
+					</div>
 					{children}
 				</div>
 				<ModalProvider />

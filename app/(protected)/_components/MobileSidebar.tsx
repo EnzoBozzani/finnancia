@@ -2,7 +2,7 @@
 
 import { CiSettings } from 'react-icons/ci';
 import { PlusIcon } from '@radix-ui/react-icons';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
@@ -28,54 +28,84 @@ import { cn, orderYearsForSelectSheet } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
+import { User } from 'next-auth';
+import { Year } from './Sidebar';
 
-type SheetMonth = {
-	name: string;
-	id: string;
-	order: number;
-};
+// type SheetMonth = {
+// 	name: string;
+// 	id: string;
+// 	order: number;
+// };
 
-type Year = {
-	order: number;
-	sheets: SheetMonth[];
-};
+// type Year = {
+// 	order: number;
+// 	sheets: SheetMonth[];
+// };
 
-export const MobileSidebar = () => {
-	const currentUser = useCurrentUser();
+interface MobileSidebarProps {
+	isDark: boolean;
+	currentUser: User | undefined;
+	isLoading: boolean;
+	isSelectOpen: boolean;
+	isInitialAmountSet: boolean;
+	onOpenSetAmountModal: () => void;
+	sheets: Year[];
+	onOpenSheetModal: () => void;
+	setIsSelectOpen: Dispatch<SetStateAction<boolean>>;
+	isOpen: boolean;
+	onOpen: () => void;
+	onClose: () => void;
+}
 
-	const isOpen = useSidebar((state) => state.isOpen);
-	const onOpen = useSidebar((state) => state.onOpen);
-	const onClose = useSidebar((state) => state.onClose);
+export const MobileSidebar = ({
+	isDark,
+	currentUser,
+	isLoading,
+	isSelectOpen,
+	isInitialAmountSet,
+	onOpenSetAmountModal,
+	sheets,
+	onOpenSheetModal,
+	setIsSelectOpen,
+	isOpen,
+	onClose,
+	onOpen,
+}: MobileSidebarProps) => {
+	// const currentUser = useCurrentUser();
 
-	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
+	// const isOpen = useSidebar((state) => state.isOpen);
+	// const onOpen = useSidebar((state) => state.onOpen);
+	// const onClose = useSidebar((state) => state.onClose);
 
-	const onOpenSetAmountModal = useSetInitialAmountModal((state) => state.onOpen);
+	// const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
-	const isDark = useIsDarkTheme();
+	// const onOpenSetAmountModal = useSetInitialAmountModal((state) => state.onOpen);
 
-	const [sheets, setSheets] = useState<Year[]>([]);
-	const [isInitialAmountSet, setIsInitialAmountSet] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isSelectOpen, setIsSelectOpen] = useState(false);
+	// const isDark = useIsDarkTheme();
 
-	useEffect(() => {
-		const fetchSheets = async () => {
-			const res = await sheetsService.getUserSheetsAndIsInitialAmountSet();
+	// const [sheets, setSheets] = useState<Year[]>([]);
+	// const [isInitialAmountSet, setIsInitialAmountSet] = useState(false);
+	// const [isLoading, setIsLoading] = useState(true);
+	// const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-			if (res.error) {
-				toast.error('Algo deu errado!');
-				return;
-			}
+	// useEffect(() => {
+	// 	const fetchSheets = async () => {
+	// 		const res = await sheetsService.getUserSheetsAndIsInitialAmountSet();
 
-			const orderedYears = orderYearsForSelectSheet(res.sheets);
+	// 		if (res.error) {
+	// 			toast.error('Algo deu errado!');
+	// 			return;
+	// 		}
 
-			setIsInitialAmountSet(res.isInitialAmountSet);
-			setSheets(orderedYears);
+	// 		const orderedYears = orderYearsForSelectSheet(res.sheets);
 
-			setIsLoading(false);
-		};
-		fetchSheets();
-	}, [isOpen]);
+	// 		setIsInitialAmountSet(res.isInitialAmountSet);
+	// 		setSheets(orderedYears);
+
+	// 		setIsLoading(false);
+	// 	};
+	// 	fetchSheets();
+	// }, [isOpen]);
 
 	return (
 		<>

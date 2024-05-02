@@ -1,17 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { PlusIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { CiCreditCard1, CiSettings } from 'react-icons/ci';
 import { SiCircuitverse } from 'react-icons/si';
 import { MdDashboardCustomize } from 'react-icons/md';
-import { redirect } from 'next/navigation';
-import { toast } from 'sonner';
+import { PlusIcon } from '@radix-ui/react-icons';
+import { Dispatch, SetStateAction } from 'react';
+import { User } from 'next-auth';
 
-import { cn, orderYearsForSelectSheet } from '@/lib/utils';
-import { useIsDarkTheme } from '@/hooks/useDarkTheme';
-import { useCurrentUser } from '@/hooks/useCurrentUser';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	Select,
 	SelectTrigger,
@@ -21,54 +19,84 @@ import {
 	SelectLabel,
 	SelectItem,
 } from '@/components/ui/select';
-import { useAddSheetModal } from '@/hooks/useAddSheetModal';
-import { sheetsService } from '@/services/sheetsService';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
+import { cn } from '@/lib/utils';
 
-type SheetMonth = {
-	name: string;
-	id: string;
-	order: number;
-};
+import { Year } from './Sidebar';
 
-type Year = {
-	order: number;
-	sheets: SheetMonth[];
-};
+// import { useEffect, useState } from 'react';
+// import { toast } from 'sonner';
 
-export const DesktopSidebar = () => {
-	const currentUser = useCurrentUser();
+// import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+// import { useCurrentUser } from '@/hooks/useCurrentUser';
+// import { useAddSheetModal } from '@/hooks/useAddSheetModal';
+// import { sheetsService } from '@/services/sheetsService';
+// import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
 
-	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
+// type SheetMonth = {
+// 	name: string;
+// 	id: string;
+// 	order: number;
+// };
 
-	const onOpenSetAmountModal = useSetInitialAmountModal((state) => state.onOpen);
+// type Year = {
+// 	order: number;
+// 	sheets: SheetMonth[];
+// };
 
-	const isDark = useIsDarkTheme();
+interface DesktopSidebarProps {
+	isDark: boolean;
+	currentUser: User | undefined;
+	isLoading: boolean;
+	isSelectOpen: boolean;
+	isInitialAmountSet: boolean;
+	onOpenSetAmountModal: () => void;
+	sheets: Year[];
+	onOpenSheetModal: () => void;
+	setIsSelectOpen: Dispatch<SetStateAction<boolean>>;
+}
 
-	const [sheets, setSheets] = useState<Year[]>([]);
-	const [isInitialAmountSet, setIsInitialAmountSet] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isSelectOpen, setIsSelectOpen] = useState(false);
+export const DesktopSidebar = ({
+	isDark,
+	currentUser,
+	isLoading,
+	isSelectOpen,
+	isInitialAmountSet,
+	onOpenSetAmountModal,
+	sheets,
+	onOpenSheetModal,
+	setIsSelectOpen,
+}: DesktopSidebarProps) => {
+	// const currentUser = useCurrentUser();
 
-	useEffect(() => {
-		const fetchSheets = async () => {
-			const res = await sheetsService.getUserSheetsAndIsInitialAmountSet();
+	// const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
-			if (res.error) {
-				toast.error('Algo deu errado!');
-				return;
-			}
+	// const onOpenSetAmountModal = useSetInitialAmountModal((state) => state.onOpen);
 
-			const orderedYears = orderYearsForSelectSheet(res.sheets);
+	// const isDark = useIsDarkTheme();
 
-			setIsInitialAmountSet(res.isInitialAmountSet);
-			setSheets(orderedYears);
+	// const [sheets, setSheets] = useState<Year[]>([]);
+	// const [isInitialAmountSet, setIsInitialAmountSet] = useState(false);
+	// const [isLoading, setIsLoading] = useState(true);
+	// const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-			setIsLoading(false);
-		};
-		fetchSheets();
-	}, []);
+	// useEffect(() => {
+	// 	const fetchSheets = async () => {
+	// 		const res = await sheetsService.getUserSheetsAndIsInitialAmountSet();
+
+	// 		if (res.error) {
+	// 			toast.error('Algo deu errado!');
+	// 			return;
+	// 		}
+
+	// 		const orderedYears = orderYearsForSelectSheet(res.sheets);
+
+	// 		setIsInitialAmountSet(res.isInitialAmountSet);
+	// 		setSheets(orderedYears);
+
+	// 		setIsLoading(false);
+	// 	};
+	// 	fetchSheets();
+	// }, []);
 
 	return (
 		<aside

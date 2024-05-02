@@ -1,13 +1,16 @@
 import { Logo } from '@/components/Logo';
-import { MobileSidebar } from './MobileSidebar';
+
 import { ThemeSwitch } from './ThemeSwitch';
 import { UserButton } from './UserButton';
+import { Sidebar } from './Sidebar';
 
 export const Header = ({ user }: { user: any }) => {
 	return (
 		<header className='p-4 w-full flex items-center justify-between'>
 			<div className='flex items-center'>
-				<MobileSidebar />
+				<div className='block lg:hidden'>
+					<Sidebar />
+				</div>
 				<Logo
 					hideFully
 					className='w-fit'
