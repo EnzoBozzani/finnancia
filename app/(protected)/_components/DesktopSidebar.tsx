@@ -23,26 +23,6 @@ import { cn } from '@/lib/utils';
 
 import { Year } from './Sidebar';
 
-// import { useEffect, useState } from 'react';
-// import { toast } from 'sonner';
-
-// import { useIsDarkTheme } from '@/hooks/useDarkTheme';
-// import { useCurrentUser } from '@/hooks/useCurrentUser';
-// import { useAddSheetModal } from '@/hooks/useAddSheetModal';
-// import { sheetsService } from '@/services/sheetsService';
-// import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
-
-// type SheetMonth = {
-// 	name: string;
-// 	id: string;
-// 	order: number;
-// };
-
-// type Year = {
-// 	order: number;
-// 	sheets: SheetMonth[];
-// };
-
 interface DesktopSidebarProps {
 	isDark: boolean;
 	currentUser: User | undefined;
@@ -66,38 +46,6 @@ export const DesktopSidebar = ({
 	onOpenSheetModal,
 	setIsSelectOpen,
 }: DesktopSidebarProps) => {
-	// const currentUser = useCurrentUser();
-
-	// const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
-
-	// const onOpenSetAmountModal = useSetInitialAmountModal((state) => state.onOpen);
-
-	// const isDark = useIsDarkTheme();
-
-	// const [sheets, setSheets] = useState<Year[]>([]);
-	// const [isInitialAmountSet, setIsInitialAmountSet] = useState(false);
-	// const [isLoading, setIsLoading] = useState(true);
-	// const [isSelectOpen, setIsSelectOpen] = useState(false);
-
-	// useEffect(() => {
-	// 	const fetchSheets = async () => {
-	// 		const res = await sheetsService.getUserSheetsAndIsInitialAmountSet();
-
-	// 		if (res.error) {
-	// 			toast.error('Algo deu errado!');
-	// 			return;
-	// 		}
-
-	// 		const orderedYears = orderYearsForSelectSheet(res.sheets);
-
-	// 		setIsInitialAmountSet(res.isInitialAmountSet);
-	// 		setSheets(orderedYears);
-
-	// 		setIsLoading(false);
-	// 	};
-	// 	fetchSheets();
-	// }, []);
-
 	return (
 		<aside
 			className={cn(
