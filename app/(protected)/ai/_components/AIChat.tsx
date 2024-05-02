@@ -79,7 +79,7 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 	}, [messages]);
 
 	return (
-		<section className={cn('mx-auto w-[95%] rounded-xl p-6')}>
+		<section className={cn('mx-auto w-[95%] rounded-xl p-2 sm:p-6')}>
 			<h1 className='bg-gradient-to-r from-green-700 via-green-500 to-green-400 inline-block text-transparent bg-clip-text font-bold text-4xl'>
 				Bem vindo, {user.name?.split(' ')[0]}!
 			</h1>

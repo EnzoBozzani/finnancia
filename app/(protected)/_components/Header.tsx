@@ -15,7 +15,9 @@ export const Header = ({ user }: { user: any }) => {
 				/>
 			</div>
 			<div className='flex items-center gap-x-4'>
-				<ThemeSwitch />
+				<div className='hidden sm:block'>
+					<ThemeSwitch />
+				</div>
 				<UserButton user={user} />
 			</div>
 		</header>
