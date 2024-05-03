@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { currentUser } from '@/lib/auth';
 import { AIPromptSchema } from '@/schemas/AIPromptSchema';
-import { chatWithAI, generateResponseFromPrompt } from '@/lib/ai';
+import { chatWithAI } from '@/lib/ai';
 import { db } from '@/lib/db';
 
 export async function POST(req: NextRequest) {
@@ -61,7 +61,6 @@ export async function POST(req: NextRequest) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.log(error);
 		return NextResponse.json({
 			error: 'Algo deu errado!',
 		});

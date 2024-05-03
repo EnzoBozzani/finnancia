@@ -19,6 +19,37 @@ Finnancia is a platform that empowers users to efficiently manage their monthly 
 
 With Finnancia, you have the power to manage your finances in a smarter and more effective way.
 
+## API
+
+### /api/ai
+
+-   **POST => body: { prompt: string }**<br>
+    Sends prompt to AI model, returning user message and model response
+
+### /api/finances/[id]
+
+-   **DELETE**
+-   **PUT**
+
+### /api/sheets
+
+-   **GET**
+-   **POST**
+
+### /api/sheets/[id]
+
+-   **DELETE**
+-   **POST**
+
+### /api/sheets/[id]/finance
+
+-   **POST**
+-   **GET**
+
+### /user/initialAmount
+
+-   **POST**
+
 ## Database
 
-![image.png](./assets/image.png)
+![db.png](./assets/db.png)
