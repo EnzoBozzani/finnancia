@@ -10,9 +10,9 @@ import { useAddSheetModal } from '@/hooks/useAddSheetModal';
 import { orderYearsForSelectSheet } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
+
 import { DesktopSidebar } from './DesktopSidebar';
 import { MobileSidebar } from './MobileSidebar';
-import { useScreenWidth } from '@/hooks/useScreenWidth';
 
 type SheetMonth = {
 	name: string;
@@ -31,8 +31,6 @@ export const Sidebar = () => {
 	const isOpen = useSidebar((state) => state.isOpen);
 	const onOpen = useSidebar((state) => state.onOpen);
 	const onClose = useSidebar((state) => state.onClose);
-
-	const width = useScreenWidth();
 
 	const onOpenSheetModal = useAddSheetModal((state) => state.onOpen);
 
@@ -85,34 +83,31 @@ export const Sidebar = () => {
 
 	return (
 		<>
-			{width >= 1024 ? (
-				<DesktopSidebar
-					currentUser={currentUser}
-					isDark={isDark}
-					isInitialAmountSet={isInitialAmountSet}
-					isLoading={isLoading}
-					isSelectOpen={isSelectOpen}
-					onOpenSetAmountModal={onOpenSetAmountModal}
-					sheets={sheets}
-					onOpenSheetModal={onOpenSheetModal}
-					setIsSelectOpen={setIsSelectOpen}
-				/>
-			) : (
-				<MobileSidebar
-					currentUser={currentUser}
-					isDark={isDark}
-					isInitialAmountSet={isInitialAmountSet}
-					isLoading={isLoading}
-					isSelectOpen={isSelectOpen}
-					isOpen={isOpen}
-					onOpen={onOpen}
-					onClose={onClose}
-					onOpenSetAmountModal={onOpenSetAmountModal}
-					sheets={sheets}
-					onOpenSheetModal={onOpenSheetModal}
-					setIsSelectOpen={setIsSelectOpen}
-				/>
-			)}
+			<DesktopSidebar
+				currentUser={currentUser}
+				isDark={isDark}
+				isInitialAmountSet={isInitialAmountSet}
+				isLoading={isLoading}
+				isSelectOpen={isSelectOpen}
+				onOpenSetAmountModal={onOpenSetAmountModal}
+				sheets={sheets}
+				onOpenSheetModal={onOpenSheetModal}
+				setIsSelectOpen={setIsSelectOpen}
+			/>
+			<MobileSidebar
+				currentUser={currentUser}
+				isDark={isDark}
+				isInitialAmountSet={isInitialAmountSet}
+				isLoading={isLoading}
+				isSelectOpen={isSelectOpen}
+				isOpen={isOpen}
+				onOpen={onOpen}
+				onClose={onClose}
+				onOpenSetAmountModal={onOpenSetAmountModal}
+				sheets={sheets}
+				onOpenSheetModal={onOpenSheetModal}
+				setIsSelectOpen={setIsSelectOpen}
+			/>
 		</>
 	);
 };
