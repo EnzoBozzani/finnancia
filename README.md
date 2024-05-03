@@ -1,23 +1,9 @@
-# Finnancia - Control your finances
+# Finnancia - Controle suas Finanças
 
-### Status: Development
+### Status: Em Desenvolvimento
 
-Finnancia is a platform that empowers users to efficiently manage their monthly finances using customizable sheets. With Finnancia, users can:
-
--   Add recurring monthly finances that will be automatically reflected across all sheets.
--   Record individual finances in detail.
--   View and manage multiple sheets quickly and simply.
--   Export sheet data in XLSX format
--   View analysis of their finances
-
-**Highlighted Features:**
-
--   Centralized Control: Add monthly finances once and see them automatically distributed across all your sheets.
--   Flexibility: Record individual finances for a more detailed and accurate view.
--   Intuitive Navigation: Access different sheets quickly and uncomplicatedly.
--   Finnancial Facilitator: Simplify financial control like never before.
-
-With Finnancia, you have the power to manage your finances in a smarter and more effective way.
+Para mais informações, acesse:
+[finnancia.com](https://finnancia.com)
 
 ## API
 
@@ -130,73 +116,87 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
-  /api/sheets/[id]:
+  /api/sheets/{id}:
     get:
       tags:
         - sheets
-      summary:
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
+      summary: Get sheets with it's finances ordered by date
+      description: Get sheets with it's finances ordered by date
       parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: false
-          explode: true
+        - name: id
+          in: path
+          description: Sheet ID
+          required: true
           schema:
             type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid status value
+                $ref: '#/components/schemas/SheetWithFinances'
+        '404':
+          description: Sheet not found
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
       security:
         - petstore_auth:
             - write:pets
             - read:pets
-  /pet/findByTags:
-    get:
+    delete:
       tags:
-        - pet
-      summary: Finds Pets by tags
-      description: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-      operationId: findPetsByTags
+        - sheets
+      summary: Deletes sheet
+      description: Get sheets with it's finances ordered by date
       parameters:
-        - name: tags
-          in: query
-          description: Tags to filter by
-          required: false
-          explode: true
+        - name: id
+          in: path
+          description: Sheet ID
+          required: true
           schema:
-            type: array
-            items:
-              type: string
+            type: string
       responses:
         '200':
-          description: successful operation
+          description: Planilha deletada com sucesso!
+        '404':
+          description: Sheet not found
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error
+  /api/sheets/{id}/finance:
+    get:
+      tags:
+        - sheets
+      summary: Get paginated finances
+      description: Get 8 paginated and filtered finances, ordered by order
+      parameters:
+        - name: id
+          in: path
+          description: Sheet ID
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: true
+          schema:
+            type: string
+        - name: title
+          in: query
+          description: Title to filter by
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/xml:
               schema:
                 type: array
                 items:
@@ -618,6 +618,76 @@ paths:
           description: User not found
 components:
   schemas:
+    Finance:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'xxxxxxxxxxxxxxxx'
+        title:
+          type: string
+          example: 'Ida ao mercado'
+        amount:
+          type: number
+          example: 345.60
+        date:
+          type: string
+          example: '01/01/2000'
+        sheetId:
+          type: string
+          example: 'xxxxxxxxxxxxxxxx'
+        order:
+          type: integer
+          example: 1
+        type:
+          type: string
+          enum:
+            - EXPENSE
+            - PROFIT
+    SheetWithFinances:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'xxxxxxxxxxxxxxxx'
+        name:
+          type: string
+          example: 'Março/2023'
+        userId:
+          type: string
+          example: 'xxxxxxxxxxxxxxxx'
+        totalAmount:
+          type: number
+          example: 1204.5
+        order:
+          type: integer
+          example: 3
+        financesCount:
+          type: integer
+        finances:
+          type: array
+          items:
+            $ref: '#/components/schemas/Finance'
+    Sheet:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'xxxxxxxxxxxxxxxx'
+        name:
+          type: string
+          example: 'Março/2023'
+        userId:
+          type: string
+          example: 'xxxxxxxxxxxxxxxx'
+        totalAmount:
+          type: number
+          example: 1204.5
+        order:
+          type: integer
+          example: 3
+        financesCount:
+          type: integer
     SheetCreatedWithSuccess:
       type: object
       properties:
@@ -643,8 +713,6 @@ components:
       properties:
         sheets:
           type: array
-          items:
-            $ref: '#/components/schemas/Address'
           example: []
         isInitialAmountSet:
           type: boolean
