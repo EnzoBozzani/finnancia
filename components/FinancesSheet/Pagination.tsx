@@ -11,9 +11,16 @@ interface PaginationProps {
 	selectedPage: number;
 	setSelectedPage: Dispatch<SetStateAction<number>>;
 	isMobile?: boolean;
+	isLoading: boolean;
 }
 
-export const Pagination = ({ numberOfGroups, selectedPage, setSelectedPage, isMobile = false }: PaginationProps) => {
+export const Pagination = ({
+	numberOfGroups,
+	selectedPage,
+	setSelectedPage,
+	isMobile = false,
+	isLoading,
+}: PaginationProps) => {
 	const isDark = useIsDarkTheme();
 
 	if (isMobile) {
@@ -27,7 +34,7 @@ export const Pagination = ({ numberOfGroups, selectedPage, setSelectedPage, isMo
 				<ChevronLeftIcon
 					className={cn(
 						'w-8 h-8 border rounded-full',
-						selectedPage === 0
+						selectedPage === 0 || isLoading
 							? cn(
 									'cursor-default',
 									isDark
@@ -36,7 +43,11 @@ export const Pagination = ({ numberOfGroups, selectedPage, setSelectedPage, isMo
 							  )
 							: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
 					)}
-					onClick={() => setSelectedPage((current) => (current === 0 ? current : current - 1))}
+					onClick={() => {
+						if (!isLoading) {
+							setSelectedPage((current) => (current === 0 ? current : current - 1));
+						}
+					}}
 				/>
 				<div>
 					<p className='p-4 text-2xl font-bold'>{selectedPage + 1}</p>
@@ -44,7 +55,7 @@ export const Pagination = ({ numberOfGroups, selectedPage, setSelectedPage, isMo
 				<ChevronRightIcon
 					className={cn(
 						'w-8 h-8 border rounded-full',
-						selectedPage === numberOfGroups - 1 || numberOfGroups === 0
+						selectedPage === numberOfGroups - 1 || numberOfGroups === 0 || isLoading
 							? cn(
 									'cursor-default',
 									isDark
@@ -53,11 +64,13 @@ export const Pagination = ({ numberOfGroups, selectedPage, setSelectedPage, isMo
 							  )
 							: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
 					)}
-					onClick={() =>
-						setSelectedPage((current) =>
-							current === numberOfGroups - 1 || numberOfGroups === 0 ? current : current + 1
-						)
-					}
+					onClick={() => {
+						if (!isLoading) {
+							setSelectedPage((current) =>
+								current === numberOfGroups - 1 || numberOfGroups === 0 ? current : current + 1
+							);
+						}
+					}}
 				/>
 			</div>
 		);
@@ -68,14 +81,18 @@ export const Pagination = ({ numberOfGroups, selectedPage, setSelectedPage, isMo
 			<ChevronLeftIcon
 				className={cn(
 					'w-10 h-10 border rounded-full',
-					selectedPage === 0
+					selectedPage === 0 || isLoading
 						? cn(
 								'cursor-default',
 								isDark ? 'text-neutral-700 border-neutral-700' : 'text-neutral-300 border-neutral-300'
 						  )
 						: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
 				)}
-				onClick={() => setSelectedPage((current) => (current === 0 ? current : current - 1))}
+				onClick={() => {
+					if (!isLoading) {
+						setSelectedPage((current) => (current === 0 ? current : current - 1));
+					}
+				}}
 			/>
 			<div>
 				<p className='p-4 text-3xl font-bold'>{selectedPage + 1}</p>
@@ -83,18 +100,20 @@ export const Pagination = ({ numberOfGroups, selectedPage, setSelectedPage, isMo
 			<ChevronRightIcon
 				className={cn(
 					'w-10 h-10 border rounded-full',
-					selectedPage === numberOfGroups - 1 || numberOfGroups === 0
+					selectedPage === numberOfGroups - 1 || numberOfGroups === 0 || isLoading
 						? cn(
 								'cursor-default',
 								isDark ? 'text-neutral-700 border-neutral-700' : 'text-neutral-300 border-neutral-300'
 						  )
 						: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
 				)}
-				onClick={() =>
-					setSelectedPage((current) =>
-						current === numberOfGroups - 1 || numberOfGroups === 0 ? current : current + 1
-					)
-				}
+				onClick={() => {
+					if (!isLoading) {
+						setSelectedPage((current) =>
+							current === numberOfGroups - 1 || numberOfGroups === 0 ? current : current + 1
+						);
+					}
+				}}
 			/>
 		</div>
 	);

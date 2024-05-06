@@ -4,7 +4,7 @@ import Markdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import TextareaAutosize from 'react-textarea-autosize';
 import { IoSend } from 'react-icons/io5';
-import { useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Message } from '@prisma/client';
 import { useFormStatus } from 'react-dom';
@@ -25,23 +25,38 @@ interface AIChatProps {
 	oldMessages: Message[];
 }
 
-const SubmitButton = () => {
+const FormBody = ({ promptRef }: { promptRef: RefObject<HTMLTextAreaElement> }) => {
 	const { pending } = useFormStatus();
 
 	const isDark = useIsDarkTheme();
 
 	return (
-		<button
-			className={cn('-ms-12 z-50', isDark ? 'text-neutral-100' : 'text-black')}
-			type='submit'
-			disabled={pending}
-		>
-			{!pending ? (
-				<IoSend className='w-6 h-6 hover:text-green-600' />
-			) : (
-				<VscLoading className='w-8 h-8 animate-spin mr-2' />
-			)}
-		</button>
+		<>
+			<TextareaAutosize
+				id='text'
+				name='text'
+				placeholder='Envie sua pergunta'
+				className={cn(
+					'w-full focus:outline-none resize-none text-base md:text-lg rounded-xl flex items-center p-4 pe-12 border border-transparent',
+					isDark
+						? 'bg-neutral-900 text-white focus:bg-neutral-800 focus:border-green-300'
+						: 'bg-neutral-100 focus:bg-neutral-200 focus:border-green-500 text-black'
+				)}
+				ref={promptRef}
+				disabled={pending}
+			/>
+			<button
+				className={cn('-ms-12 z-50', isDark ? 'text-neutral-100' : 'text-black')}
+				type='submit'
+				disabled={pending}
+			>
+				{!pending ? (
+					<IoSend className='w-6 h-6 hover:text-green-600' />
+				) : (
+					<VscLoading className='w-8 h-8 animate-spin mr-2' />
+				)}
+			</button>
+		</>
 	);
 };
 
@@ -65,8 +80,6 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 			toast.error('Ocorreu um erro ao enviar a mensagem. Tente novamente mais tarde.');
 			return;
 		}
-
-		console.log(res.userMessage, res.modelMessage);
 
 		setMessages((current) => [...current, res.userMessage, res.modelMessage]);
 	};
@@ -136,20 +149,13 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 			<form
 				action={onSubmit}
 				className='flex items-center mb-4 mx-auto'
+				onKeyDown={(ev) => {
+					if (ev.key === 'Enter' && !ev.shiftKey) {
+						ev.currentTarget.requestSubmit();
+					}
+				}}
 			>
-				<TextareaAutosize
-					id='text'
-					name='text'
-					placeholder='Envie sua pergunta'
-					className={cn(
-						'w-full focus:outline-none resize-none text-base md:text-lg rounded-xl flex items-center p-4 pe-12 border border-transparent',
-						isDark
-							? 'bg-neutral-900 text-white focus:bg-neutral-800 focus:border-green-300'
-							: 'bg-neutral-100 focus:bg-neutral-200 focus:border-green-500 text-black'
-					)}
-					ref={promptRef}
-				/>
-				<SubmitButton />
+				<FormBody promptRef={promptRef} />
 			</form>
 			<p className={cn('text-xs md:text-sm text-center', isDark ? 'text-neutral-600' : 'text-neutral-400')}>
 				A Nanci é construída sobre o Gemini, o qual pode apresentar informações imprecisas, inclusive sobre

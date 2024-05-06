@@ -239,6 +239,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 				selectedPage={selectedPage}
 				setSelectedPage={setSelectedPage}
 				isMobile
+				isLoading={isLoading}
 			/>
 		</section>
 	);

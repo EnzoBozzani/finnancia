@@ -298,6 +298,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 				numberOfGroups={Math.ceil(financesData.financesCount / 8)}
 				selectedPage={selectedPage}
 				setSelectedPage={setSelectedPage}
+				isLoading={isLoading}
 			/>
 		</div>
 	);
