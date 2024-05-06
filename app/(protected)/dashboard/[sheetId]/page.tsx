@@ -6,7 +6,7 @@ import { FinancesSheet } from '@/components/FinancesSheet';
 import { FinancesMobileTable } from '@/components/FinancesMobileTable';
 
 import { AddFinanceButton } from './_components/AddFinanceButton';
-import { ExportXLSX } from './_components/ExportXLSX';
+import { ExportReport } from './_components/ExportReport';
 
 export async function generateMetadata({ params }: { params: { sheetId: string } }) {
 	const user = await currentUser();
@@ -46,7 +46,7 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 			<FinancesSheet sheetData={sheetData} />
 			<FinancesMobileTable sheetData={sheetData} />
 			<footer className='lg:hidden mx-auto w-[95%] flex items-center justify-start lg:justify-center pb-8'>
-				<ExportXLSX sheetId={sheetData.id} />
+				<ExportReport sheetId={sheetData.id} />
 			</footer>
 			<AddFinanceButton sheetMonth={sheetData.name} />
 		</main>

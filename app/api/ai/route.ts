@@ -61,8 +61,11 @@ export async function POST(req: NextRequest) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		return NextResponse.json({
-			error: 'Algo deu errado!',
-		});
+		return NextResponse.json(
+			{
+				error: 'Algo deu errado!',
+			},
+			{ status: 500 }
+		);
 	}
 }
