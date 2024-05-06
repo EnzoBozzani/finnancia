@@ -253,7 +253,8 @@ export function dayExistsInMonth(financeDate: string | undefined) {
 	return true;
 }
 
-export function returnFormattedStringBasedOnDate(createdAt: Date) {
+export function returnFormattedStringBasedOnDate(created: Date) {
+	const createdAt = new Date(created);
 	const day = createdAt.getDate();
 	const month = createdAt.getMonth() + 1;
 	const year = createdAt.getFullYear();

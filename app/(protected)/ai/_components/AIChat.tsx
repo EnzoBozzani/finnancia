@@ -67,6 +67,8 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 			return;
 		}
 
+		console.log(res.userMessage, res.modelMessage);
+
 		setMessages((current) => [...current, res.userMessage, res.modelMessage]);
 	};
 
