@@ -9,8 +9,7 @@ Para mais informações, acesse:
 
 ### /api/ai
 
--   **POST => body: { prompt: string }**<br>
-    Sends prompt to AI model, returning user message and model response
+-   **POST**
 
 ### /api/finances/[id]
 
@@ -39,9 +38,3 @@ Para mais informações, acesse:
 ## Database
 
 ![db.png](./assets/db.png)
-
-### Soon (in development):
-
-Open: [https://editor.swagger.io](https://editor.swagger.io)
-
-Paste this in the editor:

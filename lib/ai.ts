@@ -1,13 +1,18 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Message } from '@prisma/client';
+import { Finance, Message } from '@prisma/client';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
-export async function generateResponseFromPrompt(inputText: string) {
+export async function generateReportFromFinances(finances: Finance[]) {
 	const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-	const prompt = `Atenção! Se a pergunta que for feita a seguir não for sobre temas relacionados a controle financeiro, auxílio na organização da vida financeira, ou algo similar, você deve responder dizendo que apenas responderá questões relacionadas ao controle de finanças. Se a pergunta for sobre o controle de finanças, responda-a e se apresente como a Nanci, a inteligência artificial do Finnancia! Pergunta: ${inputText}`;
-
+	const prompt = `Gere uma análise de finanças mensais com base no conteúdo json (contendo as finanças) que será passado.
+	A análise deve ser profunda, ou seja, observe todas as finanças e procure os que se enquadrem nas mesmas categorias.
+	Por exemplo, na sua análise, some todas as finanças que envolvem gastos com alimentação, e diga o total gasto com alimentação.
+	Com base nesse exemplo, devem ser gerados análises de todas as possíves categorias. Essa análise será fornecida para um usuário, 
+	portanto não cite que é um conteúdo JSON, caso precise diga que o conteúdo é sobre as finanças. Segue o conteúdo JSON: ${JSON.stringify(
+		finances
+	)}`;
 	const result = await model.generateContent(prompt);
 	const response = await result.response;
 	const text = response.text();

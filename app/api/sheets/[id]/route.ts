@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { getUserTotalAmount } from '@/data/user';
+import { generateReportFromFinances } from '@/lib/ai';
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
 	const user = await currentUser();
@@ -98,6 +99,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 				{ status: 404 }
 			);
 		}
+
+		const modelReport = await generateReportFromFinances(sheet.finances);
+
+		console.log(modelReport);
 
 		return NextResponse.json(
 			{
