@@ -4,7 +4,7 @@ import { AIChat } from './_components/AIChat';
 import { db } from '@/lib/db';
 
 export const metadata: Metadata = {
-	title: 'Painel',
+	title: 'Nanci',
 };
 
 const AIPage = async () => {

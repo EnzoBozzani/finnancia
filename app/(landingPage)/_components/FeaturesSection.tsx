@@ -64,9 +64,9 @@ export const FeaturesSection = () => {
 						<FeatureArticle.Icon>
 							<SiCircuitverse className='w-10 h-10' />
 						</FeatureArticle.Icon>
-						<FeatureArticle.Title>Gestão inteligente com a FinnancIA</FeatureArticle.Title>
+						<FeatureArticle.Title>Gestão inteligente com a Nanci</FeatureArticle.Title>
 						<FeatureArticle.Text>
-							Utilizando todo o poder da FinnancIA, sua inteligência artificial especializada no controle
+							Utilizando todo o poder da Nanci, sua inteligência artificial especializada no controle
 							financeiro, você poderá receber as mais diversas análises personalizadas sobre suas
 							finanças, além de interagir com a IA sobre qualquer assunto financeiro de sua vontade.
 						</FeatureArticle.Text>

@@ -49,10 +49,10 @@ export const FAQSection = () => {
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 					<FAQAccordion.Item value='item-5'>
-						<FAQAccordion.Trigger>Como conversar com a FinnancIA?</FAQAccordion.Trigger>
+						<FAQAccordion.Trigger>Como conversar com a Nanci?</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
 							Para bater um papo sobre controle financeiro com a IA do Finnancia, basta clicar no ícone
-							"FinnancIA" na barra lateral, a qual irá te redirecionar para o chat!
+							"Nanci" na barra lateral, a qual irá te redirecionar para o chat!
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 					<FAQAccordion.Item value='item-6'>
@@ -61,8 +61,8 @@ export const FAQSection = () => {
 							de IA em cima dessas finanças?
 						</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
-							Na página da FinnancIA, basta descer até o final da página, selecionar a planilha que deseja
-							e esperar a IA gerar o relatório!
+							Na página da Nanci, basta descer até o final da página, selecionar a planilha que deseja e
+							esperar a IA gerar o relatório!
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 				</FAQAccordion>

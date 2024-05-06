@@ -12,7 +12,6 @@ import { VscLoading } from 'react-icons/vsc';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn, returnFormattedStringBasedOnDate } from '@/lib/utils';
-import { Skeleton } from '@/components/ui/skeleton';
 import { AIService } from '@/services/AIService';
 
 interface AIChatProps {
@@ -86,7 +85,7 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 				Bem vindo, {user.name?.split(' ')[0]}!
 			</h1>
 			<p className={cn('w-full sm:w-[70%] text-xl text-justify text-neutral-500 mb-12')}>
-				Eu sou a FinnancIA, IA especializada em gerenciamento financeiro! Como posso te ajudar?
+				Eu sou a Nanci, IA especializada em gerenciamento financeiro! Como posso te ajudar?
 			</p>
 			{messages.length === 0 || !messages ? (
 				<div
@@ -124,7 +123,7 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 							key={message.id}
 							rehypePlugins={[rehypeRaw]}
 						>
-							{(message.role === 'MODEL' ? `**FinnancIA**  ` : `**${user.name?.split(' ')[0]}**  `) +
+							{(message.role === 'MODEL' ? `**Nanci**  ` : `**${user.name?.split(' ')[0]}**  `) +
 								`<small style="color:grey">${returnFormattedStringBasedOnDate(
 									message.createdAt
 								)}</small><br>` +
@@ -153,7 +152,7 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 				<SubmitButton />
 			</form>
 			<p className={cn('text-xs md:text-sm text-center', isDark ? 'text-neutral-600' : 'text-neutral-400')}>
-				A FinnancIA é construída sobre o Gemini, o qual pode apresentar informações imprecisas, inclusive sobre
+				A Nanci é construída sobre o Gemini, o qual pode apresentar informações imprecisas, inclusive sobre
 				pessoas. Por isso, cheque as respostas.
 			</p>
 		</section>

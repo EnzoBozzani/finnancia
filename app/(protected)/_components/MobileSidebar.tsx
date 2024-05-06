@@ -89,7 +89,7 @@ export const MobileSidebar = ({
 						</SheetTitle>
 						<SheetDescription className='text-xs'>
 							Faça o gerenciamento de suas finanças aqui! Navegue entre planilhas, visite o painel, veja
-							os planos, altere configurações e interaja com a FinnancIA.
+							os planos, altere configurações e interaja com a Nanci.
 						</SheetDescription>
 					</SheetHeader>
 					<div className='mt-6'>
@@ -198,7 +198,7 @@ export const MobileSidebar = ({
 									)}
 								>
 									<SiCircuitverse className='w-8 h-8 mr-2' />
-									FinnancIA
+									Nanci - IA
 								</div>
 							</>
 						) : (
@@ -259,7 +259,7 @@ export const MobileSidebar = ({
 									)}
 								>
 									<SiCircuitverse className='w-8 h-8 mr-2' />
-									FinnancIA
+									Nanci - IA
 								</Link>
 							</>
 						)}

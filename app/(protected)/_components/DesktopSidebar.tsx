@@ -59,7 +59,7 @@ export const DesktopSidebar = ({
 				</h1>
 				<p className='text-justify'>
 					Faça o gerenciamento de suas finanças aqui! Navegue entre planilhas, visite o painel, veja os
-					planos, altere configurações e interaja com a FinnancIA.
+					planos, altere configurações e interaja com a Nanci.
 				</p>
 			</header>
 			<div className='mt-12'>
@@ -163,7 +163,7 @@ export const DesktopSidebar = ({
 							)}
 						>
 							<SiCircuitverse className='w-8 h-8 mr-2' />
-							FinnancIA
+							Nanci - IA
 						</div>
 					</>
 				) : (
@@ -219,7 +219,7 @@ export const DesktopSidebar = ({
 							)}
 						>
 							<SiCircuitverse className='w-8 h-8 mr-2' />
-							FinnancIA
+							Nanci - IA
 						</Link>
 					</>
 				)}
