@@ -10,7 +10,8 @@ export async function generateReportFromFinances(finances: Finance[]) {
 	A análise deve ser profunda, ou seja, observe todas as finanças e procure os que se enquadrem nas mesmas categorias.
 	Por exemplo, na sua análise, some todas as finanças que envolvem gastos com alimentação, e diga o total gasto com alimentação.
 	Com base nesse exemplo, devem ser gerados análises de todas as possíves categorias. Essa análise será fornecida para um usuário, 
-	portanto não cite que é um conteúdo JSON, caso precise diga que o conteúdo é sobre as finanças. Segue o conteúdo JSON: ${JSON.stringify(
+	portanto não cite que é um conteúdo JSON, caso precise diga que o conteúdo é sobre as finanças. Sua resposta deve ser gerado
+	em formato de texto puro e não Markdown, ou seja, NÃO GERE A RESPOSTA NO FORMATO MARKDOWN!!!. Segue o conteúdo JSON: ${JSON.stringify(
 		finances
 	)}`;
 	const result = await model.generateContent(prompt);
