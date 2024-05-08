@@ -20,9 +20,25 @@ export async function generateReportFromFinances(finances: Finance[], totalAmoun
 	const response = await result.response;
 	const text = response.text();
 
-	//fazer a troca do markdown por texto aqui
+	const textArr = text.split('');
 
-	return text;
+	for (let i = 0; i < textArr.length; i++) {
+		if (textArr[i] === '*' && textArr[i + 1] === ' ' && textArr[i + 2] === '*' && textArr[i + 3] === '*') {
+			textArr[i] = '\n';
+			textArr[i + 1] = '';
+			textArr[i + 2] = '';
+			textArr[i + 3] = '';
+		}
+		if (textArr[i] === '*' && textArr[i + 1] === '*') {
+			textArr[i] = '';
+			textArr[i + 1] = '';
+		}
+		if (textArr[i] === '*') {
+			textArr[i] = ' - ';
+		}
+	}
+
+	return textArr.join('');
 }
 
 export async function chatWithAI(message: string, oldMessages: Message[], username: string) {

@@ -12,7 +12,6 @@ import { cn } from '@/lib/utils';
 import { AIService } from '@/services/AIService';
 
 import { Report } from './Report';
-import { useState } from 'react';
 
 interface ExportReportProps {
 	sheetId: string;
@@ -44,14 +43,7 @@ export const SubmitButton = () => {
 };
 
 export const ExportReport = ({ sheetId }: ExportReportProps) => {
-	//tirar todos os states e o import
-	const [t, setT] = useState(false);
-	const [s, setS] = useState<any>();
-	const [m, setM] = useState<any>();
-
 	const onDownload = async () => {
-		//apagar essa
-		setT(true);
 		const res = await AIService.getReport(sheetId);
 
 		if (res.error) {
@@ -59,31 +51,17 @@ export const ExportReport = ({ sheetId }: ExportReportProps) => {
 			return;
 		}
 
-		//apagar essas duas e descomentar as duas abaixo delas
-		setS(res.sheet);
-		setM(res.report);
-
 		//@ts-ignore
-		// const blob = await pdf(Report({ sheetData: res.sheet, modelReport: res.report })).toBlob();
+		const blob = await pdf(Report({ sheetData: res.sheet, modelReport: res.report })).toBlob();
 
-		// saveAs(blob, `${res.sheet.name.replace('/', '-')}.pdf`);
+		saveAs(blob, `${res.sheet.name.replace('/', '-')}.pdf`);
 
-		//apagar
-		setT(false);
+		toast.success('Relatório exportado com sucesso!');
 	};
 
 	return (
 		<form action={onDownload}>
 			<SubmitButton />
-			{/* apagar */}
-			{t || !s || !s ? null : (
-				<PDFViewer>
-					<Report
-						sheetData={s}
-						modelReport={m}
-					/>
-				</PDFViewer>
-			)}
 		</form>
 	);
 };
