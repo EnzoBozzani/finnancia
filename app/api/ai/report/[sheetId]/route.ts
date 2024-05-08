@@ -39,7 +39,7 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 			);
 		}
 
-		const modelReport = await generateReportFromFinances(sheet.finances);
+		const modelReport = await generateReportFromFinances(sheet.finances, sheet.totalAmount);
 
 		return NextResponse.json(
 			{

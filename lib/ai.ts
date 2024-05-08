@@ -3,20 +3,24 @@ import { Finance, Message } from '@prisma/client';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
-export async function generateReportFromFinances(finances: Finance[]) {
+export async function generateReportFromFinances(finances: Finance[], totalAmount: number) {
 	const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-	const prompt = `Gere uma análise de finanças mensais com base no conteúdo json (contendo as finanças) que será passado.
+	const prompt = `Sua resposta deve ser gerada em texto simples\n
+	---\n
+	Gere uma análise finanças mensais com base no conteúdo json (contendo as finanças) que será passado.
 	A análise deve ser profunda, ou seja, observe todas as finanças e procure os que se enquadrem nas mesmas categorias.
 	Por exemplo, na sua análise, some todas as finanças que envolvem gastos com alimentação, e diga o total gasto com alimentação.
 	Com base nesse exemplo, devem ser gerados análises de todas as possíves categorias. Essa análise será fornecida para um usuário, 
-	portanto não cite que é um conteúdo JSON, caso precise diga que o conteúdo é sobre as finanças. Sua resposta deve ser gerado
-	em formato de texto puro e não Markdown, ou seja, NÃO GERE A RESPOSTA NO FORMATO MARKDOWN!!!. Segue o conteúdo JSON: ${JSON.stringify(
-		finances
-	)}`;
+	portanto não cite que é um conteúdo JSON, caso precise diga que o conteúdo é sobre as finanças.\n
+	---\n
+	Segue o conteúdo JSON: ${JSON.stringify({ finances, totalAmount })}`;
+
 	const result = await model.generateContent(prompt);
 	const response = await result.response;
 	const text = response.text();
+
+	//fazer a troca do markdown por texto aqui
 
 	return text;
 }
