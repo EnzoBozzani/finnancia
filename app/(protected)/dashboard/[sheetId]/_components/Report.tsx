@@ -1,10 +1,9 @@
 'use client';
 
 import { Finance, Sheet } from '@prisma/client';
-import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
 import { currencyFormat } from '@/lib/utils';
-import { Dispatch, SetStateAction } from 'react';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -15,17 +14,33 @@ interface ReportProps {
 	modelReport: string;
 }
 
+Font.register({
+	family: 'Montserrat',
+	src: '/Montserrat/static/Montserrat-Medium.ttf',
+	fontWeight: 'normal',
+	fonts: [
+		{
+			src: '/Montserrat/static/Montserrat-Bold.ttf',
+			fontWeight: 'bold',
+		},
+		{
+			src: '/Montserrat/static/Montserrat-Medium.ttf',
+			fontWeight: 'normal',
+		},
+	],
+});
+
 const styles = StyleSheet.create({
 	page: {
 		flexDirection: 'column',
 		backgroundColor: '#fff',
 		padding: 10,
+		fontFamily: 'Montserrat',
+		fontStyle: 'normal',
 	},
 	title: {
-		fontSize: 24,
-		textAlign: 'center',
+		fontSize: 32,
 		fontWeight: 'bold',
-		marginBottom: 32,
 	},
 	row: {
 		width: '100%',

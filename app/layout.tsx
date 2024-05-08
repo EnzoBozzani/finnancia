@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 
 import { auth } from '@/auth';
+import { ThemeProvider } from '@/components/ThemeProvider';
+import { montserrat } from '@/constants/font';
 
 import './globals.css';
-import { ThemeProvider } from '@/components/ThemeProvider';
-
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'] });
 
 export const metadata: Metadata = {
 	title: {
