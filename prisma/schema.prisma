@@ -83,6 +83,9 @@ model Finance {
   order Int
   type FinanceType
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+
   sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
 }
 

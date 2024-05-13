@@ -175,9 +175,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
 			take: 8,
 			skip: Number(page) * 8,
-			orderBy: {
-				order: 'desc',
-			},
+			orderBy: [
+				{
+					order: 'desc',
+				},
+				{
+					createdAt: 'desc',
+				},
+			],
 		});
 
 		return NextResponse.json({
@@ -187,6 +192,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			financesAmount,
 		});
 	} catch (error) {
+		console.error(error);
 		return NextResponse.json(
 			{
 				error: 'Something went wrong!',
