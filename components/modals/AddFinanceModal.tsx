@@ -294,11 +294,24 @@ export const AddFinanceModal = () => {
 									<div>
 										<Label className='text-lg'>Dia:</Label>
 										<Calendar
+											formatters={{
+												formatCaption: (caption: Date) => {
+													return `${months[caption.getMonth()]} de ${caption.getFullYear()}`;
+												},
+												formatWeekdayName: (weekdayName: Date) => {
+													return `${
+														weekdayName
+															.toLocaleDateString('pt-BR', {
+																weekday: 'long',
+															})
+															.toUpperCase()[0]
+													}`;
+												},
+											}}
 											fromMonth={date}
 											toMonth={date}
 											month={date}
 											disableNavigation
-											lang='pt'
 											mode='single'
 											selected={date}
 											onSelect={setDate}
