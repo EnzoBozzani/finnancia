@@ -12,7 +12,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -28,7 +28,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		if (!userTotalAmount) {
 			return NextResponse.json(
 				{
-					error: 'Unauthorized!',
+					error: 'Não autorizado!',
 				},
 				{ status: 401 }
 			);
@@ -44,7 +44,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		if (!sheet) {
 			return NextResponse.json(
 				{
-					error: 'Sheet not found!',
+					error: 'Planilha não encontrada!',
 				},
 				{ status: 404 }
 			);
@@ -60,7 +60,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 	} catch (error) {
 		return NextResponse.json(
 			{
-				error: 'Something went wrong!',
+				error: 'Algo deu errado!',
 			},
 			{ status: 500 }
 		);
@@ -73,7 +73,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -94,13 +94,13 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 		if (!sheet) {
 			return NextResponse.json(
 				{
-					error: 'Sheet not found!',
+					error: 'Planilha não encontrada!',
 				},
 				{ status: 404 }
 			);
 		}
 
-		const modelReport = await generateReportFromFinances(sheet.finances);
+		const modelReport = await generateReportFromFinances(sheet.finances, sheet.totalAmount);
 
 		console.log(modelReport);
 
@@ -113,7 +113,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 	} catch (error) {
 		return NextResponse.json(
 			{
-				error: 'Something went wrong!',
+				error: 'Algo deu errado!',
 			},
 			{ status: 500 }
 		);

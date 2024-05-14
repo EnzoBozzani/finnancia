@@ -11,7 +11,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -26,7 +26,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		if (!financeToBeDeleted) {
 			return NextResponse.json(
 				{
-					error: 'Not found!',
+					error: 'Finança não encontrada!',
 				},
 				{ status: 404 }
 			);
@@ -40,7 +40,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		if (!sheet) {
 			return NextResponse.json(
 				{
-					error: 'Not found!',
+					error: 'Planilha não encontrada!',
 				},
 				{ status: 404 }
 			);
@@ -51,7 +51,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		if (!userTotalAmount) {
 			return NextResponse.json(
 				{
-					error: 'Not found!',
+					error: 'Usuário não encontrado!',
 				},
 				{ status: 404 }
 			);
@@ -101,7 +101,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	if (!result.success) {
 		return NextResponse.json(
 			{
-				error: 'Dados inválidos!',
+				error: 'Campo(s) inválidos(s)!',
 			},
 			{ status: 400 }
 		);
@@ -112,7 +112,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	if (!title && !date && !amount && !type) {
 		return NextResponse.json(
 			{
-				error: 'Dados inválidos!',
+				error: 'Campo(s) inválidos(s)!',
 			},
 			{ status: 400 }
 		);
@@ -123,7 +123,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -151,7 +151,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		if (!financeToBeEdited) {
 			return NextResponse.json(
 				{
-					error: 'Not found',
+					error: 'Finança não encontrada',
 				},
 				{ status: 404 }
 			);
@@ -168,7 +168,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		if (!sheet) {
 			return NextResponse.json(
 				{
-					error: 'Not found',
+					error: 'Planilha não encontrada',
 				},
 				{ status: 404 }
 			);
@@ -179,7 +179,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		if (!userTotalAmount) {
 			return NextResponse.json(
 				{
-					error: 'Not found',
+					error: 'Usuário não encontrado!',
 				},
 				{ status: 404 }
 			);
@@ -190,7 +190,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 			if (isNaN(Number(newOrder))) {
 				return NextResponse.json(
 					{
-						error: 'Dados inválidos!',
+						error: 'Campo(s) inválido(s)!',
 					},
 					{ status: 400 }
 				);

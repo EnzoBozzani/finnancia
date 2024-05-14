@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 	if (!validatedField.success) {
 		return NextResponse.json(
 			{
-				error: 'Invalid field!',
+				error: 'Campo(s) inválido(s)!',
 			},
 			{ status: 400 }
 		);

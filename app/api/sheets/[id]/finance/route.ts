@@ -14,7 +14,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 	if (!result.success) {
 		return NextResponse.json(
 			{
-				error: 'Valores inválidos!',
+				error: 'Campo(s) inválido(s)!',
 			},
 			{ status: 400 }
 		);
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 	} catch (error) {
 		return NextResponse.json(
 			{
-				error: 'Something went wrong!',
+				error: 'Algo deu errado!',
 			},
 			{ status: 500 }
 		);
@@ -116,7 +116,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 	if (!page || isNaN(Number(page))) {
 		return NextResponse.json(
 			{
-				error: 'Bad request!',
+				error: 'Campo(s) inválido(s)!',
 			},
 			{ status: 400 }
 		);
@@ -127,7 +127,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -142,7 +142,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 		if (!sheet) {
 			return NextResponse.json(
 				{
-					error: 'Sheet not found!',
+					error: 'Planilha não encontrada!',
 				},
 				{ status: 404 }
 			);
@@ -195,7 +195,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 		console.error(error);
 		return NextResponse.json(
 			{
-				error: 'Something went wrong!',
+				error: 'Algo deu errado!',
 			},
 			{ status: 500 }
 		);

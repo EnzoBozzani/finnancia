@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
 	} catch (error) {
 		return NextResponse.json(
 			{
-				error: 'Something went wrong!',
+				error: 'Algo deu errado!',
 			},
 			{ status: 500 }
 		);
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
 	if (!result.success) {
 		return NextResponse.json(
 			{
-				error: 'Data inválida!',
+				error: 'Campo(s) inválido(s)!',
 			},
 			{ status: 400 }
 		);
@@ -65,13 +65,13 @@ export async function POST(req: NextRequest) {
 	const currentDate = new Date();
 
 	if (year < currentDate.getFullYear() - 5 || year > currentDate.getFullYear() + 1 || month < 1 || month > 12) {
-		return NextResponse.json({ error: 'Invalid year or month!' }, { status: 400 });
+		return NextResponse.json({ error: 'Campo(s) inválido(s)!' }, { status: 400 });
 	}
 
 	const user = await currentUser();
 
 	if (!user) {
-		return NextResponse.json({ error: 'Unauthorized!' }, { status: 401 });
+		return NextResponse.json({ error: 'Não autorizado!' }, { status: 401 });
 	}
 
 	try {
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json(
 			{
-				success: 'Succesfully created!',
+				success: 'Planilha criada com sucesso!',
 				sheetId: newSheet.id,
 			},
 			{ status: 200 }
@@ -110,7 +110,7 @@ export async function POST(req: NextRequest) {
 	} catch (error) {
 		return NextResponse.json(
 			{
-				error: 'Something went wrong!',
+				error: 'Algo deu errado!',
 			},
 			{ status: 500 }
 		);

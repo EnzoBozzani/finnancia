@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
 	if (!user) {
 		return NextResponse.json(
 			{
-				error: 'Unauthorized!',
+				error: 'Não autorizado!',
 			},
 			{ status: 401 }
 		);
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 	if (!validatedFields.success) {
 		return NextResponse.json(
 			{
-				error: 'Invalid data!',
+				error: 'Campo(s) inválido(s)!',
 			},
 			{ status: 400 }
 		);
@@ -38,14 +38,14 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json(
 			{
-				success: 'Set with success',
+				success: 'Saldo inicial definido com sucesso!',
 			},
 			{ status: 200 }
 		);
 	} catch (error) {
 		return NextResponse.json(
 			{
-				error: 'Something went wrong!',
+				error: 'Algo deu errado!',
 			},
 			{ status: 500 }
 		);
