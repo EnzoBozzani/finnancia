@@ -11,4 +11,16 @@ export const usersService = {
 
 		return res.json();
 	},
+	async includeAIAnalysis(currentStatus: boolean) {
+		const res = await fetch('/api/user/includeAIAnalysis', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ currentStatus }),
+		});
+
+		return res.json();
+	},
 };

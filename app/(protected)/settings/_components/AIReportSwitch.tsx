@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
+import { usersService } from '@/services/usersService';
+import { toast } from 'sonner';
 
 export const AIReportSwitch = ({ includeAIAnalysis }: { includeAIAnalysis: boolean }) => {
 	const isDark = useIsDarkTheme();
@@ -27,20 +29,29 @@ export const AIReportSwitch = ({ includeAIAnalysis }: { includeAIAnalysis: boole
 			</div>
 			<div className='me-0 sm:me-6 flex flex-col items-center gap-y-2'>
 				<Switch
-					disabled={true}
+					disabled={isLoading}
 					checked={status}
-					onCheckedChange={() => {
+					onCheckedChange={async () => {
 						setIsLoading(true);
+
+						const res = await usersService.includeAIAnalysis(status);
+
+						if (res.error) {
+							toast.error('Algo deu errado!');
+							return;
+						}
+
 						setStatus((current) => !current);
 
-						//setar no db a nova configuração
 						setIsLoading(false);
+
+						toast.success('Configuração atualizada com sucesso!');
 					}}
 					style={{
-						backgroundColor: status ? '#16a34a' : isDark ? '#fff' : '#000',
+						backgroundColor: status ? '#16a34a' : 'rgb(115 115 115)',
 					}}
 				/>
-				<p className='text-xs sm:text-sm'>{status ? 'Ativado' : 'Desativado'}</p>
+				<p className='text-xs sm:text-sm text-neutral-500'>{status ? 'Ativado' : 'Desativado'}</p>
 			</div>
 		</div>
 	);
