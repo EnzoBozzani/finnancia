@@ -38,6 +38,7 @@ model User {
   totalAmount   Float   @default(0)
   isInitialAmountSet Boolean @default(false)
   tier Tier @default(FREE)
+  includeAIAnalysis Boolean @default(true)
 
   accounts      Account[]
   sheets        Sheet[]
