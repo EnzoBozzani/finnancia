@@ -19,6 +19,20 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 	const { sheetId } = params;
 
 	try {
+		const dbUser = await db.user.findUnique({
+			where: { id: user.id },
+			select: { includeAIAnalysis: true },
+		});
+
+		if (!dbUser) {
+			return NextResponse.json(
+				{
+					error: 'Não autorizado!',
+				},
+				{ status: 401 }
+			);
+		}
+
 		const sheet = await db.sheet.findUnique({
 			where: { id: sheetId, userId: user.id },
 			include: {
@@ -37,6 +51,13 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 				},
 				{ status: 404 }
 			);
+		}
+
+		if (!dbUser.includeAIAnalysis) {
+			return NextResponse.json({
+				report: null,
+				sheet,
+			});
 		}
 
 		const modelReport = await generateReportFromFinances(sheet.finances, sheet.totalAmount);

@@ -51,7 +51,6 @@ export const ExportReport = ({ sheetId }: ExportReportProps) => {
 			return;
 		}
 
-		//@ts-ignore
 		const blob = await pdf(Report({ sheetData: res.sheet, modelReport: res.report })).toBlob();
 
 		saveAs(blob, `${res.sheet.name.replace('/', '-')}.pdf`);

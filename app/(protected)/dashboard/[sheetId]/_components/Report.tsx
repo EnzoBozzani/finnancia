@@ -11,7 +11,7 @@ interface SheetWithFinances extends Sheet {
 
 interface ReportProps {
 	sheetData: SheetWithFinances;
-	modelReport: string;
+	modelReport: string | null;
 }
 
 Font.register({
@@ -101,40 +101,42 @@ export const Report = ({ sheetData, modelReport }: ReportProps) => {
 					<Text style={styles.title}>{sheetData.name}</Text>
 					<View></View>
 				</View>
+				{!modelReport ? null : (
+					<>
+						<View>
+							<Text
+								style={{
+									textAlign: 'center',
+									fontSize: 12,
+									fontWeight: 'bold',
+									marginVertical: 20,
+									color: 'rgb(163 163 163)',
+								}}
+							>
+								Atenção! Essa análise foi gerada por um modelo de IA e pode conter erros. Verifique as
+								informações!
+							</Text>
+						</View>
+						<View style={{ marginVertical: 10 }}>
+							<Text>{modelReport}</Text>
+						</View>
+						<View>
+							<Text
+								style={{
+									textAlign: 'center',
+									fontSize: 12,
+									fontWeight: 'bold',
+									marginVertical: 20,
+									color: 'rgb(163 163 163)',
+								}}
+							>
+								Fim da da análise feita pelo modelo de IA. Abaixo, as finanças:
+							</Text>
+						</View>
+					</>
+				)}
 				<View>
-					<Text
-						style={{
-							textAlign: 'center',
-							fontSize: 12,
-							fontWeight: 'bold',
-							marginVertical: 20,
-							color: 'rgb(163 163 163)',
-						}}
-					>
-						Atenção! Essa análise foi gerada por um modelo de IA e pode conter erros. Verifique as
-						informações!
-					</Text>
-				</View>
-				<View style={{ marginVertical: 10 }}>
-					<Text>{modelReport}</Text>
-				</View>
-				<View>
-					<Text
-						style={{
-							textAlign: 'center',
-							fontSize: 12,
-							fontWeight: 'bold',
-							marginVertical: 20,
-							color: 'rgb(163 163 163)',
-						}}
-					>
-						Fim da da análise feita pelo modelo de IA. Abaixo, as finanças:
-					</Text>
-				</View>
-				<View>
-					<Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>
-						Finanças de {sheetData.name}
-					</Text>
+					<Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>Finanças</Text>
 					<Text
 						style={{
 							textAlign: 'center',
