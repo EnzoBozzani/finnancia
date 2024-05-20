@@ -56,7 +56,7 @@ export const Row = ({ finance }: RowProps) => {
 			<TableCell className='text-center'>{finance.title}</TableCell>
 			<TableCell
 				className={cn(
-					'text-center font-semibold',
+					'text-center font-semibold whitespace-nowrap',
 					finance.type === 'PROFIT'
 						? isDark
 							? 'text-green-400'

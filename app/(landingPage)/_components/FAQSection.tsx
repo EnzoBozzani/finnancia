@@ -61,8 +61,8 @@ export const FAQSection = () => {
 							de IA em cima dessas finanças?
 						</FAQAccordion.Trigger>
 						<FAQAccordion.Content>
-							Na página da Nanci, basta descer até o final da página, selecionar a planilha que deseja e
-							esperar a IA gerar o relatório!
+							Na página da planilha que deseja exportar, clique no botão de exportar. Feito isso, o
+							relatório será exportado contendo a análise de IA e todas as finanças do mês.
 						</FAQAccordion.Content>
 					</FAQAccordion.Item>
 				</FAQAccordion>
