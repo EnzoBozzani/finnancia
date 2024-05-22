@@ -43,7 +43,19 @@ model User {
   accounts      Account[]
   sheets        Sheet[]
   messages      Message[]
+  categories    Category[]
 }
+
+model Category {
+  id String @id @default(cuid())
+  name String 
+  color String
+  userId String 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  finances Finance[]
+}
+
 model Message {
   id        String   @id @default(cuid())
   role      MessageRole
@@ -83,11 +95,13 @@ model Finance {
 	sheetId String
   order Int
   type FinanceType
+  categoryId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
 
   sheet Sheet @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
 
 model Sheet {

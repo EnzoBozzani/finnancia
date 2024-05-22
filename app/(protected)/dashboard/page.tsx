@@ -7,6 +7,7 @@ import { filterSheetData } from '@/lib/utils';
 import { DashboardChart } from './_components/DashboardChart';
 import { AnalysisCard } from './_components/AnalysisCard';
 import { AmountSection } from './_components/AmountSection';
+import { CategoryAccordion } from './_components/CategoryAccordion';
 
 export const metadata: Metadata = {
 	title: 'Painel',
@@ -82,6 +83,9 @@ const DashboardPage = async () => {
 					currentMonthSheetValue={sheets.length}
 					nSheets={[positiveSheets, negativeSheets, neutralSheets]}
 				/>
+			</section>
+			<section className='w-[95%] mx-auto mb-8'>
+				<CategoryAccordion />
 			</section>
 			<section className='w-[95%] mx-auto mb-8'>
 				<DashboardChart
