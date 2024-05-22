@@ -11,9 +11,19 @@ interface FormGroupProps {
 	type?: 'email' | 'password';
 	mask?: string;
 	initialValue?: string;
+	disabled?: boolean;
 }
 
-export const FormGroup = ({ label, id, className, placeholder, type, mask, initialValue }: FormGroupProps) => {
+export const FormGroup = ({
+	label,
+	id,
+	className,
+	placeholder,
+	type,
+	mask,
+	initialValue,
+	disabled,
+}: FormGroupProps) => {
 	return (
 		<div className={cn('space-y-3', className)}>
 			<div>
@@ -35,6 +45,7 @@ export const FormGroup = ({ label, id, className, placeholder, type, mask, initi
 				data-mask={mask}
 				maxLength={id === 'amount' ? 25 : 50}
 				defaultValue={initialValue}
+				disabled={disabled}
 			/>
 		</div>
 	);

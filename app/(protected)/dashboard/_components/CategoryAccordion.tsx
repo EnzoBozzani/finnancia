@@ -1,40 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
 import { Color } from '@/constants/colors';
 import { FormGroup } from '@/components/FormGroup';
+import { Button } from '@/components/ui/button';
+import { categoriesService } from '@/services/categoriesService';
+import { SelectCategory } from '@/components/SelectCategory';
 
 import { ColorPicker } from './ColorPicker';
-import { Button } from '@/components/ui/button';
-import { useFormStatus } from 'react-dom';
-
-const SubmitButton = () => {
-	const { pending } = useFormStatus();
-
-	return (
-		<div className='w-full flex justify-center items-center'>
-			<Button
-				size={'lg'}
-				disabled={pending}
-				type='submit'
-			>
-				{pending ? 'Adicionando' : 'Adicionar'}
-			</Button>
-		</div>
-	);
-};
 
 export const CategoryAccordion = () => {
 	const isDark = useIsDarkTheme();
 
-	const [selectedColor, setSelectedColor] = useState<Color>(null);
+	const router = useRouter();
 
-	const onSubmit = () => {
-		//TODO: Implementar a lógica de adicionar uma categoria
+	const [isPending, startTransition] = useTransition();
+	const [selectedColor, setSelectedColor] = useState<Color>(null);
+	const [categoryToEdit, setCategoryToEdit] = useState<string | null>(null);
+	const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null);
+
+	const onCreate = (formData: FormData) => {
+		startTransition(async () => {
+			const name = formData.get('name') as string;
+
+			if (!name) {
+				toast.error('Nome é obrigatório!');
+				return;
+			}
+
+			const res = await categoriesService.createCategory({ name, color: selectedColor });
+
+			if (res.error) {
+				toast.error(res.error);
+				return;
+			}
+
+			setTimeout(() => router.refresh(), 2000);
+			toast.success('Categoria adicionada com sucesso!');
+		});
 	};
 
 	return (
@@ -52,7 +61,7 @@ export const CategoryAccordion = () => {
 				<AccordionTrigger className='px-4 text-xl font-semibold'>Adicionar categoria</AccordionTrigger>
 				<AccordionContent className='text-justify px-4 text-lg'>
 					<form
-						action={onSubmit}
+						action={onCreate}
 						className='space-y-8'
 					>
 						<FormGroup
@@ -65,7 +74,15 @@ export const CategoryAccordion = () => {
 							selectedColor={selectedColor}
 							setSelectedColor={setSelectedColor}
 						/>
-						<SubmitButton />
+						<div className='w-full flex justify-center items-center'>
+							<Button
+								size={'lg'}
+								disabled={isPending}
+								type='submit'
+							>
+								{isPending ? 'Adicionando' : 'Adicionar'}
+							</Button>
+						</div>
 					</form>
 				</AccordionContent>
 			</AccordionItem>
@@ -79,10 +96,10 @@ export const CategoryAccordion = () => {
 				<AccordionTrigger className='px-4 text-xl font-semibold'>Editar categoria</AccordionTrigger>
 				<AccordionContent className='text-justify px-4 text-lg'>
 					<form
-						action={onSubmit}
+						action={() => {}}
 						className='space-y-8'
 					>
-						EDITAR
+						<SelectCategory setSelectedCategory={setCategoryToEdit} />
 					</form>
 				</AccordionContent>
 			</AccordionItem>
@@ -96,7 +113,7 @@ export const CategoryAccordion = () => {
 				<AccordionTrigger className='px-4 text-xl font-semibold'>Remover categoria</AccordionTrigger>
 				<AccordionContent className='text-justify px-4 text-lg'>
 					<form
-						action={onSubmit}
+						action={() => {}}
 						className='space-y-8'
 					>
 						REMOVER
