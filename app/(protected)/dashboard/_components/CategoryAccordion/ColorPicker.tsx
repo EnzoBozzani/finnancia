@@ -35,9 +35,9 @@ export const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProp
 								isDark && 'border-neutral-700',
 								selectedColor === color && 'border-sky-500'
 							)}
-							style={{ backgroundColor: color || 'transparent' }}
+							style={{ backgroundColor: color !== 'null' ? color : 'transparent' }}
 						>
-							{!color && '-'}
+							{color === 'null' && '-'}
 						</div>
 					);
 				})}

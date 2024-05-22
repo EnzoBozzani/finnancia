@@ -1,40 +1,40 @@
 export type Color =
-	| null
-	| '#fecaca'
-	| '#fed7aa'
-	| '#fde68a'
-	| '#fef08a'
-	| '#d9f99d'
-	| '#bbf7d0'
-	| '#a7f3d0'
-	| '#99f6e4'
-	| '#a5f3fc'
-	| '#bae6fd'
-	| '#bfdbfe'
-	| '#c7d2fe'
-	| '#ddd6fe'
-	| '#e9d5ff'
-	| '#f5d0fe'
-	| '#fbcfe8'
-	| '#fecdd3';
+	| 'null'
+	| '#fee2e2'
+	| '#ffedd5'
+	| '#fef3c7'
+	| '#fef9c3'
+	| '#ecfccb'
+	| '#dcfce7'
+	| '#d1fae5'
+	| '#ccfbf1'
+	| '#cffafe'
+	| '#e0f2fe'
+	| '#dbeafe'
+	| '#e0e7ff'
+	| '#ede9fe'
+	| '#f3e8ff'
+	| '#fae8ff'
+	| '#fce7f3'
+	| '#ffe4e6';
 
 export const colors: Color[] = [
-	null,
-	'#fecaca',
-	'#fed7aa',
-	'#fde68a',
-	'#fef08a',
-	'#d9f99d',
-	'#bbf7d0',
-	'#a7f3d0',
-	'#99f6e4',
-	'#a5f3fc',
-	'#bae6fd',
-	'#bfdbfe',
-	'#c7d2fe',
-	'#ddd6fe',
-	'#e9d5ff',
-	'#f5d0fe',
-	'#fbcfe8',
-	'#fecdd3',
+	'null',
+	'#fee2e2',
+	'#ffedd5',
+	'#fef3c7',
+	'#fef9c3',
+	'#ecfccb',
+	'#dcfce7',
+	'#d1fae5',
+	'#ccfbf1',
+	'#cffafe',
+	'#e0f2fe',
+	'#dbeafe',
+	'#e0e7ff',
+	'#ede9fe',
+	'#f3e8ff',
+	'#fae8ff',
+	'#fce7f3',
+	'#ffe4e6',
 ];

@@ -2,16 +2,16 @@
 
 import { Category } from '@prisma/client';
 import { Dispatch, SetStateAction, useEffect, useState, useTransition } from 'react';
+import { toast } from 'sonner';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectValue, SelectTrigger, SelectItem } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { categoriesService } from '@/services/categoriesService';
-import { toast } from 'sonner';
 
 type SelectCategoryProps = {
-	setSelectedCategory: Dispatch<SetStateAction<string | null>>;
+	setSelectedCategory: Dispatch<SetStateAction<Category | null>>;
 };
 
 export const SelectCategory = ({ setSelectedCategory }: SelectCategoryProps) => {
@@ -40,10 +40,19 @@ export const SelectCategory = ({ setSelectedCategory }: SelectCategoryProps) => 
 		<>
 			{isPending ? (
 				<Skeleton className='mx-auto w-[90%] h-12' />
+			) : categories.length === 0 || !categories ? (
+				<div
+					className={cn(
+						'border border-neutral-200 rounded-xl mx-auto w-[90%] text-base sm:text-lg py-3 flex items-center justify-center',
+						isDark && 'border-neutral-800'
+					)}
+				>
+					Nenhuma categoria encontrada
+				</div>
 			) : (
 				<Select
 					onValueChange={(value) => {
-						setSelectedCategory(value);
+						setSelectedCategory(categories.find((category) => category.id === value) || null);
 					}}
 				>
 					<SelectTrigger
@@ -56,8 +65,12 @@ export const SelectCategory = ({ setSelectedCategory }: SelectCategoryProps) => 
 							<SelectItem
 								key={`${category.id}`}
 								value={category.id}
-								className={cn('cursor-pointer rounded-none', isDark ? 'focus:opacity-90' : '')}
-								style={{ backgroundColor: category.color || 'transparent' }}
+								className={cn(
+									'cursor-pointer rounded-none',
+									isDark && category.color === 'null' && 'text-white focus:text-white',
+									'focus:opacity-80'
+								)}
+								style={{ backgroundColor: category.color !== 'null' ? category.color : 'transparent' }}
 							>
 								{category.name}
 							</SelectItem>

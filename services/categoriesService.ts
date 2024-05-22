@@ -8,7 +8,7 @@ export const categoriesService = {
 				Accept: 'application/json',
 				'Conten-Type': 'application/json',
 			},
-			body: JSON.stringify({ name, color: color ? color : undefined }),
+			body: JSON.stringify({ name, color }),
 		});
 
 		return res.json();
