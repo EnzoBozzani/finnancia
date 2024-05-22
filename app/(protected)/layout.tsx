@@ -17,7 +17,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 			<div className='min-h-full max-w-[1400px] mx-auto'>
 				<Header user={user} />
 				<div className='flex min-h-full'>
-					<div className='hidden lg:block'>
+					<div className='sticky top-0 h-[calc(100vh-80px)] hidden lg:block'>
 						<Sidebar />
 					</div>
 					{children}
