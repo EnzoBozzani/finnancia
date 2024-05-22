@@ -1,13 +1,16 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Category } from '@prisma/client';
 
 import { Color } from '@/constants/colors';
-import { FormGroup } from '@/components/FormGroup';
+import { cn } from '@/lib/utils';
 import { SelectCategory } from '@/components/SelectCategory';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { categoriesService } from '@/services/categoriesService';
 
 import { ColorPicker } from './ColorPicker';
 
@@ -15,33 +18,36 @@ export const EditCategory = () => {
 	const [isPending, startTransition] = useTransition();
 
 	const [category, setCategory] = useState<Category | null>(null);
+	const [name, setName] = useState<string>('');
 	const [selectedColor, setSelectedColor] = useState<Color>('null');
 
-	const onEdit = (formData: FormData) => {
+	const onEdit = () => {
 		startTransition(async () => {
-			const name = formData.get('name') as string;
-
 			if (!category) {
 				toast.error('Selecione uma categoria para editar');
 				return;
 			}
 
-			if (!name) {
-				toast.error('Nome é obrigatório!');
+			if (!name || name.length < 4) {
+				toast.error('Nome deve possuir mais de 3 caracteres!');
 				return;
 			}
 
-			// const res = await categoriesService.editCategory({ name, color: selectedColor });
+			const res = await categoriesService.editCategory(category.id, { name, color: selectedColor });
 
-			// if (res.error) {
-			// 	toast.error(res.error);
-			// 	return;
-			// }
+			if (res.error) {
+				toast.error(res.error);
+				return;
+			}
 
-			// setTimeout(() => router.refresh(), 2000);
-			// toast.success('Categoria editada com sucesso!');
+			toast.success(res.success);
 		});
 	};
+
+	useEffect(() => {
+		setName(category?.name || '');
+		setSelectedColor((category?.color as Color) || 'null');
+	}, [category]);
 
 	return (
 		<form
@@ -51,13 +57,28 @@ export const EditCategory = () => {
 			<SelectCategory setSelectedCategory={setCategory} />
 			{category && (
 				<>
-					<FormGroup
-						id='name'
-						label='Nome'
-						placeholder='Alimentação'
-						className='w-[95%] mx-auto'
-						disabled={!category || isPending}
-					/>
+					<div className={cn('space-y-3')}>
+						<div>
+							<Label
+								htmlFor={'name'}
+								className='text-lg'
+							>
+								Nome
+							</Label>
+						</div>
+						<Input
+							id={'name'}
+							name={'name'}
+							className='focus:border-green-400'
+							placeholder={category.name}
+							type={'text'}
+							min={4}
+							maxLength={50}
+							value={name}
+							disabled={isPending}
+							onChange={(ev) => setName(ev.target.value)}
+						/>
+					</div>
 					<ColorPicker
 						selectedColor={selectedColor}
 						setSelectedColor={setSelectedColor}
@@ -68,7 +89,7 @@ export const EditCategory = () => {
 							disabled={isPending}
 							type='submit'
 						>
-							{isPending ? 'Adicionando' : 'Adicionar'}
+							{isPending ? 'Editando' : 'Editar'}
 						</Button>
 					</div>
 				</>

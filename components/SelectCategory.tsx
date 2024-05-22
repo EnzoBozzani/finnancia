@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState, useTransition } from 're
 import { toast } from 'sonner';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import { Select, SelectContent, SelectValue, SelectTrigger, SelectItem } from '@/components/ui/select';
+import { Select, SelectContent, SelectValue, SelectTrigger, SelectItem, SelectGroup } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { categoriesService } from '@/services/categoriesService';
@@ -62,18 +62,24 @@ export const SelectCategory = ({ setSelectedCategory }: SelectCategoryProps) => 
 					</SelectTrigger>
 					<SelectContent className={cn('p-0 h-[200px]', isDark && 'bg-neutral-950 border-neutral-800')}>
 						{categories.map((category) => (
-							<SelectItem
+							<SelectGroup
 								key={`${category.id}`}
-								value={category.id}
-								className={cn(
-									'cursor-pointer rounded-none',
-									isDark && category.color === 'null' && 'text-white focus:text-white',
-									'focus:opacity-80'
-								)}
-								style={{ backgroundColor: category.color !== 'null' ? category.color : 'transparent' }}
+								className='pb-2'
 							>
-								{category.name}
-							</SelectItem>
+								<SelectItem
+									value={category.id}
+									className={cn(
+										'cursor-pointer rounded-none',
+										isDark && category.color === 'null' && 'text-white focus:text-white',
+										'focus:opacity-80'
+									)}
+									style={{
+										backgroundColor: category.color !== 'null' ? category.color : 'transparent',
+									}}
+								>
+									{category.name}
+								</SelectItem>
+							</SelectGroup>
 						))}
 					</SelectContent>
 				</Select>

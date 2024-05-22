@@ -24,4 +24,16 @@ export const categoriesService = {
 
 		return res.json();
 	},
+	async editCategory(id: string, { name, color }: { name: string; color: Color }) {
+		const res = await fetch(`/api/categories/${id}`, {
+			method: 'PUT',
+			headers: {
+				Accept: 'application/json',
+				'Conten-Type': 'application/json',
+			},
+			body: JSON.stringify({ name, color }),
+		});
+
+		return res.json();
+	},
 };
