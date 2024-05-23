@@ -6,6 +6,7 @@ interface CreateFinanceData {
 	date: string;
 	sheetId: string;
 	type: FinanceType;
+	categoryId: string;
 }
 
 interface UpdateFinanceData {
@@ -16,14 +17,14 @@ interface UpdateFinanceData {
 }
 
 export const financesService = {
-	async createFinance({ title, amount, date, type, sheetId }: CreateFinanceData) {
+	async createFinance({ title, amount, date, type, sheetId, categoryId }: CreateFinanceData) {
 		const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/sheets/${sheetId}/finance`, {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
 				'Conten-Type': 'application/json',
 			},
-			body: JSON.stringify({ title, amount, date, sheetId, type }),
+			body: JSON.stringify({ title, amount, date, sheetId, type, categoryId }),
 		});
 
 		return res.json();

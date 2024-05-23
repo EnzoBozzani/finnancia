@@ -31,7 +31,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 		);
 	}
 
-	const { amount, date, title, type } = result.data;
+	const { amount, date, title, type, categoryId } = result.data;
 
 	const order = Number(date.slice(0, 2));
 
@@ -72,6 +72,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 				date: date,
 				order,
 				type,
+				categoryId: categoryId ? categoryId : null,
 			},
 		});
 
@@ -99,6 +100,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			{ status: 200 }
 		);
 	} catch (error) {
+		console.error(error);
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',

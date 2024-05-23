@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useParams, useRouter } from 'next/navigation';
+import { Category } from '@prisma/client';
 
 import { useAddFinanceModal } from '@/hooks/useAddFinanceModal';
 import { financesService } from '@/services/financesService';
@@ -18,6 +19,7 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { SelectCategory } from '../SelectCategory';
 
 export const AddFinanceModal = () => {
 	const currentDate = new Date();
@@ -42,6 +44,7 @@ export const AddFinanceModal = () => {
 	const [date, setDate] = useState<Date | undefined>(sheetMonthIsTheCurrentMonth ? currentDate : sheetDate);
 	const [type, setType] = useState<'PROFIT' | 'EXPENSE'>('PROFIT');
 	const [message, setMessage] = useState<string | null>(null);
+	const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
 	useEffect(() => {
 		const newSheetDate = sheetNameToDate(sheetName);
@@ -125,6 +128,7 @@ export const AddFinanceModal = () => {
 			date: dateFormatted,
 			sheetId: params.sheetId,
 			type,
+			categoryId: selectedCategory?.id || '',
 		});
 
 		if (res.success) {
@@ -215,6 +219,11 @@ export const AddFinanceModal = () => {
 										</div>
 									</RadioGroup>
 								</div>
+								<SelectCategory
+									setSelectedCategory={setSelectedCategory}
+									optional
+									triggerClassName='text-sm sm:text-base w-full'
+								/>
 								<FormGroup
 									id='date'
 									label='Dia:'
@@ -229,7 +238,7 @@ export const AddFinanceModal = () => {
 							</div>
 						) : (
 							<div className='grid grid-cols-2'>
-								<div className='flex flex-col gap-y-6'>
+								<div className='flex flex-col gap-y-5'>
 									<h3 className='text-center text-xl font-semibold'>Adicionar finança</h3>
 									<FormGroup
 										id='title'
@@ -289,6 +298,11 @@ export const AddFinanceModal = () => {
 											</div>
 										</RadioGroup>
 									</div>
+									<SelectCategory
+										setSelectedCategory={setSelectedCategory}
+										optional
+										triggerClassName='text-sm sm:text-base w-full'
+									/>
 								</div>
 								<div className='flex flex-col justify-center items-center'>
 									<div>

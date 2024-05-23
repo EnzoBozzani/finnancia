@@ -5,4 +5,5 @@ export const CreateFinanceSchema = z.object({
 	title: z.string(),
 	amount: z.number().positive(),
 	type: z.enum(['EXPENSE', 'PROFIT'] as const),
+	categoryId: z.string(),
 });

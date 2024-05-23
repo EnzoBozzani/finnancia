@@ -13,9 +13,11 @@ import { categoriesService } from '@/services/categoriesService';
 type SelectCategoryProps = {
 	setSelectedCategory: Dispatch<SetStateAction<Category | null>>;
 	disabled?: boolean;
+	optional?: boolean;
+	triggerClassName?: string;
 };
 
-export const SelectCategory = ({ setSelectedCategory, disabled }: SelectCategoryProps) => {
+export const SelectCategory = ({ setSelectedCategory, disabled, optional, triggerClassName }: SelectCategoryProps) => {
 	const [isPending, startTransition] = useTransition();
 	const [categories, setCategories] = useState<Category[]>([]);
 
@@ -58,9 +60,13 @@ export const SelectCategory = ({ setSelectedCategory, disabled }: SelectCategory
 					disabled={disabled}
 				>
 					<SelectTrigger
-						className={cn('mx-auto w-[90%] text-base sm:text-lg py-6', isDark && 'border-neutral-800')}
+						className={cn(
+							'mx-auto w-[90%] text-base sm:text-lg py-6',
+							isDark && 'border-neutral-800',
+							triggerClassName
+						)}
 					>
-						<SelectValue placeholder='Selecionar categoria' />
+						<SelectValue placeholder={`Selecionar categoria ${optional ? '(opcional)' : ''}`} />
 					</SelectTrigger>
 					<SelectContent className={cn('p-0 h-[200px]', isDark && 'bg-neutral-950 border-neutral-800')}>
 						{categories.map((category) => (
