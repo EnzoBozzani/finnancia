@@ -77,12 +77,12 @@ export const SelectCategory = ({ setSelectedCategory, disabled, optional, trigge
 								<SelectItem
 									value={category.id}
 									className={cn(
-										'cursor-pointer rounded-none',
-										isDark && 'text-white focus:text-white',
+										'cursor-pointer rounded-none border-2 border-transparent focus:border-neutral-400',
+										isDark && 'text-white focus:text-white focus:border-neutral-600',
 										category.color !== 'transparent'
 											? isDark
-												? `bg-${category.color}-950 focus:bg-${category.color}-800`
-												: `bg-${category.color}-100 focus:bg-${category.color}-200`
+												? `bg-${category.color}-950 focus:bg-${category.color}-950`
+												: `bg-${category.color}-100 focus:bg-${category.color}-100`
 											: 'bg-transparent'
 									)}
 								>

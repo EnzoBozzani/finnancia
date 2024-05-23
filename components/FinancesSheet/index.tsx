@@ -236,6 +236,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 											<Skeleton className='w-[60%] h-[40px] mx-auto' />
 										</TableCell>
 										<TableCell>
+											<Skeleton className='w-[60%] h-[40px] mx-auto' />
+										</TableCell>
+										<TableCell>
 											<Skeleton className='w-12 h-12 rounded-full mx-auto' />
 										</TableCell>
 									</TableRow>
@@ -275,7 +278,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 									: 'bg-white hover:bg-neutral-100 border-neutral-300'
 							)}
 						>
-							<TableCell colSpan={3}>
+							<TableCell colSpan={4}>
 								Saldo total{currentFilter && ` (Pesquisa: "${currentFilter}")`}:
 							</TableCell>
 							<TableCell

@@ -31,6 +31,16 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 	const onOpenEdit = useEditFinanceModal((state) => state.onOpen);
 	const onOpenDelete = useDeleteFinanceModal((state) => state.onOpen);
 
+	const normalizedFinance = {
+		amount: finance.amount,
+		categoryId: finance.categoryId || '',
+		date: finance.date,
+		order: finance.order,
+		sheetId: finance.sheetId,
+		title: finance.title,
+		type: finance.type,
+	};
+
 	const router = useRouter();
 
 	const isDark = useIsDarkTheme();
@@ -50,7 +60,7 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={async () => {
-							const res = await financesService.createFinance(finance);
+							const res = await financesService.createFinance(normalizedFinance);
 
 							if (res.success) {
 								router.refresh();

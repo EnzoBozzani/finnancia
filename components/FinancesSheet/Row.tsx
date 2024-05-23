@@ -43,10 +43,18 @@ export const Row = ({ finance }: RowProps) => {
 					)}
 				></TableCell>
 				<TableCell className='text-center'></TableCell>
+				<TableCell className='text-center'></TableCell>
 				<TableCell className='grid place-items-center'></TableCell>
 			</TableRow>
 		);
 	}
+
+	const bgColor =
+		finance.category && finance.category.color !== 'transparent'
+			? isDark
+				? `bg-${finance.category.color}-950`
+				: `bg-${finance.category.color}-100`
+			: 'bg-transparent';
 
 	return (
 		<TableRow
@@ -54,15 +62,9 @@ export const Row = ({ finance }: RowProps) => {
 				'outline-none border-b',
 				isDark
 					? 'bg-neutral-950 text-white hover:bg-neutral-900 border-neutral-700'
-					: 'bg-white text-black hover:bg-neutral-100 border-neutral-300'
+					: 'bg-white text-black hover:bg-neutral-100 border-neutral-300',
+				bgColor
 			)}
-			style={{
-				backgroundColor: finance.category
-					? finance.category.color === 'null'
-						? ''
-						: finance.category.color
-					: '',
-			}}
 		>
 			<TableCell className='text-center'>{finance.title}</TableCell>
 			<TableCell
