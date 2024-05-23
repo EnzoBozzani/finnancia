@@ -3,6 +3,7 @@
 import { useTransition, useState } from 'react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { VscLoading } from 'react-icons/vsc';
 
 import { categoriesService } from '@/services/categoriesService';
 import { FormGroup } from '@/components/FormGroup';
@@ -34,8 +35,8 @@ export const AddCategory = () => {
 				return;
 			}
 
-			setTimeout(() => router.refresh(), 2000);
-			toast.success('Categoria adicionada com sucesso!');
+			router.refresh();
+			setTimeout(() => toast.success('Categoria adicionada com sucesso!'), 2500);
 		});
 	};
 
@@ -60,7 +61,13 @@ export const AddCategory = () => {
 					disabled={isPending}
 					type='submit'
 				>
-					{isPending ? 'Adicionando' : 'Adicionar'}
+					{isPending ? (
+						<>
+							<VscLoading className='animate-spin sm:mr-2' /> Adicionando
+						</>
+					) : (
+						'Adicionar'
+					)}
 				</Button>
 			</div>
 		</form>

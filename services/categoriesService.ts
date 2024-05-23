@@ -36,4 +36,15 @@ export const categoriesService = {
 
 		return res.json();
 	},
+	async deleteCategory(id: string) {
+		const res = await fetch(`/api/categories/${id}`, {
+			method: 'DELETE',
+			headers: {
+				Accept: 'application/json',
+				'Conten-Type': 'application/json',
+			},
+		});
+
+		return res.json();
+	},
 };

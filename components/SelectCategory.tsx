@@ -12,9 +12,10 @@ import { categoriesService } from '@/services/categoriesService';
 
 type SelectCategoryProps = {
 	setSelectedCategory: Dispatch<SetStateAction<Category | null>>;
+	disabled?: boolean;
 };
 
-export const SelectCategory = ({ setSelectedCategory }: SelectCategoryProps) => {
+export const SelectCategory = ({ setSelectedCategory, disabled }: SelectCategoryProps) => {
 	const [isPending, startTransition] = useTransition();
 	const [categories, setCategories] = useState<Category[]>([]);
 
@@ -54,6 +55,7 @@ export const SelectCategory = ({ setSelectedCategory }: SelectCategoryProps) => 
 					onValueChange={(value) => {
 						setSelectedCategory(categories.find((category) => category.id === value) || null);
 					}}
+					disabled={disabled}
 				>
 					<SelectTrigger
 						className={cn('mx-auto w-[90%] text-base sm:text-lg py-6', isDark && 'border-neutral-800')}

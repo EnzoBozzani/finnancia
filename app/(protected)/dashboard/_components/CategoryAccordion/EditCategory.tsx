@@ -3,6 +3,8 @@
 import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Category } from '@prisma/client';
+import { VscLoading } from 'react-icons/vsc';
+import { useRouter } from 'next/navigation';
 
 import { Color } from '@/constants/colors';
 import { cn } from '@/lib/utils';
@@ -15,6 +17,8 @@ import { categoriesService } from '@/services/categoriesService';
 import { ColorPicker } from './ColorPicker';
 
 export const EditCategory = () => {
+	const router = useRouter();
+
 	const [isPending, startTransition] = useTransition();
 
 	const [category, setCategory] = useState<Category | null>(null);
@@ -40,7 +44,8 @@ export const EditCategory = () => {
 				return;
 			}
 
-			toast.success(res.success);
+			router.refresh();
+			setTimeout(() => toast.success(res.success), 2500);
 		});
 	};
 
@@ -54,7 +59,10 @@ export const EditCategory = () => {
 			action={onEdit}
 			className='space-y-8'
 		>
-			<SelectCategory setSelectedCategory={setCategory} />
+			<SelectCategory
+				setSelectedCategory={setCategory}
+				disabled={isPending}
+			/>
 			{category && (
 				<>
 					<div className={cn('space-y-3')}>
@@ -89,7 +97,13 @@ export const EditCategory = () => {
 							disabled={isPending}
 							type='submit'
 						>
-							{isPending ? 'Editando' : 'Editar'}
+							{isPending ? (
+								<>
+									<VscLoading className='animate-spin sm:mr-2' /> Editando
+								</>
+							) : (
+								'Editar'
+							)}
 						</Button>
 					</div>
 				</>

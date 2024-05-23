@@ -1,19 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { Category } from '@prisma/client';
 
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
+
 import { AddCategory } from './AddCategory';
 import { EditCategory } from './EditCategory';
+import { RemoveCategory } from './RemoveCategory';
 
 export const CategoryAccordion = () => {
 	const isDark = useIsDarkTheme();
-	const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
-	const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
 
 	return (
 		<Accordion
@@ -53,12 +52,7 @@ export const CategoryAccordion = () => {
 			>
 				<AccordionTrigger className='px-4 text-xl font-semibold'>Remover categoria</AccordionTrigger>
 				<AccordionContent className='text-justify px-4 text-lg'>
-					<form
-						action={() => {}}
-						className='space-y-8'
-					>
-						REMOVER
-					</form>
+					<RemoveCategory />
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>

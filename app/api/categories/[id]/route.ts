@@ -1,8 +1,9 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import { Color } from '@/constants/colors';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { EditCategorySchema } from '@/schemas/EditCategorySchema';
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
 	const body = await req.json();
@@ -69,6 +70,50 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		return NextResponse.json(
 			{
 				success: 'Categoria editada com sucesso!',
+			},
+			{ status: 200 }
+		);
+	} catch (error) {
+		return NextResponse.json(
+			{
+				error: 'Algo deu errado!',
+			},
+			{ status: 500 }
+		);
+	}
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+	const user = await currentUser();
+
+	if (!user) {
+		return NextResponse.json(
+			{
+				error: 'Não autorizado!',
+			},
+			{ status: 401 }
+		);
+	}
+
+	try {
+		const categoryToBeDeleted = await db.category.findUnique({ where: { id: params.id, userId: user.id } });
+
+		if (!categoryToBeDeleted) {
+			return NextResponse.json(
+				{
+					error: 'Categoria não encontrada!',
+				},
+				{ status: 404 }
+			);
+		}
+
+		await db.category.delete({
+			where: { id: params.id, userId: user.id },
+		});
+
+		return NextResponse.json(
+			{
+				success: 'Categoria deletada com sucesso!',
 			},
 			{ status: 200 }
 		);
