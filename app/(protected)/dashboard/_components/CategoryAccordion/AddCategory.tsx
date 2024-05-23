@@ -17,7 +17,7 @@ export const AddCategory = () => {
 
 	const [isPending, startTransition] = useTransition();
 
-	const [selectedColor, setSelectedColor] = useState<Color>('null');
+	const [selectedColor, setSelectedColor] = useState<Color>('transparent');
 
 	const onCreate = (formData: FormData) => {
 		startTransition(async () => {

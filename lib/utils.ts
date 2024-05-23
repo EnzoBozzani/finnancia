@@ -106,6 +106,9 @@ export function splitFinancesInGroupsOf8(sheetData: SheetWithFinances) {
 			sheetId: sheetData.id,
 			title: '',
 			type: 'EXPENSE',
+			createdAt: new Date(),
+			updatedAt: new Date(),
+			categoryId: null,
 		});
 		idCounter++;
 	}
