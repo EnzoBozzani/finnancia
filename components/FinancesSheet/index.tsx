@@ -105,7 +105,6 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 	return (
 		<div className='hidden lg:block'>
 			<div className='max-w-screen-xl w-[95%] mx-auto flex items-center justify-between mb-6'>
-				{/* <div className='w-[154px]'></div> */}
 				<ExportReport sheetId={sheetData.id} />
 				<h1 className='font-semibold text-3xl text-green-600 flex items-center justify-center gap-x-2'>
 					{sheetData.name}
@@ -198,6 +197,9 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 							</TableHead>
 							<TableHead className={cn('text-center', isDark ? 'text-neutral-400' : 'text-neutral-600')}>
 								Quantia
+							</TableHead>
+							<TableHead className={cn('text-center', isDark ? 'text-neutral-400' : 'text-neutral-600')}>
+								Categoria
 							</TableHead>
 							<TableHead className={cn('text-center', isDark ? 'text-neutral-400' : 'text-neutral-600')}>
 								Data

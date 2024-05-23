@@ -1,6 +1,6 @@
 'use client';
 
-import { Finance } from '@prisma/client';
+import { Category, Finance } from '@prisma/client';
 
 import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
@@ -8,8 +8,12 @@ import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { TableRow, TableCell } from '../ui/table';
 import { ActionsDropdown } from './ActionsDropdown';
 
+type FinanceWithCategory = Finance & {
+	category?: Category;
+};
+
 interface RowProps {
-	finance: Finance;
+	finance: FinanceWithCategory;
 }
 
 export const Row = ({ finance }: RowProps) => {
@@ -52,6 +56,13 @@ export const Row = ({ finance }: RowProps) => {
 					? 'bg-neutral-950 text-white hover:bg-neutral-900 border-neutral-700'
 					: 'bg-white text-black hover:bg-neutral-100 border-neutral-300'
 			)}
+			style={{
+				backgroundColor: finance.category
+					? finance.category.color === 'null'
+						? ''
+						: finance.category.color
+					: '',
+			}}
 		>
 			<TableCell className='text-center'>{finance.title}</TableCell>
 			<TableCell
@@ -69,6 +80,7 @@ export const Row = ({ finance }: RowProps) => {
 				{finance.type === 'PROFIT' ? '+ ' : '- '}
 				{currencyFormat(finance.amount)}
 			</TableCell>
+			<TableCell className='text-center'>{finance.category ? finance.category.name : '-'}</TableCell>
 			<TableCell className='text-center'>{finance.date}</TableCell>
 			<TableCell className='grid place-items-center'>
 				<ActionsDropdown finance={finance} />

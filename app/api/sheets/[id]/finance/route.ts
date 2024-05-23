@@ -177,6 +177,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
 			take: 8,
 			skip: Number(page) * 8,
+			include: {
+				category: {
+					select: {
+						name: true,
+						color: true,
+					},
+				},
+			},
 			orderBy: [
 				{
 					order: 'desc',
