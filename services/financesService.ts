@@ -14,6 +14,7 @@ interface UpdateFinanceData {
 	amount?: number;
 	date?: string;
 	type?: 'EXPENSE' | 'PROFIT';
+	categoryId?: string;
 }
 
 export const financesService = {

@@ -1,11 +1,11 @@
-import { Finance } from '@prisma/client';
+import { Category, Finance } from '@prisma/client';
 import { create } from 'zustand';
 
 type EditFinanceModalStore = {
 	isOpen: boolean;
 	onOpen: (finance: Finance) => void;
 	onClose: () => void;
-	finance: Finance | null;
+	finance: (Finance & { category?: Category }) | null;
 };
 
 export const useEditFinanceModal = create<EditFinanceModalStore>((set) => ({

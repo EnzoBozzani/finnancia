@@ -107,7 +107,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		);
 	}
 
-	const { title, date, amount, type } = result.data;
+	const { title, date, amount, type, categoryId } = result.data;
 
 	if (!title && !date && !amount && !type) {
 		return NextResponse.json(
@@ -135,107 +135,85 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 		amount?: number;
 		order?: number;
 		type?: 'EXPENSE' | 'PROFIT';
+		categoryId?: string;
 	} = {};
 
 	if (title) valuesToUpdate['title'] = title;
 	if (date) valuesToUpdate['date'] = date;
 	if (amount) valuesToUpdate['amount'] = amount;
 	if (type) valuesToUpdate['type'] = type;
+	if (categoryId && categoryId !== '')
+		try {
+			const financeToBeEdited = await db.finance.findUnique({
+				where: { id: params.id },
+				select: { sheetId: true, amount: true, type: true },
+			});
 
-	try {
-		const financeToBeEdited = await db.finance.findUnique({
-			where: { id: params.id },
-			select: { sheetId: true, amount: true, type: true },
-		});
-
-		if (!financeToBeEdited) {
-			return NextResponse.json(
-				{
-					error: 'Finança não encontrada',
-				},
-				{ status: 404 }
-			);
-		}
-
-		const sheet = await db.sheet.findUnique({
-			where: { id: financeToBeEdited.sheetId, userId: user.id },
-			select: {
-				id: true,
-				totalAmount: true,
-			},
-		});
-
-		if (!sheet) {
-			return NextResponse.json(
-				{
-					error: 'Planilha não encontrada',
-				},
-				{ status: 404 }
-			);
-		}
-
-		const userTotalAmount = await getUserTotalAmount(user.id);
-
-		if (!userTotalAmount) {
-			return NextResponse.json(
-				{
-					error: 'Usuário não encontrado!',
-				},
-				{ status: 404 }
-			);
-		}
-
-		if (date) {
-			const newOrder = date.split('/')[0];
-			if (isNaN(Number(newOrder))) {
+			if (!financeToBeEdited) {
 				return NextResponse.json(
 					{
-						error: 'Campo(s) inválido(s)!',
+						error: 'Finança não encontrada',
 					},
-					{ status: 400 }
+					{ status: 404 }
 				);
 			}
-			valuesToUpdate['order'] = Number(newOrder);
-		}
 
-		await db.finance.update({
-			where: { id: params.id, sheetId: sheet.id },
-			data: {
-				...valuesToUpdate,
-			},
-		});
-
-		if (!amount && type && type !== financeToBeEdited.type) {
-			await db.sheet.update({
+			const sheet = await db.sheet.findUnique({
 				where: { id: financeToBeEdited.sheetId, userId: user.id },
-				data: {
-					totalAmount:
-						type === 'PROFIT'
-							? sheet.totalAmount + 2 * financeToBeEdited.amount
-							: sheet.totalAmount - 2 * financeToBeEdited.amount,
+				select: {
+					id: true,
+					totalAmount: true,
 				},
 			});
 
-			await db.user.update({
-				where: { id: user.id },
+			if (!sheet) {
+				return NextResponse.json(
+					{
+						error: 'Planilha não encontrada',
+					},
+					{ status: 404 }
+				);
+			}
+
+			const userTotalAmount = await getUserTotalAmount(user.id);
+
+			if (!userTotalAmount) {
+				return NextResponse.json(
+					{
+						error: 'Usuário não encontrado!',
+					},
+					{ status: 404 }
+				);
+			}
+
+			if (date) {
+				const newOrder = date.split('/')[0];
+				if (isNaN(Number(newOrder))) {
+					return NextResponse.json(
+						{
+							error: 'Campo(s) inválido(s)!',
+						},
+						{ status: 400 }
+					);
+				}
+				valuesToUpdate['order'] = Number(newOrder);
+			}
+
+			await db.finance.update({
+				where: { id: params.id, sheetId: sheet.id },
 				data: {
-					totalAmount:
-						type === 'PROFIT'
-							? userTotalAmount + 2 * financeToBeEdited.amount
-							: userTotalAmount - 2 * financeToBeEdited.amount,
+					...valuesToUpdate,
 				},
 			});
-		}
 
-		if (amount) {
-			if (type && type !== financeToBeEdited.type) {
+			if (!amount && type && type !== financeToBeEdited.type) {
 				await db.sheet.update({
 					where: { id: financeToBeEdited.sheetId, userId: user.id },
 					data: {
 						totalAmount:
 							type === 'PROFIT'
-								? sheet.totalAmount + financeToBeEdited.amount + amount
-								: sheet.totalAmount - financeToBeEdited.amount - amount,
+								? sheet.totalAmount + 2 * financeToBeEdited.amount
+								: sheet.totalAmount - 2 * financeToBeEdited.amount,
 					},
 				});
 
@@ -244,45 +222,68 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 					data: {
 						totalAmount:
 							type === 'PROFIT'
-								? userTotalAmount + financeToBeEdited.amount + amount
-								: userTotalAmount - financeToBeEdited.amount - amount,
-					},
-				});
-			} else {
-				await db.sheet.update({
-					where: { id: financeToBeEdited.sheetId, userId: user.id },
-					data: {
-						totalAmount:
-							financeToBeEdited.type === 'PROFIT'
-								? sheet.totalAmount - financeToBeEdited.amount + amount
-								: sheet.totalAmount + financeToBeEdited.amount - amount,
-					},
-				});
-
-				await db.user.update({
-					where: { id: user.id },
-					data: {
-						totalAmount:
-							financeToBeEdited.type === 'PROFIT'
-								? userTotalAmount - financeToBeEdited.amount + amount
-								: userTotalAmount + financeToBeEdited.amount - amount,
+								? userTotalAmount + 2 * financeToBeEdited.amount
+								: userTotalAmount - 2 * financeToBeEdited.amount,
 					},
 				});
 			}
-		}
 
-		return NextResponse.json(
-			{
-				success: 'Editado com sucesso!',
-			},
-			{ status: 200 }
-		);
-	} catch (error) {
-		return NextResponse.json(
-			{
-				error: 'Algo deu errado!',
-			},
-			{ status: 500 }
-		);
-	}
+			if (amount) {
+				if (type && type !== financeToBeEdited.type) {
+					await db.sheet.update({
+						where: { id: financeToBeEdited.sheetId, userId: user.id },
+						data: {
+							totalAmount:
+								type === 'PROFIT'
+									? sheet.totalAmount + financeToBeEdited.amount + amount
+									: sheet.totalAmount - financeToBeEdited.amount - amount,
+						},
+					});
+
+					await db.user.update({
+						where: { id: user.id },
+						data: {
+							totalAmount:
+								type === 'PROFIT'
+									? userTotalAmount + financeToBeEdited.amount + amount
+									: userTotalAmount - financeToBeEdited.amount - amount,
+						},
+					});
+				} else {
+					await db.sheet.update({
+						where: { id: financeToBeEdited.sheetId, userId: user.id },
+						data: {
+							totalAmount:
+								financeToBeEdited.type === 'PROFIT'
+									? sheet.totalAmount - financeToBeEdited.amount + amount
+									: sheet.totalAmount + financeToBeEdited.amount - amount,
+						},
+					});
+
+					await db.user.update({
+						where: { id: user.id },
+						data: {
+							totalAmount:
+								financeToBeEdited.type === 'PROFIT'
+									? userTotalAmount - financeToBeEdited.amount + amount
+									: userTotalAmount + financeToBeEdited.amount - amount,
+						},
+					});
+				}
+			}
+
+			return NextResponse.json(
+				{
+					success: 'Editado com sucesso!',
+				},
+				{ status: 200 }
+			);
+		} catch (error) {
+			return NextResponse.json(
+				{
+					error: 'Algo deu errado!',
+				},
+				{ status: 500 }
+			);
+		}
 }

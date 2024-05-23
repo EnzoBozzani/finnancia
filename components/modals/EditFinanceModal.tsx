@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { Category } from '@prisma/client';
 
 import { dayExistsInMonth, cn, currencyFormat, financeStringToDate } from '@/lib/utils';
 import { financesService } from '@/services/financesService';
@@ -18,6 +19,7 @@ import { Dialog, DialogContent } from '../ui/dialog';
 import { SubmitButton } from '../SubmitButton';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { SelectCategory } from '../SelectCategory';
 
 export const EditFinanceModal = () => {
 	const router = useRouter();
@@ -32,6 +34,7 @@ export const EditFinanceModal = () => {
 	const [date, setDate] = useState<Date | undefined>(undefined);
 	const [type, setType] = useState<'PROFIT' | 'EXPENSE'>(finance?.type || 'EXPENSE');
 	const [message, setMessage] = useState<string | null>(null);
+	const [selectedCategory, setSelectedCategory] = useState<Category | null>(finance?.category || null);
 
 	const financeDate = financeStringToDate(finance?.date);
 
@@ -117,7 +120,8 @@ export const EditFinanceModal = () => {
 			title === finance.title &&
 			Number(amountFormatted) === finance.amount &&
 			dateFormatted === finance.date &&
-			type === finance.type
+			type === finance.type &&
+			selectedCategory?.id === finance.categoryId
 		) {
 			onClose();
 			return;
@@ -128,6 +132,7 @@ export const EditFinanceModal = () => {
 			amount: +amountFormatted,
 			date: dateFormatted,
 			type,
+			categoryId: selectedCategory?.id,
 		});
 
 		if (res.success) {
@@ -222,6 +227,12 @@ export const EditFinanceModal = () => {
 											</div>
 										</RadioGroup>
 									</div>
+									<SelectCategory
+										setSelectedCategory={setSelectedCategory}
+										optional
+										triggerClassName='text-sm sm:text-base w-full'
+										selectedCategory={selectedCategory}
+									/>
 								</div>
 								<div className='flex flex-col justify-center items-center'>
 									<div>
@@ -329,6 +340,12 @@ export const EditFinanceModal = () => {
 										</div>
 									</RadioGroup>
 								</div>
+								<SelectCategory
+									setSelectedCategory={setSelectedCategory}
+									optional
+									triggerClassName='text-sm sm:text-base w-full'
+									selectedCategory={selectedCategory}
+								/>
 								<FormGroup
 									id='date'
 									label='Dia:'
