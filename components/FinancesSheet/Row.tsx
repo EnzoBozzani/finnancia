@@ -4,8 +4,8 @@ import { Category, Finance } from '@prisma/client';
 
 import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+import { TableRow, TableCell } from '@/components/ui/table';
 
-import { TableRow, TableCell } from '../ui/table';
 import { ActionsDropdown } from './ActionsDropdown';
 
 type FinanceWithCategory = Finance & {
@@ -66,7 +66,7 @@ export const Row = ({ finance }: RowProps) => {
 				bgColor
 			)}
 		>
-			<TableCell className='text-center'>{finance.title}</TableCell>
+			<TableCell className='text-center break-words'>{finance.title}</TableCell>
 			<TableCell
 				className={cn(
 					'text-center font-semibold whitespace-nowrap',

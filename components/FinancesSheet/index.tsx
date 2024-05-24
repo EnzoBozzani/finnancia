@@ -11,11 +11,11 @@ import { cn, currencyFormat } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { useDeleteSheetModal } from '@/hooks/useDeleteSheetModal';
 import { financesService } from '@/services/financesService';
+import { ExportReport } from '@/app/(protected)/dashboard/[sheetId]/_components/ExportReport';
 
 import { Row } from './Row';
 import { Pagination } from './Pagination';
 import { Skeleton } from '../ui/skeleton';
-import { ExportReport } from '@/app/(protected)/dashboard/[sheetId]/_components/ExportReport';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -106,7 +106,12 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		<div className='hidden lg:block'>
 			<div className='max-w-screen-xl w-[95%] mx-auto flex items-center justify-between mb-6'>
 				<ExportReport sheetId={sheetData.id} />
-				<h1 className='font-semibold text-3xl text-green-600 flex items-center justify-center gap-x-2'>
+				<h1
+					className={cn(
+						'font-semibold text-3xl flex items-center justify-center gap-x-2 uppercase',
+						isDark && 'text-white'
+					)}
+				>
 					{sheetData.name}
 					<button
 						onClick={() => {

@@ -86,7 +86,12 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 	return (
 		<section className='block lg:hidden mb-6'>
 			<div className='max-w-screen-xl w-[95%] mx-auto flex flex-col items-center justify-center gap-y-3 mb-6'>
-				<h1 className='font-semibold text-3xl text-green-600 flex items-center justify-center gap-x-2'>
+				<h1
+					className={cn(
+						'font-semibold text-2xl uppercase flex items-center justify-center gap-x-2',
+						isDark && 'text-white'
+					)}
+				>
 					{sheetData.name}
 					<button
 						onClick={() => {
