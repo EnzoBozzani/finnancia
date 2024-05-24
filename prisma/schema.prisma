@@ -44,6 +44,7 @@ model User {
   sheets        Sheet[]
   messages      Message[]
   categories    Category[]
+  helpMessages  HelpMessage[]
 }
 
 model Category {
@@ -67,6 +68,14 @@ model Message {
   createdAt DateTime @default(now())
 }
 
+model HelpMessage {
+  id        String   @id @default(cuid())
+  body      String
+  userEmail String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+}
 
 model Account {
   id                 String  @id @default(cuid())

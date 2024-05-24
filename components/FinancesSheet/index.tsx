@@ -108,7 +108,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 				<ExportReport sheetId={sheetData.id} />
 				<h1
 					className={cn(
-						'font-semibold text-3xl flex items-center justify-center gap-x-2 uppercase',
+						'font-black text-3xl flex items-center justify-center gap-x-2 uppercase',
 						isDark && 'text-white'
 					)}
 				>

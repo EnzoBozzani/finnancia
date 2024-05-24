@@ -88,7 +88,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 			<div className='max-w-screen-xl w-[95%] mx-auto flex flex-col items-center justify-center gap-y-3 mb-6'>
 				<h1
 					className={cn(
-						'font-semibold text-2xl uppercase flex items-center justify-center gap-x-2',
+						'font-black text-2xl uppercase flex items-center justify-center gap-x-2',
 						isDark && 'text-white'
 					)}
 				>

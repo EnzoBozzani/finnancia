@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/db';
 import { currentUser } from '@/lib/auth';
@@ -6,7 +7,6 @@ import { currentUser } from '@/lib/auth';
 import { ThemeSwitcher } from './_components/ThemeSwitcher';
 import { ExportCSV } from './_components/ExportCSV';
 import { AIReportSwitch } from './_components/AIReportSwitch';
-import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
 	title: 'Configurações',
