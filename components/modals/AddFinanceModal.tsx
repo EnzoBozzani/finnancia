@@ -223,6 +223,7 @@ export const AddFinanceModal = () => {
 									setSelectedCategory={setSelectedCategory}
 									optional
 									triggerClassName='text-sm sm:text-base w-full'
+									hasNoCategory
 								/>
 								<FormGroup
 									id='date'
@@ -302,6 +303,7 @@ export const AddFinanceModal = () => {
 										setSelectedCategory={setSelectedCategory}
 										optional
 										triggerClassName='text-sm sm:text-base w-full'
+										hasNoCategory
 									/>
 								</div>
 								<div className='flex flex-col justify-center items-center'>

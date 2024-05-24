@@ -42,6 +42,7 @@ export const EditFinanceModal = () => {
 		const financeDate = financeStringToDate(finance?.date);
 		setDate(financeDate);
 		setType(finance?.type || 'EXPENSE');
+		setSelectedCategory(finance?.category || null);
 	}, [isOpen]);
 
 	if (!finance) return null;
@@ -127,12 +128,18 @@ export const EditFinanceModal = () => {
 			return;
 		}
 
+		let categoryId: string | undefined = '';
+
+		if (selectedCategory) {
+			selectedCategory.id === finance.categoryId ? (categoryId = undefined) : (categoryId = selectedCategory.id);
+		}
+
 		const res = await financesService.editFinance(finance.id, {
 			title,
 			amount: +amountFormatted,
 			date: dateFormatted,
 			type,
-			categoryId: selectedCategory?.id,
+			categoryId,
 		});
 
 		if (res.success) {
@@ -229,9 +236,10 @@ export const EditFinanceModal = () => {
 									</div>
 									<SelectCategory
 										setSelectedCategory={setSelectedCategory}
-										optional
 										triggerClassName='text-sm sm:text-base w-full'
 										selectedCategory={selectedCategory}
+										hasInitialValue
+										hasNoCategory
 									/>
 								</div>
 								<div className='flex flex-col justify-center items-center'>
@@ -342,9 +350,10 @@ export const EditFinanceModal = () => {
 								</div>
 								<SelectCategory
 									setSelectedCategory={setSelectedCategory}
-									optional
 									triggerClassName='text-sm sm:text-base w-full'
 									selectedCategory={selectedCategory}
+									hasInitialValue
+									hasNoCategory
 								/>
 								<FormGroup
 									id='date'

@@ -17,6 +17,8 @@ type SelectCategoryProps = {
 	triggerClassName?: string;
 	initialCategory?: Category;
 	selectedCategory?: Category | null;
+	hasInitialValue?: boolean;
+	hasNoCategory?: boolean;
 };
 
 export const SelectCategory = ({
@@ -25,6 +27,8 @@ export const SelectCategory = ({
 	optional,
 	triggerClassName,
 	selectedCategory,
+	hasInitialValue,
+	hasNoCategory,
 }: SelectCategoryProps) => {
 	const [isPending, startTransition] = useTransition();
 	const [categories, setCategories] = useState<Category[]>([]);
@@ -66,7 +70,7 @@ export const SelectCategory = ({
 						setSelectedCategory(categories.find((category) => category.id === value) || null);
 					}}
 					disabled={disabled}
-					value={selectedCategory?.id}
+					defaultValue={hasInitialValue ? selectedCategory?.id || 'transparent' : ''}
 				>
 					<SelectTrigger
 						className={cn(
@@ -78,17 +82,19 @@ export const SelectCategory = ({
 						<SelectValue placeholder={`Selecionar categoria ${optional ? '(opcional)' : ''}`} />
 					</SelectTrigger>
 					<SelectContent className={cn('p-0 h-[200px]', isDark && 'bg-neutral-950 border-neutral-800')}>
-						<SelectGroup className='pb-2'>
-							<SelectItem
-								value={'transparent'}
-								className={cn(
-									'cursor-pointer rounded-none border-2 border-transparent focus:border-neutral-400 bg-transparent',
-									isDark && 'text-white focus:text-white focus:border-neutral-600'
-								)}
-							>
-								Sem categoria
-							</SelectItem>
-						</SelectGroup>
+						{hasNoCategory && (
+							<SelectGroup className='pb-2'>
+								<SelectItem
+									value={'transparent'}
+									className={cn(
+										'cursor-pointer rounded-none border-2 border-transparent focus:border-neutral-400 bg-transparent',
+										isDark && 'text-white focus:text-white focus:border-neutral-600'
+									)}
+								>
+									Sem categoria
+								</SelectItem>
+							</SelectGroup>
+						)}
 						{categories.map((category) => (
 							<SelectGroup
 								key={`${category.id}`}

@@ -5,5 +5,5 @@ export const EditFinanceSchema = z.object({
 	title: z.string().optional(),
 	amount: z.number().positive().optional(),
 	type: z.enum(['EXPENSE', 'PROFIT'] as const).optional(),
-	categoryId: z.string(),
+	categoryId: z.string().optional(),
 });

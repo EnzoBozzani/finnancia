@@ -178,12 +178,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			take: 8,
 			skip: Number(page) * 8,
 			include: {
-				category: {
-					select: {
-						name: true,
-						color: true,
-					},
-				},
+				category: true,
 			},
 			orderBy: [
 				{
