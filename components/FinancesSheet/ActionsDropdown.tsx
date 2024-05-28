@@ -60,7 +60,14 @@ export const ActionsDropdown = ({ finance }: ActionsDropdownProps) => {
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={async () => {
-							const res = await financesService.createFinance(normalizedFinance);
+							const res = await financesService.createFinance({
+								amount: normalizedFinance.amount,
+								categoryId: normalizedFinance.categoryId || '',
+								date: normalizedFinance.date,
+								sheetId: normalizedFinance.sheetId,
+								title: `${normalizedFinance.title} - cópia`,
+								type: normalizedFinance.type,
+							});
 
 							if (res.success) {
 								router.refresh();

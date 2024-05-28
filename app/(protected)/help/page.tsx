@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 	title: 'Suporte',
 };
 
-const SettingsPage = async () => {
+const HelpPage = async () => {
 	const user = await currentUser();
 
 	return (
@@ -17,4 +17,4 @@ const SettingsPage = async () => {
 	);
 };
 
-export default SettingsPage;
+export default HelpPage;
