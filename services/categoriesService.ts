@@ -47,4 +47,15 @@ export const categoriesService = {
 
 		return res.json();
 	},
+	async getUsedColors() {
+		const res = await fetch('/api/categories/colors', {
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+				'Conten-Type': 'application/json',
+			},
+		});
+
+		return res.json() as Promise<{ colors?: Color[]; error?: string }>;
+	},
 };
