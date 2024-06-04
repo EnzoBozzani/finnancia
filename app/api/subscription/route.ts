@@ -1,57 +1,64 @@
-import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
 import { NextResponse } from 'next/server';
 
+import { currentUser } from '@/lib/auth';
+import { getUserSubscription, stripe } from '@/lib/stripe';
+
 const DAY_IN_MS = 86_400_000;
+const returnUrl = `${process.env.NEXT_PUBLIC_APP_URL}/settings`;
 
 export async function GET() {
 	const user = await currentUser();
 
 	if (!user) {
-		return NextResponse.json({ hasActiveSubscription: false }, { status: 200 });
+		return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
 	}
 
 	try {
-		const data = await db.userSubscription.findFirst({
-			where: { userId: user.id },
-		});
+		const userSubscription = await getUserSubscription(user.id);
 
-		if (!data) {
-			return NextResponse.json({ hasActiveSubscription: false }, { status: 200 });
+		if (userSubscription && userSubscription.stripeCustomerId) {
+			const stripeSession = await stripe.billingPortal.sessions.create({
+				customer: userSubscription.stripeCustomerId,
+				return_url: returnUrl,
+			});
+
+			return NextResponse.json({ url: stripeSession.url });
 		}
 
-		const isActive = data.stripePriceId && data.stripeCurrentPeriodEnd?.getTime() + DAY_IN_MS > Date.now();
+		const stripeSession = await stripe.checkout.sessions.create({
+			mode: 'subscription',
+			payment_method_types: ['card'],
+			customer_email: user.email!,
+			line_items: [
+				{
+					quantity: 1,
+					price_data: {
+						currency: 'BRL',
+						product_data: {
+							name: 'Finnancia Pro',
+							description: 'Tenha acesso à todo o potencial do Finnancia!',
+						},
+						unit_amount: 1490,
+						recurring: {
+							interval: 'month',
+						},
+					},
+				},
+			],
+			metadata: {
+				userId: user.id,
+			},
+			success_url: returnUrl,
+			cancel_url: returnUrl,
+		});
 
-		return NextResponse.json({ hasActiveSubscription: !!isActive }, { status: 200 });
+		return NextResponse.json({ url: stripeSession.url });
 	} catch (error) {
 		return NextResponse.json(
 			{
-				error: 'Algo deu errado!',
+				error: 'Algo deu errado',
 			},
 			{ status: 500 }
 		);
 	}
 }
-
-// export const getUserSubscription = cache(async () => {
-// 	const { userId } = await auth();
-
-// 	if (!userId) {
-// 		return null;
-// 	}
-
-// 	const data = await db.query.userSubscription.findFirst({
-// 		where: eq(userSubscription.userId, userId),
-// 	});
-
-// 	if (!data) {
-// 		return null;
-// 	}
-
-// 	const isActive = data.stripePriceId && data.stripeCurrentPeriodEnd?.getTime() + DAY_IN_MS > Date.now();
-
-// 	return {
-// 		...data,
-// 		isActive: !!isActive,
-// 	};
-// });
