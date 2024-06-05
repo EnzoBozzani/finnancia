@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 
 import { currentUser } from '@/lib/auth';
 import { getUserSubscription, stripe } from '@/lib/stripe';
+import { AMOUNT } from '@/constants/subscription';
 
-const DAY_IN_MS = 86_400_000;
 const returnUrl = `${process.env.NEXT_PUBLIC_APP_URL}/settings`;
 
 export async function GET() {
@@ -38,7 +38,7 @@ export async function GET() {
 							name: 'Finnancia Pro',
 							description: 'Tenha acesso à todo o potencial do Finnancia!',
 						},
-						unit_amount: 1490,
+						unit_amount: AMOUNT,
 						recurring: {
 							interval: 'month',
 						},

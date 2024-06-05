@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { CreateFinanceSchema } from '@/schemas/CreateFinanceSchema';
 import { currentUser } from '@/lib/auth';
 import { getUserTotalAmount } from '@/data/user';
+import { getUserSubscription } from '@/lib/stripe';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
 	const body = await req.json();
@@ -50,6 +51,17 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 					error: 'Planilha não encontrada!',
 				},
 				{ status: 404 }
+			);
+		}
+
+		const userSubscription = await getUserSubscription(user.id);
+
+		if (!userSubscription?.isActive && sheet.financesCount >= 32) {
+			return NextResponse.json(
+				{
+					error: 'Limite de finanças atingido!',
+				},
+				{ status: 400 }
 			);
 		}
 

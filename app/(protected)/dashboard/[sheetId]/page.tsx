@@ -7,6 +7,7 @@ import { FinancesMobileTable } from '@/components/FinancesMobileTable';
 
 import { AddFinanceButton } from './_components/AddFinanceButton';
 import { ExportReport } from './_components/ExportReport';
+import { getUserSubscription } from '@/lib/stripe';
 
 export async function generateMetadata({ params }: { params: { sheetId: string } }) {
 	const user = await currentUser();
@@ -41,6 +42,8 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 		redirect('/dashboard');
 	}
 
+	const userSubscription = await getUserSubscription(user.id);
+
 	return (
 		<main className='flex-1'>
 			<FinancesSheet sheetData={sheetData} />
@@ -48,7 +51,11 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 			<footer className='lg:hidden mx-auto w-[95%] flex items-center justify-start lg:justify-center pb-8'>
 				<ExportReport sheetId={sheetData.id} />
 			</footer>
-			<AddFinanceButton sheetMonth={sheetData.name} />
+			<AddFinanceButton
+				financesCount={sheetData.financesCount}
+				sheetMonth={sheetData.name}
+				hasActiveSubscription={!!userSubscription?.isActive}
+			/>
 		</main>
 	);
 };

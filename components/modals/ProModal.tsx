@@ -21,10 +21,16 @@ export const ProModal = () => {
 	const onClose = useProModal((state) => state.onClose);
 	const text = useProModal((state) => state.text);
 
+	const BulletPoint = () => (
+		<div
+			className={cn('w-[5px] h-[5px] rounded-full bg-green-500', isDark ? 'bg-neutral-100' : 'bg-neutral-900')}
+		/>
+	);
+
 	return (
 		<>
 			<Dialog
-				open={true}
+				open={isOpen}
 				defaultOpen
 				onOpenChange={onClose}
 			>
@@ -34,35 +40,31 @@ export const ProModal = () => {
 						isDark ? 'bg-neutral-900 text-white' : 'bg-white'
 					)}
 				>
-					<div className='w-full flex items-center justify-center mb-8'>
+					<div className='lg:flex hidden w-full items-center justify-center'>
 						<Image
 							src={'/pro.svg'}
 							alt='Pro'
-							height={120}
-							width={120}
-							className='w-full'
+							height={100}
+							width={100}
+							className='w-[250px] h-auto'
 						/>
 					</div>
-					<h3 className='text-center font-black text-xl uppercase'>Assine Finnancia Pro agora!</h3>
-					<p>{text}</p>
-					<ul className='space-y-3 text-sm mb-6'>
+					<h3 className='text-center font-black text-lg uppercase mt-4'>
+						Dê um upgrade no seu controle financeiro com Finnancia Pro!
+					</h3>
+					<p className='text-xs text-neutral-500 text-justify'>{text}</p>
+					<ul className='space-y-2 text-xs mb-6 pl-4'>
 						<li className='flex items-center gap-x-2'>
-							<div
-								className={cn(
-									'w-[5px] h-[5px] rounded-full bg-green-500',
-									isDark ? 'bg-neutral-100' : 'bg-neutral-900'
-								)}
-							/>
-							<span>Crie até 1000 finanças por mês</span>
+							<BulletPoint />
+							<span>Adicione quantas finanças quiser, sem limites</span>
 						</li>
 						<li className='flex items-center gap-x-2'>
-							<div
-								className={cn(
-									'w-[5px] h-[5px] rounded-full bg-green-500',
-									isDark ? 'bg-neutral-100' : 'bg-neutral-900'
-								)}
-							/>
-							<span>Acesse todas as cores de categoria disponíveis</span>
+							<BulletPoint />
+							<span>Use todas as cores de categoria disponíveis</span>
+						</li>
+						<li className='flex items-center gap-x-2'>
+							<BulletPoint />
+							<span>Exporte quantos relatórios personalizados quiser</span>
 						</li>
 					</ul>
 					<div className='flex items-center justify-center'>
@@ -89,7 +91,7 @@ export const ProModal = () => {
 									Carregando
 								</>
 							) : (
-								<>Inscreva-se</>
+								<>Assine o Pro</>
 							)}
 						</Button>
 					</div>

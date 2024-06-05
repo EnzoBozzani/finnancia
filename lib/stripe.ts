@@ -1,14 +1,13 @@
 import Stripe from 'stripe';
 
-import { currentUser } from './auth';
+import { DAY_IN_MS } from '@/constants/subscription';
+
 import { db } from './db';
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 	apiVersion: '2024-04-10',
 	typescript: true,
 });
-
-const DAY_IN_MS = 86_400_000;
 
 export const getUserSubscription = async (userId: string) => {
 	try {
