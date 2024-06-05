@@ -44,4 +44,15 @@ export const sheetsService = {
 
 		return res.json();
 	},
+	async getSheetDataForReport(sheetId: string) {
+		const res = await fetch(`/api/report/${sheetId}`, {
+			method: 'GET',
+			headers: {
+				Accept: 'application/json',
+				'Conten-Type': 'application/json',
+			},
+		});
+
+		return res.json();
+	},
 };

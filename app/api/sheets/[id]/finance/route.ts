@@ -6,6 +6,7 @@ import { CreateFinanceSchema } from '@/schemas/CreateFinanceSchema';
 import { currentUser } from '@/lib/auth';
 import { getUserTotalAmount } from '@/data/user';
 import { getUserSubscription } from '@/lib/stripe';
+import { MAX_FINANCES_FOR_FREE } from '@/constants/subscription';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
 	const body = await req.json();
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
 		const userSubscription = await getUserSubscription(user.id);
 
-		if (!userSubscription?.isActive && sheet.financesCount >= 32) {
+		if (!userSubscription?.isActive && sheet.financesCount >= MAX_FINANCES_FOR_FREE) {
 			return NextResponse.json(
 				{
 					error: 'Limite de finanças atingido!',

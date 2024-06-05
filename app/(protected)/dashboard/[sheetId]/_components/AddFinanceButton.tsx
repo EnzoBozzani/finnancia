@@ -4,6 +4,7 @@ import { PlusIcon } from '@radix-ui/react-icons';
 
 import { useAddFinanceModal } from '@/hooks/useAddFinanceModal';
 import { useProModal } from '@/hooks/useProModal';
+import { MAX_FINANCES_FOR_FREE } from '@/constants/subscription';
 
 type AddFinanceButtonProps = {
 	sheetMonth: string;
@@ -20,7 +21,7 @@ export const AddFinanceButton = ({ sheetMonth, financesCount, hasActiveSubscript
 		<div
 			role='button'
 			onClick={() => {
-				if (!hasActiveSubscription && financesCount >= 32) {
+				if (!hasActiveSubscription && financesCount >= MAX_FINANCES_FOR_FREE) {
 					openProModal(
 						'Vixe! Parece que você atingiu o limite de finanças para este mês. Para continuar adicionando, você pode assinar o Finnancia Pro por apenas R$ 9,90 ao mês e ter acesso a isso e mais:'
 					);

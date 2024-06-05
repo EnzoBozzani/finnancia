@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import { AIService } from '@/services/AIService';
 
 import { Report } from './Report';
+import { sheetsService } from '@/services/sheetsService';
 
 interface ExportReportProps {
 	sheetId: string;
@@ -44,14 +45,14 @@ export const SubmitButton = () => {
 
 export const ExportReport = ({ sheetId }: ExportReportProps) => {
 	const onDownload = async () => {
-		const res = await AIService.getReport(sheetId);
+		const res = await sheetsService.getSheetDataForReport(sheetId);
 
 		if (res.error) {
 			toast.error('Algo deu errado!');
 			return;
 		}
 
-		const blob = await pdf(Report({ sheetData: res.sheet, modelReport: res.report })).toBlob();
+		const blob = await pdf(Report({ sheetData: res.sheet })).toBlob();
 
 		saveAs(blob, `${res.sheet.name.replace('/', '-')}.pdf`);
 

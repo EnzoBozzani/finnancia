@@ -37,8 +37,7 @@ model User {
   image         String?
   totalAmount   Float   @default(0)
   isInitialAmountSet Boolean @default(false)
-  tier Tier @default(FREE)
-  includeAIAnalysis Boolean @default(true)
+  hasUsedFreeReport Boolean @default(false)
 
   accounts      Account[]
   sheets        Sheet[]
