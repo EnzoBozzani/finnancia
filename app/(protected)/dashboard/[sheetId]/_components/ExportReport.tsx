@@ -5,14 +5,14 @@ import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { useFormStatus } from 'react-dom';
 import { VscLoading } from 'react-icons/vsc';
 import { toast } from 'sonner';
-import { PDFViewer, pdf } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { AIService } from '@/services/AIService';
+import { sheetsService } from '@/services/sheetsService';
 
 import { Report } from './Report';
-import { sheetsService } from '@/services/sheetsService';
+import { useProModal } from '@/hooks/useProModal';
 
 interface ExportReportProps {
 	sheetId: string;
@@ -44,11 +44,20 @@ export const SubmitButton = () => {
 };
 
 export const ExportReport = ({ sheetId }: ExportReportProps) => {
+	const openProModal = useProModal((state) => state.onOpen);
+
 	const onDownload = async () => {
 		const res = await sheetsService.getSheetDataForReport(sheetId);
 
 		if (res.error) {
 			toast.error('Algo deu errado!');
+			return;
+		}
+
+		if (res.freeReportUsed) {
+			openProModal(
+				'Vixe! Parece que você atingiu o limite de relatórios gratuitos. Para continuar adicionando, você pode assinar o Finnancia Pro por apenas R$ 9,90 ao mês e ter acesso a isso e mais:'
+			);
 			return;
 		}
 

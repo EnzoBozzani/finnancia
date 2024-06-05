@@ -73,15 +73,15 @@ export const ProModal = () => {
 							className='w-[200px] flex items-center text-lg py-6'
 							disabled={pending}
 							onClick={() => {
-								startTransition(() => {
-									subscriptionService
-										.getStripeUrl()
-										.then((res) => {
-											if (res.url) {
-												window.location.href = res.url;
-											}
-										})
-										.catch(() => toast.error('Algo deu errado... Tente novamente mais tarde!'));
+								startTransition(async () => {
+									const res = await subscriptionService.getStripeUrl();
+
+									if (res.error) {
+										toast.error('Algo deu errado... Tente novamente mais tarde!');
+										return;
+									}
+
+									window.location.href = res.url;
 								});
 							}}
 						>

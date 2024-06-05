@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { generateReportFromFinances } from '@/lib/ai';
+import { getUserSubscription } from '@/lib/stripe';
 
 export async function GET(req: NextRequest, { params }: { params: { sheetId: string } }) {
 	const user = await currentUser();
@@ -19,6 +19,41 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 	const { sheetId } = params;
 
 	try {
+		const userSubscription = await getUserSubscription(user.id);
+
+		const dbUser = await db.user.findUnique({
+			where: { id: user.id },
+			select: { hasUsedFreeReport: true },
+		});
+
+		if (!dbUser) {
+			return NextResponse.json(
+				{
+					error: 'Não autorizado!',
+				},
+				{ status: 401 }
+			);
+		}
+
+		if (dbUser.hasUsedFreeReport && !userSubscription?.isActive) {
+			return NextResponse.json(
+				{
+					message: 'Você já usou seu relatório gratuito!',
+					freeReportUsed: true,
+				},
+				{ status: 200 }
+			);
+		}
+
+		if (!userSubscription?.isActive) {
+			await db.user.update({
+				where: { id: user.id },
+				data: {
+					hasUsedFreeReport: true,
+				},
+			});
+		}
+
 		const sheet = await db.sheet.findUnique({
 			where: { id: sheetId, userId: user.id },
 			include: {
