@@ -1,18 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { useSetInitialAmountModal } from '@/hooks/useSetInitialAmountModal';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';
+import { usersService } from '@/services/usersService';
 
 import { FormGroup } from '../FormGroup';
 import { FormMessage } from '../FormMessage';
 import { SubmitButton } from '../SubmitButton';
-import { usersService } from '@/services/usersService';
-import { toast } from 'sonner';
-import { revalidatePath } from 'next/cache';
 
 export const SetInitialAmountModal = () => {
 	const isDark = useIsDarkTheme();
@@ -46,7 +45,7 @@ export const SetInitialAmountModal = () => {
 
 		if (res.success) {
 			toast.success('Saldo definido com sucesso!');
-			revalidatePath('/dashboard', 'layout');
+			location.reload();
 		}
 
 		onClose();
