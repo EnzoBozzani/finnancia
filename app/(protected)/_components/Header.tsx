@@ -1,10 +1,23 @@
 import { Logo } from '@/components/Logo';
 
-import { ThemeSwitch } from './ThemeSwitch';
 import { UserButton } from './UserButton';
 import { Sidebar } from './Sidebar';
 
-export const Header = ({ user }: { user: any }) => {
+type HeaderProps = {
+	user: {
+		id: string;
+		name: string | null;
+		email: string | null;
+		emailVerified: Date | null;
+		image: string | null;
+		totalAmount: number;
+		isInitialAmountSet: boolean;
+		hasUsedFreeReport: boolean;
+	};
+	isActive: boolean;
+};
+
+export const Header = async ({ user, isActive }: HeaderProps) => {
 	return (
 		<header className='p-4 w-full flex items-center justify-between'>
 			<div className='flex items-center'>
@@ -17,12 +30,10 @@ export const Header = ({ user }: { user: any }) => {
 					isNotLink
 				/>
 			</div>
-			<div className='flex items-center gap-x-4'>
-				<div className='hidden sm:block'>
-					<ThemeSwitch />
-				</div>
-				<UserButton user={user} />
-			</div>
+			<UserButton
+				user={user}
+				isActive={isActive}
+			/>
 		</header>
 	);
 };
