@@ -3,7 +3,7 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ['/', '/terms-of-service', '/privacy-policy', '/api/webhooks/stripe'];
+export const publicRoutes = ['/', '/terms-of-service', '/privacy-policy', '/api/subscription/webhook'];
 
 /**
  * An array of routes that are used for authentication.
