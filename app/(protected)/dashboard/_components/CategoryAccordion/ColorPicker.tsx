@@ -11,9 +11,10 @@ import { Loader } from '@/components/Loader';
 type ColorPickerProps = {
 	selectedColor: Color;
 	setSelectedColor: Dispatch<SetStateAction<Color>>;
+	initialColor?: Color;
 };
 
-export const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProps) => {
+export const ColorPicker = ({ selectedColor, setSelectedColor, initialColor }: ColorPickerProps) => {
 	const isDark = useIsDarkTheme();
 
 	const [pending, startTransition] = useTransition();
@@ -51,7 +52,7 @@ export const ColorPicker = ({ selectedColor, setSelectedColor }: ColorPickerProp
 					<Loader />
 				) : (
 					colors.map((color) => {
-						const isUsed = usedColors.includes(color);
+						const isUsed = usedColors.includes(color) && color !== initialColor;
 
 						const bgColor =
 							color === 'transparent' ? 'transparent' : isDark ? `bg-${color}-950` : `bg-${color}-100`;

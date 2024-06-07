@@ -105,7 +105,8 @@ export const SelectCategory = ({
 									value={category.id}
 									className={cn(
 										'cursor-pointer rounded-none border-2 border-transparent focus:border-neutral-400',
-										isDark && 'text-white focus:text-white focus:border-neutral-600',
+										isDark &&
+											'text-white focus:text-white focus:border-neutral-600 focus:bg-transparent',
 										category.color !== 'transparent'
 											? isDark
 												? `bg-${category.color}-950 focus:bg-${category.color}-950`

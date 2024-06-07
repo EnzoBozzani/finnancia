@@ -1,8 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { Category } from '@prisma/client';
-
 import { Accordion, AccordionItem, AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn } from '@/lib/utils';

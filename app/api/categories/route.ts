@@ -105,6 +105,9 @@ export async function GET(req: NextRequest) {
 			where: {
 				userId: user.id,
 			},
+			orderBy: {
+				name: 'asc',
+			},
 		});
 
 		return NextResponse.json(categories, { status: 200 });

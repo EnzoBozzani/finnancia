@@ -23,7 +23,7 @@ export const EditCategory = () => {
 
 	const [category, setCategory] = useState<Category | null>(null);
 	const [name, setName] = useState<string>('');
-	const [selectedColor, setSelectedColor] = useState<Color>('null');
+	const [selectedColor, setSelectedColor] = useState<Color>('transparent');
 
 	const onEdit = () => {
 		startTransition(async () => {
@@ -51,7 +51,7 @@ export const EditCategory = () => {
 
 	useEffect(() => {
 		setName(category?.name || '');
-		setSelectedColor((category?.color as Color) || 'null');
+		setSelectedColor((category?.color as Color) || 'transparent');
 	}, [category]);
 
 	return (
@@ -90,6 +90,7 @@ export const EditCategory = () => {
 					<ColorPicker
 						selectedColor={selectedColor}
 						setSelectedColor={setSelectedColor}
+						initialColor={category.color as Color}
 					/>
 					<div className='w-full flex justify-center items-center'>
 						<Button
