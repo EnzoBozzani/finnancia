@@ -230,7 +230,7 @@ export const MobileSidebar = ({
 								</div>
 								<Link
 									onClick={() => onClose()}
-									href={'/billing'}
+									href={'/plans'}
 									className={cn(
 										'p-3 flex items-center',
 										isDark ? 'hover:bg-neutral-900' : 'hover:bg-neutral-200'

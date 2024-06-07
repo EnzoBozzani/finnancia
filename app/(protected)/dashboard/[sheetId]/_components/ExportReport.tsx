@@ -56,7 +56,7 @@ export const ExportReport = ({ sheetId }: ExportReportProps) => {
 
 		if (res.freeReportUsed) {
 			openProModal(
-				'Vixe! Parece que você atingiu o limite de relatórios gratuitos. Para continuar adicionando, você pode assinar o Finnancia Pro por apenas R$ 9,90 ao mês e ter acesso a isso e mais:'
+				'Vixe! Parece que você atingiu o limite de relatórios gratuitos. Para continuar exportando, você pode assinar o Finnancia Pro por apenas R$ 9,90 ao mês e ter acesso a isso e mais:'
 			);
 			return;
 		}

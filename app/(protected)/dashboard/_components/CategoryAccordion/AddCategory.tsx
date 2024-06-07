@@ -9,6 +9,7 @@ import { categoriesService } from '@/services/categoriesService';
 import { FormGroup } from '@/components/FormGroup';
 import { Button } from '@/components/ui/button';
 import { Color } from '@/constants/colors';
+import { useProModal } from '@/hooks/useProModal';
 
 import { ColorPicker } from './ColorPicker';
 
@@ -18,6 +19,8 @@ export const AddCategory = () => {
 	const [isPending, startTransition] = useTransition();
 
 	const [selectedColor, setSelectedColor] = useState<Color>('transparent');
+
+	const openProModal = useProModal((state) => state.onOpen);
 
 	const onCreate = (formData: FormData) => {
 		startTransition(async () => {
@@ -32,6 +35,13 @@ export const AddCategory = () => {
 
 			if (res.error) {
 				toast.error(res.error);
+				return;
+			}
+
+			if (res.maxFreeCategoriesReached) {
+				openProModal(
+					'Vixe! Parece que você atingiu o limite de categorias gratuitas. Para continuar adicionando, você pode assinar o Finnancia Pro por apenas R$ 9,90 ao mês e ter acesso a isso e mais:'
+				);
 				return;
 			}
 

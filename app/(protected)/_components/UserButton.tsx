@@ -90,7 +90,7 @@ export const UserButton = ({ user, isActive }: UserButtonProps) => {
 							onClick={() => setIsOpen(false)}
 							className={isDark ? 'focus:bg-neutral-800 focus:text-white' : ''}
 						>
-							<Link href={'/billing'}>Planos</Link>
+							<Link href={'/plans'}>Planos</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem
 							onClick={() => setIsOpen(false)}

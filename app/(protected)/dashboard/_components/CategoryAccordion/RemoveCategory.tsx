@@ -4,15 +4,12 @@ import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Category } from '@prisma/client';
 import { VscLoading } from 'react-icons/vsc';
-import { useRouter } from 'next/navigation';
 
 import { SelectCategory } from '@/components/SelectCategory';
 import { Button } from '@/components/ui/button';
 import { categoriesService } from '@/services/categoriesService';
 
 export const RemoveCategory = () => {
-	const router = useRouter();
-
 	const [isPending, startTransition] = useTransition();
 
 	const [category, setCategory] = useState<Category | null>(null);
@@ -31,7 +28,7 @@ export const RemoveCategory = () => {
 				return;
 			}
 
-			router.refresh();
+			location.reload();
 			setTimeout(() => toast.success(res.success), 2500);
 		});
 	};

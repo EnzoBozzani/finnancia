@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { CreateCategorySchema } from '@/schemas/CreateCategorySchema';
+import { getUserSubscription } from '@/lib/stripe';
+import { MAX_CATEGORIES_FOR_FREE } from '@/constants/subscription';
 
 export async function POST(req: NextRequest) {
 	const user = await currentUser();
@@ -32,9 +34,23 @@ export async function POST(req: NextRequest) {
 	const { name, color } = validatedFields.data;
 
 	try {
+		const userSubscription = await getUserSubscription(user.id);
+
+		const categoriesCount = await db.category.count({ where: { userId: user.id } });
+
+		if (categoriesCount >= MAX_CATEGORIES_FOR_FREE && !userSubscription?.isActive) {
+			return NextResponse.json(
+				{
+					message: 'Você atingiu o limite de 5 categorias!',
+					maxFreeCategoriesReached: true,
+				},
+				{ status: 200 }
+			);
+		}
+
 		const existingCategory = await db.category.findFirst({
 			where: {
-				name,
+				OR: [{ name }, { color }],
 				userId: user.id,
 			},
 		});
