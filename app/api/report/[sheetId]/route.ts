@@ -35,15 +35,15 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 			);
 		}
 
-		if (dbUser.hasUsedFreeReport && !userSubscription?.isActive) {
-			return NextResponse.json(
-				{
-					message: 'Você já usou seu relatório gratuito!',
-					freeReportUsed: true,
-				},
-				{ status: 200 }
-			);
-		}
+		// if (dbUser.hasUsedFreeReport && !userSubscription?.isActive) {
+		// 	return NextResponse.json(
+		// 		{
+		// 			message: 'Você já usou seu relatório gratuito!',
+		// 			freeReportUsed: true,
+		// 		},
+		// 		{ status: 200 }
+		// 	);
+		// }
 
 		if (!userSubscription?.isActive) {
 			await db.user.update({
@@ -60,6 +60,9 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 				finances: {
 					orderBy: {
 						order: 'asc',
+					},
+					include: {
+						category: true,
 					},
 				},
 			},

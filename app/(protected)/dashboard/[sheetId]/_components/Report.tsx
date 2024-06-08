@@ -1,6 +1,6 @@
 'use client';
 
-import { Finance, Sheet } from '@prisma/client';
+import { Category, Finance, Sheet } from '@prisma/client';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
 import { currencyFormat } from '@/lib/utils';
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-const SheetRow = ({ finance }: { finance: Finance }) => (
+const SheetRow = ({ finance }: { finance: Finance & { category?: Category } }) => (
 	<View style={styles.row}>
 		<View style={styles.cell}>
 			<Text>{finance.title}</Text>
@@ -70,6 +70,9 @@ const SheetRow = ({ finance }: { finance: Finance }) => (
 				{finance.type === 'PROFIT' ? '+ ' : '- '}
 				{currencyFormat(finance.amount)}
 			</Text>
+		</View>
+		<View style={styles.cell}>
+			<Text>{finance.category ? finance.category.name : '-'}</Text>
 		</View>
 		<View style={styles.cell}>
 			<Text>{finance.date}</Text>
@@ -119,6 +122,9 @@ export const Report = ({ sheetData }: ReportProps) => {
 					</View>
 					<View style={styles.cell}>
 						<Text>Quantia</Text>
+					</View>
+					<View style={styles.cell}>
+						<Text>Categoria</Text>
 					</View>
 					<View style={styles.cell}>
 						<Text>Data</Text>

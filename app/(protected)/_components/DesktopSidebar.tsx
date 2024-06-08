@@ -49,7 +49,7 @@ export const DesktopSidebar = ({
 	return (
 		<aside
 			className={cn(
-				'w-[350px] min-h-full hidden lg:block border-r pe-4',
+				'w-[300px] min-h-full hidden lg:block border-r pe-4',
 				isDark ? 'bg-neutral-950 text-white border-r-neutral-700' : 'bg-white'
 			)}
 		>
@@ -57,7 +57,7 @@ export const DesktopSidebar = ({
 				<h1 className={cn('font-bold', isDark ? 'text-white' : '')}>
 					Olá{currentUser?.name?.split(' ')[0] ? ', ' + currentUser?.name?.split(' ')[0] : ''}!
 				</h1>
-				<p className='text-justify'>
+				<p>
 					Faça o gerenciamento de suas finanças aqui! Navegue entre planilhas, visite o painel, veja os
 					planos, altere configurações e interaja com a Nanci.
 				</p>
