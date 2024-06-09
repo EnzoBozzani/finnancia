@@ -77,6 +77,15 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 			);
 		}
 
+		if (sheet.finances.length === 0) {
+			return NextResponse.json(
+				{
+					error: 'Não é possível exportar uma planilha vazia!',
+				},
+				{ status: 200 }
+			);
+		}
+
 		return NextResponse.json(
 			{
 				sheet,

@@ -54,7 +54,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 		const res = await financesService.getPaginatedFinances(sheetData.id, selectedPage, filter);
 
 		if (res.error || res.sheetId !== sheetData.id) {
-			toast.error('Algo deu errado!');
+			toast.error('Algo deu errado');
 			setIsLoading(false);
 			return;
 		}
@@ -253,7 +253,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 							<>
 								<TableRow>
 									<TableCell
-										colSpan={4}
+										colSpan={5}
 										className={cn(
 											'text-center font-semibold h-[520px]',
 											isDark ? 'bg-neutral-950 text-white' : 'bg-white'

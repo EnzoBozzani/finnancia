@@ -10,9 +10,9 @@ import { pdf } from '@react-pdf/renderer';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { sheetsService } from '@/services/sheetsService';
+import { useProModal } from '@/hooks/useProModal';
 
 import { Report } from './Report';
-import { useProModal } from '@/hooks/useProModal';
 
 interface ExportReportProps {
 	sheetId: string;
@@ -50,7 +50,7 @@ export const ExportReport = ({ sheetId }: ExportReportProps) => {
 		const res = await sheetsService.getSheetDataForReport(sheetId);
 
 		if (res.error) {
-			toast.error('Algo deu errado!');
+			toast.error(res.error);
 			return;
 		}
 

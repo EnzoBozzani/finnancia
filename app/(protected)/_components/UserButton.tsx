@@ -53,10 +53,7 @@ export const UserButton = ({ user, isActive }: UserButtonProps) => {
 
 					window.location.href = res.url;
 				}}
-				className={cn(
-					'rounded-full bg-green-600 px-4 py-1 font-black text-xs sm:text-sm text-white',
-					isDark && 'text-black'
-				)}
+				className='rounded-full bg-green-600 px-4 py-1 font-black text-xs sm:text-sm text-white'
 			>
 				{isActive ? 'PRO' : 'GRATUITO'}
 			</div>
