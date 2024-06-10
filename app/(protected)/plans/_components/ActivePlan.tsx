@@ -15,7 +15,7 @@ export const ActivePlan = ({ hasActiveSubscription }: { hasActiveSubscription: b
 
 	return (
 		<>
-			<h6 className={cn('w-[95%] mx-auto text-2xl font-bold mb-6', isDark && 'text-white')}>Plano atual</h6>
+			<h6 className={cn('w-[95%] mx-auto text-2xl font-bold mb-4', isDark && 'text-white')}>Plano atual</h6>
 			<div
 				className={cn(
 					'w-[95%] mx-auto rounded-lg border bg-neutral-100 p-8 grid grid-cols-1 md:grid-cols-2 gap-4',
