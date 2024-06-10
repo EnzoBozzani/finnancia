@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -16,6 +17,10 @@ export const metadata: Metadata = {
 const DashboardPage = async () => {
 	const user = await currentUser();
 
+	if (!user) {
+		redirect('/auth');
+	}
+
 	const sheets = await db.sheet.findMany({
 		where: { userId: user.id },
 		include: {
@@ -27,6 +32,10 @@ const DashboardPage = async () => {
 		where: { id: user.id },
 		select: { totalAmount: true, isInitialAmountSet: true },
 	});
+
+	if (!dbUser) {
+		redirect('/auth');
+	}
 
 	const {
 		sheetsNames,

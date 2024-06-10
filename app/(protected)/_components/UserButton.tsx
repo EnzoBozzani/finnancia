@@ -5,7 +5,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { ExitIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
-import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import {
@@ -18,7 +18,6 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
-import { subscriptionService } from '@/services/subscriptionService';
 
 type UserButtonProps = {
 	user: {
@@ -35,6 +34,8 @@ type UserButtonProps = {
 };
 
 export const UserButton = ({ user, isActive }: UserButtonProps) => {
+	const router = useRouter();
+
 	const [isOpen, setIsOpen] = useState(false);
 
 	const isDark = useIsDarkTheme();
@@ -43,15 +44,8 @@ export const UserButton = ({ user, isActive }: UserButtonProps) => {
 		<div className='flex items-center gap-x-2'>
 			<div
 				role='button'
-				onClick={async () => {
-					const res = await subscriptionService.getStripeUrl();
-
-					if (res.error) {
-						toast.error('Algo deu errado... Tente novamente mais tarde!');
-						return;
-					}
-
-					window.location.href = res.url;
+				onClick={() => {
+					router.push('/plans');
 				}}
 				className='rounded-full bg-green-600 px-4 py-1 font-black text-xs sm:text-sm text-white'
 			>

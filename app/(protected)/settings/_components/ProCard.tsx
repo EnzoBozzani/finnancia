@@ -24,9 +24,8 @@ export const ProCard = ({ hasActiveSubscription }: { hasActiveSubscription: bool
 		<div
 			className={cn(
 				'shrink-0 flex flex-col items-center justify-between mx-auto w-[95%] border rounded-xl p-4 gap-y-8',
-				isDark ? 'text-white border-neutral-700' : 'text-black'
+				isDark ? 'text-white border-neutral-700 bg-neutral-900' : 'text-black bg-neutral-100'
 			)}
-			id='pro-card'
 		>
 			<div>
 				<h2 className='text-center text-lg font-semibold'>ASSINATURA</h2>
@@ -82,7 +81,7 @@ export const ProCard = ({ hasActiveSubscription }: { hasActiveSubscription: bool
 					});
 				}}
 			>
-				{pending ? 'Carregando...' : hasActiveSubscription ? 'Gerenciar Plano' : 'Seja Pro'}
+				{pending ? 'Carregando...' : hasActiveSubscription ? 'Gerenciar assinatura' : 'Seja Pro'}
 			</Button>
 		</div>
 	);

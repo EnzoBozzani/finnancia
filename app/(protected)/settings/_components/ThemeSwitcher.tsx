@@ -13,7 +13,7 @@ export const ThemeSwitcher = () => {
 			<div
 				className={cn(
 					'flex flex-col sm:flex-row items-center justify-between mx-auto w-[95%] border rounded-xl p-4 gap-6',
-					isDark ? 'text-white border-neutral-700' : 'text-black'
+					isDark ? 'bg-neutral-900 text-white border-neutral-700' : 'bg-neutral-100 text-black'
 				)}
 			>
 				<div>

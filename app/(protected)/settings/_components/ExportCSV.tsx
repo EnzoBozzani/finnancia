@@ -49,7 +49,7 @@ export const ExportCSV = () => {
 		<div
 			className={cn(
 				'flex flex-col gap-y-4 mx-auto w-[95%] border rounded-xl p-4',
-				isDark ? 'text-white border-neutral-700' : 'text-black'
+				isDark ? 'text-white border-neutral-700 bg-neutral-900' : 'text-black bg-neutral-100'
 			)}
 		>
 			<div className={cn('flex flex-col sm:flex-row items-center justify-between gap-6')}>
@@ -61,6 +61,10 @@ export const ExportCSV = () => {
 				</div>
 				{isLoading ? (
 					<Skeleton className='w-[240px] sm:w-[400px] h-12' />
+				) : sheets.length === 0 ? (
+					<div className='font-bold border rounded-lg text-base sm:text-lg px-2 py-4 w-[240px] sm:w-[400px]'>
+						<p className='text-center'>Você não tem planilhas</p>
+					</div>
 				) : (
 					<Select
 						onValueChange={(value) => {
@@ -103,6 +107,12 @@ export const ExportCSV = () => {
 				<Button
 					onClick={async () => {
 						setIsLoading(true);
+						if (!sheets || sheets.length === 0) {
+							toast.error('Você ainda não tem planilhas');
+							setIsLoading(false);
+							return;
+						}
+
 						if (!selectedSheetId || selectedSheetId === '') {
 							toast.error('Selecione uma planilha');
 							setIsLoading(false);
