@@ -81,6 +81,7 @@ const SheetRow = ({ finance }: { finance: Finance & { category?: Category } }) =
 				padding: 10,
 				borderBottom: '1px solid rgb(212 212 212)',
 				backgroundColor: bgMap[finance.category ? (finance.category.color as Color) : 'transparent'],
+				fontSize: 12,
 			}}
 		>
 			<View style={styles.cell}>
@@ -118,6 +119,7 @@ export const Report = ({ sheetData }: ReportProps) => {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						alignItems: 'center',
+						marginBottom: 32,
 					}}
 				>
 					<Image
@@ -133,10 +135,12 @@ export const Report = ({ sheetData }: ReportProps) => {
 				<View
 					style={{
 						width: '95%',
-						marginHorizontal: 0,
+						marginHorizontal: 'auto',
 						display: 'flex',
 						flexDirection: 'column',
-						gap: 16,
+						alignItems: 'center',
+						justifyContent: 'center',
+						gap: 32,
 						marginBottom: 32,
 					}}
 				>
@@ -148,28 +152,22 @@ export const Report = ({ sheetData }: ReportProps) => {
 					/>
 					<ReportAnalysisCard
 						currentMonthSheetValue={sheetData.totalAmount}
-						textColor='sky'
+						textColor='green'
 						medium={50}
-						title='Saldo'
+						title='Ganho'
 					/>
 					<ReportAnalysisCard
 						currentMonthSheetValue={sheetData.totalAmount}
-						textColor='sky'
+						textColor='red'
 						medium={50}
-						title='Saldo'
+						title='Gasto'
 					/>
 				</View>
+			</Page>
+			<Page style={styles.page}>
 				<View>
-					<Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold' }}>Finanças</Text>
-					<Text
-						style={{
-							textAlign: 'center',
-							fontSize: 16,
-							fontWeight: 'bold',
-							color: sheetData.totalAmount >= 0 ? 'rgb(21 128 61)' : 'rgb(185 28 28)',
-						}}
-					>
-						{currencyFormat(sheetData.totalAmount)}
+					<Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>
+						Finanças
 					</Text>
 				</View>
 				<View
@@ -180,6 +178,7 @@ export const Report = ({ sheetData }: ReportProps) => {
 						alignItems: 'center',
 						padding: 10,
 						borderBottom: '1px solid rgb(212 212 212)',
+						fontSize: 12,
 					}}
 				>
 					<View style={styles.cell}>

@@ -54,6 +54,7 @@ export const ReportAnalysisCard = ({ currentMonthSheetValue, medium, textColor, 
 			<View
 				style={{
 					display: 'flex',
+					flexDirection: 'row',
 					alignItems: 'center',
 					justifyContent: 'flex-start',
 					gap: 8,
@@ -80,10 +81,10 @@ export const ReportAnalysisCard = ({ currentMonthSheetValue, medium, textColor, 
 			</View>
 			<View
 				style={{
-					fontSize: 60,
-					textAlign: 'left',
+					fontSize: 36,
+					textAlign: 'center',
 					fontWeight: 'bold',
-					marginVertical: 32,
+					marginVertical: 16,
 				}}
 			>
 				<Text>{currencyFormat(currentMonthSheetValue)}</Text>
@@ -91,10 +92,10 @@ export const ReportAnalysisCard = ({ currentMonthSheetValue, medium, textColor, 
 			<View
 				style={{
 					display: 'flex',
+					flexDirection: 'row',
 					alignItems: 'center',
 					justifyContent: 'space-between',
 					gap: 16,
-					marginVertical: 32,
 				}}
 			>
 				<View
@@ -104,24 +105,20 @@ export const ReportAnalysisCard = ({ currentMonthSheetValue, medium, textColor, 
 						color: porcentageColor,
 					}}
 				>
-					{porcentageColor === textColorMap.green ? (
-						textColor === 'red' ? (
-							<Text>-</Text>
-						) : (
-							<Text>+</Text>
-						)
-					) : porcentageColor === textColorMap.red ? (
-						textColor === 'red' ? (
-							<Text>+</Text>
-						) : (
-							<Text>-</Text>
-						)
-					) : null}
 					<Text
 						style={{
 							marginRight: 8,
 						}}
 					>
+						{porcentageColor === textColorMap.green
+							? textColor === 'red'
+								? '-'
+								: '+'
+							: porcentageColor === textColorMap.red
+							? textColor === 'red'
+								? '+'
+								: '-'
+							: null}
 						{porcentage.toLocaleString('pt-BR', {
 							maximumFractionDigits: 2,
 						})}
