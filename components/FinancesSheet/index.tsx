@@ -152,7 +152,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 								? 'border-b-neutral-700 placeholder:text-neutrao-300'
 								: 'border-b-neutral-300 placeholder:text-neutral-700'
 						)}
-						placeholder='Filtrar por título'
+						placeholder='Filtrar'
 						ref={filterRef}
 						maxLength={10}
 					/>

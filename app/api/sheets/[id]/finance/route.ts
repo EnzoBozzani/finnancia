@@ -164,19 +164,39 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 		}
 
 		const financesCount = await db.finance.count({
-			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
+			where: {
+				sheetId: sheet.id,
+				OR: [
+					{ title: { contains: title || '', mode: 'insensitive' } },
+					{ category: { name: { contains: title || '', mode: 'insensitive' } } },
+				],
+			},
 		});
 
 		let financesAmount = 0;
 		if (title) {
 			const filteredFinancesProfitAmount = await db.finance.aggregate({
-				where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' }, type: 'PROFIT' },
+				where: {
+					sheetId: sheet.id,
+					OR: [
+						{ title: { contains: title || '', mode: 'insensitive' } },
+						{ category: { name: { contains: title || '', mode: 'insensitive' } } },
+					],
+					type: 'PROFIT',
+				},
 				_sum: {
 					amount: true,
 				},
 			});
 			const filteredFinancesExpenseAmount = await db.finance.aggregate({
-				where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' }, type: 'EXPENSE' },
+				where: {
+					sheetId: sheet.id,
+					OR: [
+						{ title: { contains: title || '', mode: 'insensitive' } },
+						{ category: { name: { contains: title || '', mode: 'insensitive' } } },
+					],
+					type: 'EXPENSE',
+				},
 				_sum: {
 					amount: true,
 				},
@@ -187,7 +207,13 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 		}
 
 		const finances = await db.finance.findMany({
-			where: { sheetId: sheet.id, title: { contains: title || '', mode: 'insensitive' } },
+			where: {
+				sheetId: sheet.id,
+				OR: [
+					{ title: { contains: title || '', mode: 'insensitive' } },
+					{ category: { name: { contains: title || '', mode: 'insensitive' } } },
+				],
+			},
 			take: 8,
 			skip: Number(page) * 8,
 			include: {
