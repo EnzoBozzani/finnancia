@@ -3,6 +3,7 @@
 import { useTransition } from 'react';
 import { toast } from 'sonner';
 import Image from 'next/image';
+import { VscLoading } from 'react-icons/vsc';
 
 import { Button } from '@/components/ui/button';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
@@ -85,7 +86,16 @@ export const ProCard = ({ hasActiveSubscription }: { hasActiveSubscription: bool
 					});
 				}}
 			>
-				{pending ? 'Carregando...' : hasActiveSubscription ? 'Gerenciar assinatura' : 'Seja Pro'}
+				{pending ? (
+					<>
+						<VscLoading className='w-4 h-4 animate-spin mr-2' />
+						Carregando
+					</>
+				) : hasActiveSubscription ? (
+					'Gerenciar assinatura'
+				) : (
+					'Seja Pro'
+				)}
 			</Button>
 		</div>
 	);

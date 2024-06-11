@@ -2,6 +2,7 @@
 
 import { useTransition } from 'react';
 import { toast } from 'sonner';
+import { VscLoading } from 'react-icons/vsc';
 
 import { Button } from '@/components/ui/button';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
@@ -18,7 +19,7 @@ export const ActivePlan = ({ hasActiveSubscription }: { hasActiveSubscription: b
 			<h6 className={cn('w-[95%] mx-auto text-2xl font-bold mb-4', isDark && 'text-white')}>Plano atual</h6>
 			<div
 				className={cn(
-					'w-[95%] mx-auto rounded-lg border bg-neutral-100 p-8 grid grid-cols-1 md:grid-cols-2 gap-4',
+					'w-[95%] mx-auto rounded-lg border bg-neutral-100 p-8 grid grid-cols-1 md:grid-cols-2 gap-4 text-black',
 					isDark && 'border-neutral-700 bg-neutral-900 text-white'
 				)}
 			>
@@ -51,7 +52,16 @@ export const ActivePlan = ({ hasActiveSubscription }: { hasActiveSubscription: b
 							});
 						}}
 					>
-						{pending ? 'Carregando...' : hasActiveSubscription ? 'Gerenciar assinatura' : 'Seja Pro agora'}
+						{pending ? (
+							<>
+								<VscLoading className='w-4 h-4 animate-spin mr-2' />
+								Carregando
+							</>
+						) : hasActiveSubscription ? (
+							'Gerenciar assinatura'
+						) : (
+							'Seja Pro agora'
+						)}
 					</Button>
 				</div>
 			</div>
