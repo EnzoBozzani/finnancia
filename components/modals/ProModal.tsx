@@ -66,6 +66,10 @@ export const ProModal = () => {
 							<BulletPoint />
 							<span>Exporte quantos relatórios personalizados quiser</span>
 						</li>
+						<li className='flex items-center gap-x-2'>
+							<BulletPoint />
+							<span>Converse ilimitadamente com a Nanci</span>
+						</li>
 					</ul>
 					<div className='flex items-center justify-center'>
 						<Button

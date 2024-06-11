@@ -60,6 +60,10 @@ export const ProCard = ({ hasActiveSubscription }: { hasActiveSubscription: bool
 								<BulletPoint />
 								<span>Exporte quantos relatórios personalizados quiser</span>
 							</li>
+							<li className='flex items-center gap-x-2'>
+								<BulletPoint />
+								<span>Converse ilimitadamente com a Nanci</span>
+							</li>
 						</ul>
 					</div>
 				</>

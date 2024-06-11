@@ -51,7 +51,7 @@ export const ActivePlan = ({ hasActiveSubscription }: { hasActiveSubscription: b
 							});
 						}}
 					>
-						{hasActiveSubscription ? 'Gerenciar assinatura' : 'Seja Pro agora'}
+						{pending ? 'Carregando...' : hasActiveSubscription ? 'Gerenciar assinatura' : 'Seja Pro agora'}
 					</Button>
 				</div>
 			</div>
