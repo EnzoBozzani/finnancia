@@ -13,6 +13,7 @@ import { VscLoading } from 'react-icons/vsc';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn, returnFormattedStringBasedOnDate } from '@/lib/utils';
 import { AIService } from '@/services/AIService';
+import { useProModal } from '@/hooks/useProModal';
 
 interface AIChatProps {
 	user: {
@@ -63,6 +64,8 @@ const FormBody = ({ promptRef }: { promptRef: RefObject<HTMLTextAreaElement> }) 
 export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 	const isDark = useIsDarkTheme();
 
+	const openProModal = useProModal((state) => state.onOpen);
+
 	const [messages, setMessages] = useState<Message[]>(oldMessages);
 	const promptRef = useRef<HTMLTextAreaElement>(null);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -78,6 +81,13 @@ export const AIChat = ({ user, oldMessages }: AIChatProps) => {
 
 		if (res.error) {
 			toast.error('Ocorreu um erro ao enviar a mensagem. Tente novamente mais tarde.');
+			return;
+		}
+
+		if (res.maxPromptsReached) {
+			openProModal(
+				'Vixe! Parece que você atingiu o limite de mensagens gratuitas. Para continuar adicionando, você pode assinar o Finnancia Pro por apenas R$ 9,90 ao mês e ter acesso a isso e mais:'
+			);
 			return;
 		}
 

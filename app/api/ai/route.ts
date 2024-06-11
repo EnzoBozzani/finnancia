@@ -4,6 +4,8 @@ import { currentUser } from '@/lib/auth';
 import { AIPromptSchema } from '@/schemas/AIPromptSchema';
 import { chatWithAI } from '@/lib/ai';
 import { db } from '@/lib/db';
+import { MAX_PROMPTS_FOR_FREE } from '@/constants/subscription';
+import { getUserSubscription } from '@/lib/stripe';
 
 export async function POST(req: NextRequest) {
 	const user = await currentUser();
@@ -33,7 +35,19 @@ export async function POST(req: NextRequest) {
 	const { prompt } = validatedField.data;
 
 	try {
+		const userSubscription = await getUserSubscription(user.id);
+
 		const oldMessages = await db.message.findMany({ where: { userId: user.id } });
+
+		const numberOfUserMessages = oldMessages.filter((message) => message.role === 'USER').length;
+
+		console.log(numberOfUserMessages);
+
+		if (numberOfUserMessages >= MAX_PROMPTS_FOR_FREE && !userSubscription?.isActive) {
+			return NextResponse.json({
+				maxPromptsReached: true,
+			});
+		}
 
 		const response = await chatWithAI(prompt, oldMessages, user.name!);
 
