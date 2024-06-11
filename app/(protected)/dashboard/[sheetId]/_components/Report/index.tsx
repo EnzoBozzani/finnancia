@@ -13,6 +13,9 @@ interface SheetWithFinances extends Sheet {
 
 interface ReportProps {
 	sheetData: SheetWithFinances;
+	mediumAmount: number;
+	mediumProfit: number;
+	mediumExpense: number;
 }
 
 Font.register({
@@ -108,7 +111,18 @@ const SheetRow = ({ finance }: { finance: Finance & { category?: Category } }) =
 	);
 };
 
-export const Report = ({ sheetData }: ReportProps) => {
+export const Report = ({ sheetData, mediumAmount, mediumExpense, mediumProfit }: ReportProps) => {
+	let currentSheetTotalExpense = 0;
+	let currentSheetTotalProfit = 0;
+
+	sheetData.finances.forEach((finance) => {
+		if (finance.type === 'EXPENSE') {
+			currentSheetTotalExpense += finance.amount;
+		} else {
+			currentSheetTotalProfit += finance.amount;
+		}
+	});
+
 	return (
 		<Document>
 			<Page style={styles.page}>
@@ -147,19 +161,19 @@ export const Report = ({ sheetData }: ReportProps) => {
 					<ReportAnalysisCard
 						currentMonthSheetValue={sheetData.totalAmount}
 						textColor='sky'
-						medium={50}
+						medium={mediumAmount}
 						title='Saldo'
 					/>
 					<ReportAnalysisCard
-						currentMonthSheetValue={sheetData.totalAmount}
+						currentMonthSheetValue={currentSheetTotalProfit}
 						textColor='green'
-						medium={50}
+						medium={mediumProfit}
 						title='Ganho'
 					/>
 					<ReportAnalysisCard
-						currentMonthSheetValue={sheetData.totalAmount}
+						currentMonthSheetValue={currentSheetTotalExpense}
 						textColor='red'
-						medium={50}
+						medium={mediumExpense}
 						title='Gasto'
 					/>
 				</View>

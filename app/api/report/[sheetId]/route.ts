@@ -35,15 +35,15 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 			);
 		}
 
-		// if (dbUser.hasUsedFreeReport && !userSubscription?.isActive) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			message: 'Você já usou seu relatório gratuito!',
-		// 			freeReportUsed: true,
-		// 		},
-		// 		{ status: 200 }
-		// 	);
-		// }
+		if (dbUser.hasUsedFreeReport && !userSubscription?.isActive) {
+			return NextResponse.json(
+				{
+					message: 'Você já usou seu relatório gratuito!',
+					freeReportUsed: true,
+				},
+				{ status: 200 }
+			);
+		}
 
 		if (!userSubscription?.isActive) {
 			await db.user.update({
@@ -86,9 +86,46 @@ export async function GET(req: NextRequest, { params }: { params: { sheetId: str
 			);
 		}
 
+		const sheets = await db.sheet.findMany({
+			where: { userId: user.id },
+			include: {
+				finances: {
+					select: {
+						amount: true,
+						type: true,
+					},
+				},
+			},
+		});
+
+		const numberOfSheets = sheets.length;
+
+		let totalExpense = 0;
+		let totalProfit = 0;
+		let totalAmount = 0;
+
+		sheets.forEach((currentSheet) => {
+			totalAmount += currentSheet.totalAmount;
+
+			currentSheet.finances.forEach((finance) => {
+				if (finance.type === 'EXPENSE') {
+					totalExpense += finance.amount;
+				} else {
+					totalProfit += finance.amount;
+				}
+			});
+		});
+
+		const mediumAmount = totalAmount / (numberOfSheets || 1);
+		const mediumProfit = totalProfit / (numberOfSheets || 1);
+		const mediumExpense = totalExpense / (numberOfSheets || 1);
+
 		return NextResponse.json(
 			{
 				sheet,
+				mediumAmount,
+				mediumProfit,
+				mediumExpense,
 			},
 			{ status: 200 }
 		);
