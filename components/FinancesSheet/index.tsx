@@ -309,6 +309,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 				selectedPage={selectedPage}
 				setSelectedPage={setSelectedPage}
 				isLoading={isLoading}
+				sheetId={sheetData.id}
 			/>
 		</div>
 	);

@@ -2,12 +2,14 @@
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { Dispatch, SetStateAction, useState, useTransition } from 'react';
+import { Finance, Category } from '@prisma/client';
+import { VscLoading } from 'react-icons/vsc';
+import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
-import { Button } from '@/components/ui/button';
 import { SheetPieChart } from './SheetPieChart';
-import { VscLoading } from 'react-icons/vsc';
+import { financesService } from '@/services/financesService';
 
 interface PaginationProps {
 	numberOfGroups: number;
@@ -15,6 +17,7 @@ interface PaginationProps {
 	setSelectedPage: Dispatch<SetStateAction<number>>;
 	isMobile?: boolean;
 	isLoading: boolean;
+	sheetId?: string;
 }
 
 export const Pagination = ({
@@ -23,10 +26,12 @@ export const Pagination = ({
 	setSelectedPage,
 	isMobile = false,
 	isLoading,
+	sheetId,
 }: PaginationProps) => {
 	const isDark = useIsDarkTheme();
 
 	const [isVisible, setIsVisible] = useState(false);
+	const [finances, setFinances] = useState<(Finance & { category?: Category })[]>([]);
 
 	const [pending, startTransition] = useTransition();
 
@@ -87,12 +92,25 @@ export const Pagination = ({
 		<>
 			<div className='w-[95%] mx-auto flex justify-between items-center mb-4'>
 				<button
+					disabled={pending || isLoading}
 					className={cn(
 						'px-4 py-2 border border-black rounded-lg hover:opacity-50 flex items-center',
 						isDark && 'border-white text-white'
 					)}
 					onClick={() => {
-						startTransition(() => {
+						startTransition(async () => {
+							if (!sheetId) return;
+
+							setFinances([]);
+
+							const res = await financesService.getFinancesWithCategories(sheetId);
+
+							if (res.error) {
+								toast.error(res.error);
+								return;
+							}
+
+							setFinances(res.finances);
 							setIsVisible((current) => !current);
 						});
 					}}
@@ -153,7 +171,7 @@ export const Pagination = ({
 				</div>
 				<div className='w-[170px]'></div>
 			</div>
-			{isVisible && <SheetPieChart finances={[]} />}
+			{isVisible && <SheetPieChart finances={finances} />}
 		</>
 	);
 };
