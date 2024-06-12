@@ -1,10 +1,13 @@
 'use client';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState, useTransition } from 'react';
 
 import { cn } from '@/lib/utils';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+import { Button } from '@/components/ui/button';
+import { SheetPieChart } from './SheetPieChart';
+import { VscLoading } from 'react-icons/vsc';
 
 interface PaginationProps {
 	numberOfGroups: number;
@@ -22,6 +25,10 @@ export const Pagination = ({
 	isLoading,
 }: PaginationProps) => {
 	const isDark = useIsDarkTheme();
+
+	const [isVisible, setIsVisible] = useState(false);
+
+	const [pending, startTransition] = useTransition();
 
 	if (isMobile) {
 		return (
@@ -77,44 +84,76 @@ export const Pagination = ({
 	}
 
 	return (
-		<div className={cn('flex items-center justify-center mb-4', isDark ? 'text-white' : 'text-black')}>
-			<ChevronLeftIcon
-				className={cn(
-					'w-10 h-10 border rounded-full',
-					selectedPage === 0 || isLoading
-						? cn(
-								'cursor-default',
-								isDark ? 'text-neutral-700 border-neutral-700' : 'text-neutral-300 border-neutral-300'
-						  )
-						: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
-				)}
-				onClick={() => {
-					if (!isLoading) {
-						setSelectedPage((current) => (current === 0 ? current : current - 1));
-					}
-				}}
-			/>
-			<div>
-				<p className='p-4 text-3xl font-bold'>{selectedPage + 1}</p>
+		<>
+			<div className='w-[95%] mx-auto flex justify-between items-center mb-4'>
+				<button
+					className={cn(
+						'px-4 py-2 border border-black rounded-lg hover:opacity-50 flex items-center',
+						isDark && 'border-white text-white'
+					)}
+					onClick={() => {
+						startTransition(() => {
+							setIsVisible((current) => !current);
+						});
+					}}
+				>
+					{pending ? (
+						<>
+							<VscLoading className='h-4 w-4 mr-2 animate-spin' />
+							{isVisible ? 'Escondendo' : 'Gerando'}
+						</>
+					) : isVisible ? (
+						'Esconder gráfico'
+					) : (
+						'Gerar gráfico'
+					)}
+				</button>
+				<div className={cn('flex items-center justify-center', isDark ? 'text-white' : 'text-black')}>
+					<ChevronLeftIcon
+						className={cn(
+							'w-10 h-10 border rounded-full',
+							selectedPage === 0 || isLoading
+								? cn(
+										'cursor-default',
+										isDark
+											? 'text-neutral-700 border-neutral-700'
+											: 'text-neutral-300 border-neutral-300'
+								  )
+								: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
+						)}
+						onClick={() => {
+							if (!isLoading) {
+								setSelectedPage((current) => (current === 0 ? current : current - 1));
+							}
+						}}
+					/>
+					<div>
+						<p className='p-4 text-3xl font-bold'>{selectedPage + 1}</p>
+					</div>
+					<ChevronRightIcon
+						className={cn(
+							'w-10 h-10 border rounded-full',
+							selectedPage === numberOfGroups - 1 || numberOfGroups === 0 || isLoading
+								? cn(
+										'cursor-default',
+										isDark
+											? 'text-neutral-700 border-neutral-700'
+											: 'text-neutral-300 border-neutral-300'
+								  )
+								: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
+						)}
+						onClick={() => {
+							if (!isLoading) {
+								setSelectedPage((current) =>
+									current === numberOfGroups - 1 || numberOfGroups === 0 ? current : current + 1
+								);
+							}
+						}}
+					/>
+				</div>
+				<div className='w-[170px]'></div>
 			</div>
-			<ChevronRightIcon
-				className={cn(
-					'w-10 h-10 border rounded-full',
-					selectedPage === numberOfGroups - 1 || numberOfGroups === 0 || isLoading
-						? cn(
-								'cursor-default',
-								isDark ? 'text-neutral-700 border-neutral-700' : 'text-neutral-300 border-neutral-300'
-						  )
-						: cn('cursor-pointer', isDark ? 'border-white' : 'border-black')
-				)}
-				onClick={() => {
-					if (!isLoading) {
-						setSelectedPage((current) =>
-							current === numberOfGroups - 1 || numberOfGroups === 0 ? current : current + 1
-						);
-					}
-				}}
-			/>
-		</div>
+			{isVisible && <SheetPieChart finances={[]} />}
+		</>
 	);
 };

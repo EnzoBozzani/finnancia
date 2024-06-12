@@ -4,10 +4,10 @@ import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { FinancesSheet } from '@/components/FinancesSheet';
 import { FinancesMobileTable } from '@/components/FinancesMobileTable';
+import { getUserSubscription } from '@/lib/stripe';
 
 import { AddFinanceButton } from './_components/AddFinanceButton';
 import { ExportReport } from './_components/ExportReport';
-import { getUserSubscription } from '@/lib/stripe';
 
 export async function generateMetadata({ params }: { params: { sheetId: string } }) {
 	const user = await currentUser();
