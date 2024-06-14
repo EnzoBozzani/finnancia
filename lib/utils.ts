@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { $Enums, Finance, Sheet } from '@prisma/client';
+import { $Enums, Category, Finance, Sheet } from '@prisma/client';
 
 import { Month, monthNameToMonthNumber, months } from '@/constants/months';
 
@@ -271,4 +271,71 @@ export function returnFormattedStringBasedOnDate(created: Date) {
 	})}/${year} às ${hour.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}:${minute.toLocaleString('pt-BR', {
 		minimumIntegerDigits: 2,
 	})}:${second.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}`;
+}
+
+export function getCategoriesDataFromFinances(finances: (Finance & { category?: Category })[]) {
+	const namesExpense: string[] = [];
+	const colorsExpense: string[] = [];
+	const amountsExpense: number[] = [];
+
+	const namesProfit: string[] = [];
+	const colorsProfit: string[] = [];
+	const amountsProfit: number[] = [];
+
+	for (let i = 0; i < finances.length; i++) {
+		if (finances[i].type === 'EXPENSE') {
+			if (!finances[i].category) {
+				if (namesExpense.includes('Sem categoria')) {
+					const index = namesExpense.indexOf('Sem categoria');
+					amountsExpense[index] += finances[i].amount;
+				} else {
+					namesExpense.push('Sem categoria');
+					colorsExpense.push('transparent');
+					amountsExpense.push(finances[i].amount);
+				}
+			}
+
+			if (finances[i].category) {
+				if (namesExpense.includes(finances[i].category!.name)) {
+					const index = namesExpense.indexOf(finances[i].category!.name);
+					amountsExpense[index] += finances[i].amount;
+				} else {
+					namesExpense.push(finances[i].category!.name);
+					colorsExpense.push(finances[i].category!.color);
+					amountsExpense.push(finances[i].amount);
+				}
+			}
+		} else {
+			if (!finances[i].category) {
+				if (namesProfit.includes('Sem categoria')) {
+					const index = namesProfit.indexOf('Sem categoria');
+					amountsProfit[index] += finances[i].amount;
+				} else {
+					namesProfit.push('Sem categoria');
+					colorsProfit.push('transparent');
+					amountsProfit.push(finances[i].amount);
+				}
+			}
+
+			if (finances[i].category) {
+				if (namesProfit.includes(finances[i].category!.name)) {
+					const index = namesProfit.indexOf(finances[i].category!.name);
+					amountsProfit[index] += finances[i].amount;
+				} else {
+					namesProfit.push(finances[i].category!.name);
+					colorsProfit.push(finances[i].category!.color);
+					amountsProfit.push(finances[i].amount);
+				}
+			}
+		}
+	}
+
+	return {
+		namesExpense,
+		colorsExpense,
+		amountsExpense,
+		namesProfit,
+		colorsProfit,
+		amountsProfit,
+	};
 }

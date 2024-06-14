@@ -4,7 +4,7 @@ import { currentUser } from '@/lib/auth';
 import { getUserSubscription, stripe } from '@/lib/stripe';
 import { AMOUNT } from '@/constants/subscription';
 
-const returnUrl = `${process.env.NEXT_PUBLIC_APP_URL}/settings`;
+const returnUrl = `${process.env.NEXT_PUBLIC_APP_URL}/plans`;
 
 export async function GET() {
 	const user = await currentUser();
