@@ -1,8 +1,10 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { $Enums, Category, Finance, Sheet } from '@prisma/client';
+import { ChartData } from 'chart.js';
 
 import { Month, monthNameToMonthNumber, months } from '@/constants/months';
+import { Color, colorMap } from '@/constants/colors';
 
 type SheetMonth = {
 	name: string;
@@ -273,7 +275,7 @@ export function returnFormattedStringBasedOnDate(created: Date) {
 	})}:${second.toLocaleString('pt-BR', { minimumIntegerDigits: 2 })}`;
 }
 
-export function getCategoriesDataFromFinances(finances: (Finance & { category?: Category })[]) {
+export function getCategoriesDataFromFinances(finances: (Finance & { category?: Category })[], isDark: boolean) {
 	const namesExpense: string[] = [];
 	const colorsExpense: string[] = [];
 	const amountsExpense: number[] = [];
@@ -330,12 +332,42 @@ export function getCategoriesDataFromFinances(finances: (Finance & { category?: 
 		}
 	}
 
+	const dataExpense: ChartData<'pie'> = {
+		labels: namesExpense,
+		datasets: [
+			{
+				label: 'Valor',
+				data: amountsExpense,
+				backgroundColor: isDark
+					? colorsExpense.map((color) => colorMap[color as Color].dark)
+					: colorsExpense.map((color) => colorMap[color as Color].light),
+				hoverOffset: 4,
+				borderColor: isDark ? 'rgb(64 64 64)' : 'rgb(212 212 212)',
+				borderWidth: 1,
+			},
+		],
+	};
+
+	const dataProfit: ChartData<'pie'> = {
+		labels: namesProfit,
+		datasets: [
+			{
+				label: 'Valor',
+				data: amountsProfit,
+				backgroundColor: isDark
+					? colorsProfit.map((color) => colorMap[color as Color].dark)
+					: colorsProfit.map((color) => colorMap[color as Color].light),
+				hoverOffset: 4,
+				borderColor: isDark ? 'rgb(64 64 64)' : 'rgb(212 212 212)',
+				borderWidth: 1,
+			},
+		],
+	};
+
 	return {
+		dataExpense,
+		dataProfit,
 		namesExpense,
-		colorsExpense,
-		amountsExpense,
 		namesProfit,
-		colorsProfit,
-		amountsProfit,
 	};
 }

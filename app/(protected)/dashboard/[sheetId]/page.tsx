@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { FinancesSheet } from '@/components/FinancesSheet';
 import { FinancesMobileTable } from '@/components/FinancesMobileTable';
 import { getUserSubscription } from '@/lib/stripe';
+import { SheetPieChart } from '@/components/FinancesSheet/SheetPieChart';
 
 import { AddFinanceButton } from './_components/AddFinanceButton';
 import { ExportReport } from './_components/ExportReport';
@@ -51,6 +52,7 @@ const SheetPage = async ({ params }: { params: { sheetId: string } }) => {
 			<footer className='lg:hidden mx-auto w-[95%] flex items-center justify-start lg:justify-center pb-8'>
 				<ExportReport sheetId={sheetData.id} />
 			</footer>
+			<SheetPieChart sheetId={sheetData.id} />
 			<AddFinanceButton
 				financesCount={sheetData.financesCount}
 				sheetMonth={sheetData.name}

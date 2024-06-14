@@ -1,56 +1,55 @@
 'use client';
 
-import { Chart as ChartJS, ChartData, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useEffect, useState, useTransition } from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { Finance, Category } from '@prisma/client';
+import { toast } from 'sonner';
 
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { cn, getCategoriesDataFromFinances } from '@/lib/utils';
-import { Color, colorMap } from '@/constants/colors';
+import { financesService } from '@/services/financesService';
+import { Skeleton } from '@/components/ui/skeleton';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface SheetPieChartProps {
-	finances: (Finance & { category?: Category })[];
-}
-
-export const SheetPieChart = ({ finances }: SheetPieChartProps) => {
+export const SheetPieChart = ({ sheetId }: { sheetId: string }) => {
 	const isDark = useIsDarkTheme();
 
-	const { amountsExpense, amountsProfit, colorsExpense, colorsProfit, namesExpense, namesProfit } =
-		getCategoriesDataFromFinances(finances);
+	const [finances, setFinances] = useState<(Finance & { category?: Category })[]>([]);
 
-	const dataExpense: ChartData<'pie'> = {
-		labels: namesExpense,
-		datasets: [
-			{
-				label: 'Valor',
-				data: amountsExpense,
-				backgroundColor: isDark
-					? colorsExpense.map((color) => colorMap[color as Color].dark)
-					: colorsExpense.map((color) => colorMap[color as Color].light),
-				hoverOffset: 4,
-				borderColor: isDark ? 'rgb(64 64 64)' : 'rgb(212 212 212)',
-				borderWidth: 1,
-			},
-		],
+	const [pending, startTransition] = useTransition();
+
+	const { dataExpense, dataProfit, namesExpense, namesProfit } = getCategoriesDataFromFinances(finances, isDark);
+
+	const options: ChartOptions<'pie'> = {
+		color: isDark ? 'white' : 'black',
 	};
 
-	const dataProfit: ChartData<'pie'> = {
-		labels: namesProfit,
-		datasets: [
-			{
-				label: 'Valor',
-				data: amountsProfit,
-				backgroundColor: isDark
-					? colorsProfit.map((color) => colorMap[color as Color].dark)
-					: colorsProfit.map((color) => colorMap[color as Color].light),
-				hoverOffset: 4,
-				borderColor: isDark ? 'rgb(64 64 64)' : 'rgb(212 212 212)',
-				borderWidth: 1,
-			},
-		],
-	};
+	useEffect(() => {
+		const fetchData = () => {
+			startTransition(async () => {
+				setFinances([]);
+
+				const res = await financesService.getFinancesWithCategories(sheetId);
+
+				if (res.error) {
+					toast.error(res.error);
+					return;
+				}
+
+				setFinances(res.finances);
+			});
+		};
+		fetchData();
+	}, []);
+
+	if (pending) {
+		<div className='w-[95%] mx-auto flex items-center justify-evenly gap-x-2 mb-12'>
+			<Skeleton className='w-[400px] h-[400px] rounded-xl' />
+			<Skeleton className='w-[400px] h-[400px] rounded-xl' />
+		</div>;
+	}
 
 	if (finances.length === 0) {
 		return (
@@ -81,28 +80,56 @@ export const SheetPieChart = ({ finances }: SheetPieChartProps) => {
 	}
 
 	return (
-		<div className='flex items-center justify-evenly gap-x-2 mb-12'>
+		<div className='flex flex-col sm:flex-row items-center justify-evenly gap-2 mb-12'>
 			<div
 				className={cn(
-					'flex flex-col justify-center items-center w-[45%] rounded-xl border p-4',
+					'flex flex-col justify-center items-center w-[95%] sm:w-[45%] rounded-xl border p-4',
 					isDark ? 'border-neutral-700' : 'border-neutral-300'
 				)}
 			>
-				<h1 className={cn('text-lg font-bold text-center', isDark ? 'text-neutral-300' : 'text-neutral-700')}>
+				<h1
+					className={cn(
+						'text-base md:text-lg font-bold text-center uppercase',
+						isDark ? 'text-white' : 'text-neutral-700'
+					)}
+				>
 					Gastos por Categoria
 				</h1>
-				<Pie data={dataExpense} />
+				{namesExpense.length === 0 ? (
+					<p className={cn('text-center mt-12', isDark ? 'text-white' : 'text-black')}>
+						Parece que não há gastos nessa planilha! :)
+					</p>
+				) : (
+					<Pie
+						data={dataExpense}
+						options={options}
+					/>
+				)}
 			</div>
 			<div
 				className={cn(
-					'flex flex-col justify-center items-center w-[45%] rounded-xl border p-4',
+					'flex flex-col justify-center items-center w-[95%] sm:w-[45%] rounded-xl border p-4',
 					isDark ? 'border-neutral-700' : 'border-neutral-300'
 				)}
 			>
-				<h1 className={cn('text-lg font-bold text-center', isDark ? 'text-neutral-300' : 'text-neutral-700')}>
+				<h1
+					className={cn(
+						'text-base md:text-lg font-bold text-center uppercase',
+						isDark ? 'text-white' : 'text-neutral-700'
+					)}
+				>
 					Ganhos por Categoria
 				</h1>
-				<Pie data={dataProfit} />
+				{namesProfit.length === 0 ? (
+					<p className={cn('text-center mt-12', isDark ? 'text-white' : 'text-black')}>
+						Parece que não há ganhos nessa planilha! :(
+					</p>
+				) : (
+					<Pie
+						data={dataProfit}
+						options={options}
+					/>
+				)}
 			</div>
 		</div>
 	);

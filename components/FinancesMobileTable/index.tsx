@@ -14,6 +14,7 @@ import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 import { FinancesMobileRow } from './FinancesMobileRow';
 import { Pagination } from '../FinancesSheet/Pagination';
 import { Skeleton } from '../ui/skeleton';
+import { SheetPieChart } from '../FinancesSheet/SheetPieChart';
 
 interface SheetWithFinances extends Sheet {
 	finances: Finance[];
@@ -132,7 +133,7 @@ export const FinancesMobileTable = ({ sheetData }: FinancesMobileTableProps) => 
 								? 'border-b-neutral-700 placeholder:text-neutrao-300'
 								: 'border-b-neutral-300 placeholder:text-neutral-700'
 						)}
-						placeholder='Filtrar por título'
+						placeholder='Filtrar'
 						ref={filterRef}
 						maxLength={10}
 					/>
