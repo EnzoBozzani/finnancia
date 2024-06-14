@@ -3,12 +3,13 @@
 import { Category, Finance, Sheet } from '@prisma/client';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
-import { Color } from '@/constants/colors';
+import { Color, colorMap } from '@/constants/colors';
 import { currencyFormat } from '@/lib/utils';
+
 import { ReportAnalysisCard } from './ReportAnalysisCard';
 
 interface SheetWithFinances extends Sheet {
-	finances: Finance[];
+	finances: (Finance & { category?: Category })[];
 }
 
 interface ReportProps {
@@ -53,27 +54,6 @@ const styles = StyleSheet.create({
 });
 
 const SheetRow = ({ finance }: { finance: Finance & { category?: Category } }) => {
-	const bgMap: { [key in Color]: string } = {
-		transparent: 'transparent',
-		red: '#fee2e2',
-		orange: '#ffedd5',
-		amber: '#fef3c7',
-		yellow: '#fef9c3',
-		lime: '#ecfccb',
-		green: '#dcfce7',
-		emerald: '#d1fae5',
-		teal: '#ccfbf1',
-		cyan: '#cffafe',
-		sky: '#e0f2fe',
-		blue: '#dbeafe',
-		indigo: '#e0e7ff',
-		violet: '#ede9fe',
-		purple: '#f3e8ff',
-		fuchsia: '#fae8ff',
-		pink: '#fce7f3',
-		rose: '#ffe4e6',
-	};
-
 	return (
 		<View
 			style={{
@@ -83,7 +63,7 @@ const SheetRow = ({ finance }: { finance: Finance & { category?: Category } }) =
 				alignItems: 'center',
 				padding: 10,
 				borderBottom: '1px solid rgb(212 212 212)',
-				backgroundColor: bgMap[finance.category ? (finance.category.color as Color) : 'transparent'],
+				backgroundColor: colorMap[finance.category ? (finance.category.color as Color) : 'transparent'].light,
 				fontSize: 12,
 			}}
 		>
@@ -115,12 +95,67 @@ export const Report = ({ sheetData, mediumAmount, mediumExpense, mediumProfit }:
 	let currentSheetTotalExpense = 0;
 	let currentSheetTotalProfit = 0;
 
+	const categoriesExpense = new Map<string, number>();
+	const categoriesProfit = new Map<string, number>();
+
 	sheetData.finances.forEach((finance) => {
 		if (finance.type === 'EXPENSE') {
 			currentSheetTotalExpense += finance.amount;
 		} else {
 			currentSheetTotalProfit += finance.amount;
 		}
+
+		switch (finance.type) {
+			case 'EXPENSE':
+				if (finance.category) {
+					if (categoriesExpense.has(finance.category.name)) {
+						categoriesExpense.set(
+							finance.category.name,
+							categoriesExpense.get(finance.category.name)! + finance.amount
+						);
+					} else {
+						categoriesExpense.set(finance.category.name, finance.amount);
+					}
+				} else {
+					if (categoriesExpense.has('Sem categoria')) {
+						categoriesExpense.set(
+							'Sem categoria',
+							categoriesExpense.get('Sem categoria')! + finance.amount
+						);
+					} else {
+						categoriesExpense.set('Sem categoria', finance.amount);
+					}
+				}
+				break;
+			case 'PROFIT':
+				if (finance.category) {
+					if (categoriesProfit.has(finance.category.name)) {
+						categoriesProfit.set(
+							finance.category.name,
+							categoriesProfit.get(finance.category.name)! + finance.amount
+						);
+					} else {
+						categoriesProfit.set(finance.category.name, finance.amount);
+					}
+				} else {
+					if (categoriesProfit.has('Sem categoria')) {
+						categoriesProfit.set('Sem categoria', categoriesProfit.get('Sem categoria')! + finance.amount);
+					} else {
+						categoriesProfit.set('Sem categoria', finance.amount);
+					}
+				}
+				break;
+		}
+	});
+
+	const percentagesExpense = new Map<string, number>();
+	const percentagesProfit = new Map<string, number>();
+
+	categoriesExpense.forEach((amount, category) => {
+		percentagesExpense.set(category, (amount / currentSheetTotalExpense) * 100);
+	});
+	categoriesProfit.forEach((amount, category) => {
+		percentagesProfit.set(category, (amount / currentSheetTotalProfit) * 100);
 	});
 
 	return (
@@ -133,7 +168,7 @@ export const Report = ({ sheetData, mediumAmount, mediumExpense, mediumProfit }:
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						alignItems: 'center',
-						marginBottom: 32,
+						marginBottom: 24,
 					}}
 				>
 					<Image
@@ -154,8 +189,8 @@ export const Report = ({ sheetData, mediumAmount, mediumExpense, mediumProfit }:
 						flexDirection: 'column',
 						alignItems: 'center',
 						justifyContent: 'center',
-						gap: 32,
-						marginBottom: 32,
+						gap: 16,
+						marginBottom: 24,
 					}}
 				>
 					<ReportAnalysisCard
@@ -177,6 +212,36 @@ export const Report = ({ sheetData, mediumAmount, mediumExpense, mediumProfit }:
 						title='Gasto'
 					/>
 				</View>
+				<Text
+					style={{
+						fontSize: 12,
+						textAlign: 'justify',
+						marginBottom: 8,
+						width: '95%',
+						marginHorizontal: 'auto',
+					}}
+				>
+					Os gastos são compostos por:{' '}
+					{Array.from(percentagesExpense)
+						.map((category) => `${category[0]} (${category[1].toFixed(2)}%)`)
+						.join(', ')}
+					.
+				</Text>
+				<Text
+					style={{
+						fontSize: 12,
+						textAlign: 'justify',
+						marginBottom: 8,
+						width: '95%',
+						marginHorizontal: 'auto',
+					}}
+				>
+					Os ganhos são compostos por:{' '}
+					{Array.from(percentagesProfit)
+						.map((category) => `${category[0]} (${category[1].toFixed(2)}%)`)
+						.join(', ')}
+					.
+				</Text>
 			</Page>
 			<Page style={styles.page}>
 				<View>
