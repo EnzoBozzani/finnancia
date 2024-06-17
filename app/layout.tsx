@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 		default: 'Finnancia',
 		template: 'Finnancia - %s',
 	},
-	description: 'Finance Control',
+	description: 'Assuma o controle do seu dinheiro com Finnancia',
 	icons: [
 		{
 			url: '/logo.jpg',

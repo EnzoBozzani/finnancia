@@ -71,9 +71,10 @@ model HelpMessage {
   id        String   @id @default(cuid())
   body      String
   userEmail String
+  userId   String
   createdAt DateTime @default(now())
 
-  user User @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
