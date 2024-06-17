@@ -11,4 +11,17 @@ export const usersService = {
 
 		return res.json();
 	},
+
+	async sendMessage(message: string) {
+		const res = await fetch('/api/user/help', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ message }),
+		});
+
+		return res.json();
+	},
 };
