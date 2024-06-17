@@ -19,10 +19,20 @@ export const SupportBox = () => {
 	};
 
 	return (
-		<section className='w-full h-[calc(100vh-100px)] flex justify-center items-center flex-col gap-y-8'>
+		<section className='w-full flex justify-center items-center flex-col gap-y-8'>
 			<h1 className={cn('uppercase text-2xl md:text-5xl text-center font-black', isDark && 'text-white')}>
 				Suporte
 			</h1>
+			<p
+				className={cn(
+					'text-justify text-sm text-neutral-300 w-[90%] lg:w-[75%] mx-auto',
+					isDark && 'text-neutral-700'
+				)}
+			>
+				Se você tiver alguma dúvida, sugestão ou problema, fique à vontade para nos enviar uma mensagem! A
+				partir do momento que recerbermos seu feedback, nosso contato será pelo e-mail da conta Google usada
+				para cadastrar-se no Finnancia. Desde já, agradecemos por nos ajudar a melhorar!
+			</p>
 			<form
 				action={onSubmit}
 				className='flex items-center mx-auto w-[90%] lg:w-[75%]'
@@ -35,7 +45,7 @@ export const SupportBox = () => {
 				<TextareaAutosize
 					id='text'
 					name='text'
-					placeholder='Após fazer sua pergunta, nosso contato será no seu e-mail da conta Google cadastrada no Finnancia!'
+					placeholder='Envie seu feedback'
 					className={cn(
 						'w-full focus:outline-none resize-none text-sm md:text-base rounded-xl flex items-center p-4 pe-12 border border-transparent',
 						isDark
@@ -56,15 +66,6 @@ export const SupportBox = () => {
 					)}
 				</button>
 			</form>
-			<p className={cn('text-xs md:text-sm text-center', isDark ? 'text-neutral-600' : 'text-neutral-400')}>
-				Você também pode consultar nossa{' '}
-				<Link
-					className={cn('underline', isDark ? 'text-neutral-100' : 'text-neutral-100')}
-					href={'/'}
-				>
-					seção de perguntas frequentes
-				</Link>
-			</p>
 		</section>
 	);
 };

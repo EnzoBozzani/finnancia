@@ -1,10 +1,16 @@
+'use client';
+
+import { cn } from '@/lib/utils';
 import { FAQAccordion } from './FAQAccordion';
+import { useIsDarkTheme } from '@/hooks/useDarkTheme';
 
 export const FAQSection = () => {
+	const isDark = useIsDarkTheme();
+
 	return (
-		<section className='w-full bg-green-100'>
-			<div className='mx-auto max-w-screen-xl py-12 px-6'>
-				<h1 className='text-2xl sm:text-4xl font-semibold text-center'>FAQ</h1>
+		<section className='w-full my-8'>
+			<div className='mx-auto'>
+				<h1 className={cn('text-2xl sm:text-4xl font-semibold text-center', isDark && 'text-white')}>FAQ</h1>
 				<FAQAccordion>
 					<FAQAccordion.Item value='item-1'>
 						<FAQAccordion.Trigger>
