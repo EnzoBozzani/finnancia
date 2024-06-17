@@ -74,7 +74,7 @@ export const UserButton = ({ user, isActive }: UserButtonProps) => {
 				<DropdownMenuContent
 					className={cn('w-56', isDark && 'bg-neutral-950 border-neutral-700 text-neutral-100')}
 				>
-					<DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+					<DropdownMenuLabel>{user.email}</DropdownMenuLabel>
 					<DropdownMenuSeparator className={cn(isDark && 'bg-neutral-700')} />
 					<DropdownMenuGroup>
 						<DropdownMenuItem
