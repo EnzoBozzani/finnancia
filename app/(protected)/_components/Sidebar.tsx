@@ -99,14 +99,12 @@ export const Sidebar = () => {
 				isDark={isDark}
 				isInitialAmountSet={isInitialAmountSet}
 				isLoading={isLoading}
-				isSelectOpen={isSelectOpen}
 				isOpen={isOpen}
 				onOpen={onOpen}
 				onClose={onClose}
 				onOpenSetAmountModal={onOpenSetAmountModal}
 				sheets={sheets}
 				onOpenSheetModal={onOpenSheetModal}
-				setIsSelectOpen={setIsSelectOpen}
 			/>
 		</>
 	);

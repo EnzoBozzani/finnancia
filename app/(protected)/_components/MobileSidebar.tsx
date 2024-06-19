@@ -2,7 +2,7 @@
 
 import { CiSettings } from 'react-icons/ci';
 import { PlusIcon } from '@radix-ui/react-icons';
-import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { CiCreditCard1 } from 'react-icons/ci';
 import { MdDashboardCustomize } from 'react-icons/md';
@@ -29,12 +29,10 @@ interface MobileSidebarProps {
 	isDark: boolean;
 	currentUser: User | undefined;
 	isLoading: boolean;
-	isSelectOpen: boolean;
 	isInitialAmountSet: boolean;
 	onOpenSetAmountModal: () => void;
 	sheets: Year[];
 	onOpenSheetModal: () => void;
-	setIsSelectOpen: Dispatch<SetStateAction<boolean>>;
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
@@ -44,16 +42,16 @@ export const MobileSidebar = ({
 	isDark,
 	currentUser,
 	isLoading,
-	isSelectOpen,
 	isInitialAmountSet,
 	onOpenSetAmountModal,
 	sheets,
 	onOpenSheetModal,
-	setIsSelectOpen,
 	isOpen,
 	onClose,
 	onOpen,
 }: MobileSidebarProps) => {
+	const [isSelectOpen, setIsSelectOpen] = useState(false);
+
 	return (
 		<>
 			<button
