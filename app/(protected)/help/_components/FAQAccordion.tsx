@@ -20,7 +20,7 @@ export const FAQAccordion = ({ children }: FAQAccordionProps) => {
 	);
 };
 
-FAQAccordion.Item = function ({ children, value }: FAQAccordionProps) {
+export const FAQAccordionItem = ({ children, value }: FAQAccordionProps) => {
 	const isDark = useIsDarkTheme();
 
 	return (
@@ -36,10 +36,10 @@ FAQAccordion.Item = function ({ children, value }: FAQAccordionProps) {
 	);
 };
 
-FAQAccordion.Trigger = function ({ children }: FAQAccordionProps) {
+export const FAQAccordionTrigger = ({ children }: FAQAccordionProps) => {
 	return <AccordionTrigger className='px-4 font-semibold'>{children}</AccordionTrigger>;
 };
 
-FAQAccordion.Content = function ({ children }: FAQAccordionProps) {
+export const FAQAccordionContent = ({ children }: FAQAccordionProps) => {
 	return <AccordionContent className='text-justify px-4'>{children}</AccordionContent>;
 };
