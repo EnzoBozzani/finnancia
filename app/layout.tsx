@@ -13,12 +13,6 @@ export const metadata: Metadata = {
 		template: 'Finnancia - %s',
 	},
 	description: 'Assuma o controle do seu dinheiro com Finnancia',
-	icons: [
-		{
-			url: '/logo.jpg',
-			href: '/logo.jpg',
-		},
-	],
 };
 
 export default async function RootLayout({
