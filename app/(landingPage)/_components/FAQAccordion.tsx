@@ -16,7 +16,7 @@ export const FAQAccordion = ({ children }: FAQAccordionProps) => {
 	);
 };
 
-FAQAccordion.Item = function ({ children, value }: FAQAccordionProps) {
+export const FAQAccordionItem = ({ children, value }: FAQAccordionProps) => {
 	return (
 		<AccordionItem
 			className='mt-4 bg-white rounded-lg'
@@ -27,10 +27,10 @@ FAQAccordion.Item = function ({ children, value }: FAQAccordionProps) {
 	);
 };
 
-FAQAccordion.Trigger = function ({ children }: FAQAccordionProps) {
+export const FAQAccordionTrigger = ({ children }: FAQAccordionProps) => {
 	return <AccordionTrigger className='px-4 text-lg font-semibold'>{children}</AccordionTrigger>;
 };
 
-FAQAccordion.Content = function ({ children }: FAQAccordionProps) {
+export const FAQAccordionContent = ({ children }: FAQAccordionProps) => {
 	return <AccordionContent className='text-justify px-4 text-lg'>{children}</AccordionContent>;
 };

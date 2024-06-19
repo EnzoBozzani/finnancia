@@ -10,14 +10,14 @@ export const FeatureArticle = ({ children }: ChildrenProps) => {
 	);
 };
 
-FeatureArticle.Icon = function ({ children }: ChildrenProps) {
+export const FeatureArticleIcon = ({ children }: ChildrenProps) => {
 	return <div className='w-fit text-green-600'>{children}</div>;
 };
 
-FeatureArticle.Title = function ({ children }: ChildrenProps) {
+export const FeatureArticleTitle = ({ children }: ChildrenProps) => {
 	return <h3 className='text-xl font-semibold text-center md:text-justify'>{children}</h3>;
 };
 
-FeatureArticle.Text = function ({ children }: ChildrenProps) {
+export const FeatureArticleText = ({ children }: ChildrenProps) => {
 	return <p className='text-neutral-600 text-sm text-center md:text-justify bg-white'>{children}</p>;
 };

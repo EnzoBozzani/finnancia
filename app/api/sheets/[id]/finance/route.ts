@@ -105,6 +105,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 		});
 
 		revalidatePath('dashboard', 'layout');
+		revalidatePath(`dashboard/${params.id}`, 'page');
 
 		return NextResponse.json(
 			{

@@ -51,34 +51,6 @@ export const SheetPieChart = ({ sheetId }: { sheetId: string }) => {
 		</div>;
 	}
 
-	if (finances.length === 0) {
-		return (
-			<div
-				className={cn(
-					'flex flex-col justify-center items-center w-full rounded-xl border p-4',
-					isDark ? 'border-neutral-700' : 'border-neutral-300'
-				)}
-			>
-				<h1
-					className={cn(
-						'pb-4 text-lg font-bold text-center',
-						isDark ? 'text-neutral-300' : 'text-neutral-700'
-					)}
-				>
-					GANHO, GASTO E SALDO MENSAL
-				</h1>
-				<div
-					className={cn(
-						'w-full bg-transparent border-t p-4 pt-8 space-y-2 flex justify-center items-center',
-						isDark ? 'text-neutral-300 border-neutral-700' : 'border-neutral-300 text-neutral-700'
-					)}
-				>
-					Oops... Parece que você ainda não tem nenhuma planilha!
-				</div>
-			</div>
-		);
-	}
-
 	return (
 		<div className='flex flex-col sm:flex-row items-center justify-evenly gap-2 mb-12'>
 			<div

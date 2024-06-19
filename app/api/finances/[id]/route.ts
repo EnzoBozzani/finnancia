@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
@@ -81,6 +82,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 						: userTotalAmount + financeToBeDeleted.amount,
 			},
 		});
+
+		revalidatePath(`dashboard/${params.id}`, 'page');
 
 		return NextResponse.json({ success: 'Deletado com sucesso!' }, { status: 200 });
 	} catch (error) {
@@ -274,6 +277,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 				});
 			}
 		}
+
+		revalidatePath(`dashboard/${params.id}`, 'page');
 
 		return NextResponse.json(
 			{

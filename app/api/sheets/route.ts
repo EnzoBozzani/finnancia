@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
 	const { month, year } = result.data;
 	const currentDate = new Date();
 
-	if (year < currentDate.getFullYear() - 5 || year > currentDate.getFullYear() + 1 || month < 1 || month > 12) {
+	if (year < currentDate.getFullYear() || year > currentDate.getFullYear() + 1 || month < 1 || month > 12) {
 		return NextResponse.json({ error: 'Campo(s) inválido(s)!' }, { status: 400 });
 	}
 

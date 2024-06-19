@@ -5,7 +5,7 @@ import { LuMonitorSmartphone } from 'react-icons/lu';
 import { FaGoogle } from 'react-icons/fa';
 import { SiCircuitverse } from 'react-icons/si';
 
-import { FeatureArticle } from './FeatureArticle';
+import { FeatureArticle, FeatureArticleIcon, FeatureArticleText, FeatureArticleTitle } from './FeatureArticle';
 
 export const FeaturesSection = () => {
 	return (
@@ -18,69 +18,69 @@ export const FeaturesSection = () => {
 				</p>
 				<div className='grid grid-cols-1 md:grid-cols-2 mt-8'>
 					<FeatureArticle>
-						<FeatureArticle.Icon>
+						<FeatureArticleIcon>
 							<RiOrganizationChart className='w-10 h-10' />
-						</FeatureArticle.Icon>
-						<FeatureArticle.Title>Controle Centralizado</FeatureArticle.Title>
-						<FeatureArticle.Text>
+						</FeatureArticleIcon>
+						<FeatureArticleTitle>Controle Centralizado</FeatureArticleTitle>
+						<FeatureArticleText>
 							Tenha acesso a uma visão geral e centralizada de suas finanças diretamente pelo painel,
 							trazendo uma forte perspectiva da sua vida financeira por meio de análises profundas em seus
 							dados.
-						</FeatureArticle.Text>
+						</FeatureArticleText>
 					</FeatureArticle>
 					<FeatureArticle>
-						<FeatureArticle.Icon>
+						<FeatureArticleIcon>
 							<VscGitPullRequestCreate className='w-10 h-10' />
-						</FeatureArticle.Icon>
-						<FeatureArticle.Title>Flexibilidade no Registro</FeatureArticle.Title>
-						<FeatureArticle.Text>
+						</FeatureArticleIcon>
+						<FeatureArticleTitle>Flexibilidade no Registro</FeatureArticleTitle>
+						<FeatureArticleText>
 							Adicione, edite, duplique e remova finanças de maneira simples e prática, permitindo uma
 							enorme flexibilidade no registro e gestão de finanças. Estando conectado, você pode
 							gerenciar suas finanças de qualquer lugar!
-						</FeatureArticle.Text>
+						</FeatureArticleText>
 					</FeatureArticle>
 					<FeatureArticle>
-						<FeatureArticle.Icon>
+						<FeatureArticleIcon>
 							<LuMonitorSmartphone className='w-10 h-10' />
-						</FeatureArticle.Icon>
-						<FeatureArticle.Title>Interface Amigável</FeatureArticle.Title>
-						<FeatureArticle.Text>
+						</FeatureArticleIcon>
+						<FeatureArticleTitle>Interface Amigável</FeatureArticleTitle>
+						<FeatureArticleText>
 							Por meio de uma interface extremamente intuitiva e agradável, navegue entre planilhas sem
 							esforço algum, tendo uma grande facilidade no gerenciamento dos dados financeiros.
-						</FeatureArticle.Text>
+						</FeatureArticleText>
 					</FeatureArticle>
 					<FeatureArticle>
-						<FeatureArticle.Icon>
+						<FeatureArticleIcon>
 							<FaGoogle className='w-10 h-10' />
-						</FeatureArticle.Icon>
-						<FeatureArticle.Title>Login simplificado</FeatureArticle.Title>
-						<FeatureArticle.Text>
+						</FeatureArticleIcon>
+						<FeatureArticleTitle>Login simplificado</FeatureArticleTitle>
+						<FeatureArticleText>
 							Não se preocupe com nenhuma burocracia para utilizar o Finnancia. Entre sem dificuldade
 							alguma utilizando diretamente sua conta Google, tendo total certeza de que seus dados estão
 							seguros.
-						</FeatureArticle.Text>
+						</FeatureArticleText>
 					</FeatureArticle>
 					<FeatureArticle>
-						<FeatureArticle.Icon>
+						<FeatureArticleIcon>
 							<SiCircuitverse className='w-10 h-10' />
-						</FeatureArticle.Icon>
-						<FeatureArticle.Title>Gestão inteligente com a Nanci</FeatureArticle.Title>
-						<FeatureArticle.Text>
+						</FeatureArticleIcon>
+						<FeatureArticleTitle>Gestão inteligente com a Nanci</FeatureArticleTitle>
+						<FeatureArticleText>
 							Utilizando todo o poder da Nanci, sua inteligência artificial especializada no controle
 							financeiro, você poderá receber as mais diversas análises personalizadas sobre suas
 							finanças, além de interagir com a IA sobre qualquer assunto financeiro de sua vontade.
-						</FeatureArticle.Text>
+						</FeatureArticleText>
 					</FeatureArticle>
 					<FeatureArticle>
-						<FeatureArticle.Icon>
+						<FeatureArticleIcon>
 							<FaMoneyCheckDollar className='w-10 h-10' />
-						</FeatureArticle.Icon>
-						<FeatureArticle.Title>Facilitador Financeiro</FeatureArticle.Title>
-						<FeatureArticle.Text>
+						</FeatureArticleIcon>
+						<FeatureArticleTitle>Facilitador Financeiro</FeatureArticleTitle>
+						<FeatureArticleText>
 							O Finnancia simplifica o controle financeiro como nunca antes, fornecendo aos usuários uma
 							ferramenta poderosa para gerenciar suas finanças de maneira inteligente e eficaz, promovendo
 							uma tomada de decisões financeiras mais informada.
-						</FeatureArticle.Text>
+						</FeatureArticleText>
 					</FeatureArticle>
 				</div>
 			</section>

@@ -44,9 +44,9 @@ export const AddSheetModal = () => {
 			return;
 		}
 
-		if (year < currentDate.getFullYear() - 5 || year > currentDate.getFullYear() + 1) {
+		if (year < currentDate.getFullYear() || year > currentDate.getFullYear() + 1) {
 			setMessage(
-				`Só é possível adicionar planilhas para datas entre ${currentDate.getFullYear() - 5} e ${
+				`Só é possível adicionar planilhas para datas entre ${currentDate.getFullYear()} e ${
 					currentDate.getFullYear() + 1
 				}`
 			);
