@@ -52,7 +52,7 @@ export const ColorPicker = ({ selectedColor, setSelectedColor, initialColor }: C
 					<Loader />
 				) : (
 					colors.map((color) => {
-						const isUsed = usedColors.includes(color) && color !== initialColor;
+						const isUsed = usedColors.includes(color) && color !== initialColor && color !== 'transparent';
 
 						const bgColor =
 							color === 'transparent' ? 'transparent' : isDark ? `bg-${color}-950` : `bg-${color}-100`;

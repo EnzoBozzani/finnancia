@@ -5,6 +5,7 @@ import { db } from '@/lib/db';
 import { CreateCategorySchema } from '@/schemas/CreateCategorySchema';
 import { getUserSubscription } from '@/lib/stripe';
 import { MAX_CATEGORIES_FOR_FREE } from '@/constants/subscription';
+import { Category } from '@prisma/client';
 
 export async function POST(req: NextRequest) {
 	const user = await currentUser();
@@ -48,12 +49,16 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
-		const existingCategory = await db.category.findFirst({
-			where: {
-				OR: [{ name }, { color }],
-				userId: user.id,
-			},
-		});
+		let existingCategory: Category | null = null;
+
+		if (color !== 'transparent') {
+			existingCategory = await db.category.findFirst({
+				where: {
+					OR: [{ name }, { color }],
+					userId: user.id,
+				},
+			});
+		}
 
 		if (existingCategory) {
 			return NextResponse.json(
