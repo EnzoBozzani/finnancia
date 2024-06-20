@@ -4,7 +4,6 @@ import { useEffect, useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import { Category } from '@prisma/client';
 import { VscLoading } from 'react-icons/vsc';
-import { useRouter } from 'next/navigation';
 
 import { Color } from '@/constants/colors';
 import { cn } from '@/lib/utils';
@@ -17,8 +16,6 @@ import { categoriesService } from '@/services/categoriesService';
 import { ColorPicker } from './ColorPicker';
 
 export const EditCategory = () => {
-	const router = useRouter();
-
 	const [isPending, startTransition] = useTransition();
 
 	const [category, setCategory] = useState<Category | null>(null);
@@ -44,8 +41,8 @@ export const EditCategory = () => {
 				return;
 			}
 
-			router.refresh();
-			setTimeout(() => toast.success(res.success), 2500);
+			toast.success('Categoria editada com sucesso!');
+			setTimeout(() => location.reload(), 1000);
 		});
 	};
 

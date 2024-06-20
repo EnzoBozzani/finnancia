@@ -28,8 +28,8 @@ export const RemoveCategory = () => {
 				return;
 			}
 
-			location.reload();
-			setTimeout(() => toast.success(res.success), 2500);
+			toast.success('Categoria removida com sucesso!');
+			setTimeout(() => location.reload(), 1000);
 		});
 	};
 

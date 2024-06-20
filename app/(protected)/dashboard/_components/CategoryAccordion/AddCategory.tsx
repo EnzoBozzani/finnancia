@@ -2,7 +2,6 @@
 
 import { useTransition, useState } from 'react';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import { VscLoading } from 'react-icons/vsc';
 
 import { categoriesService } from '@/services/categoriesService';
@@ -14,8 +13,6 @@ import { useProModal } from '@/hooks/useProModal';
 import { ColorPicker } from './ColorPicker';
 
 export const AddCategory = () => {
-	const router = useRouter();
-
 	const [isPending, startTransition] = useTransition();
 
 	const [selectedColor, setSelectedColor] = useState<Color>('transparent');
@@ -45,8 +42,8 @@ export const AddCategory = () => {
 				return;
 			}
 
-			router.refresh();
-			setTimeout(() => toast.success('Categoria adicionada com sucesso!'), 2500);
+			toast.success('Categoria adicionada com sucesso!');
+			setTimeout(() => location.reload(), 1000);
 		});
 	};
 
