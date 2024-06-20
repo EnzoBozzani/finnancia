@@ -10,6 +10,9 @@ import { FAQSection } from './_components/FAQSection';
 
 export const metadata: Metadata = {
 	title: 'Controle seu dinheiro',
+	other: {
+		'google-site-verification': 'pbAzyYwmVedcR48Od7b-opdn57P5UIo39u5KwzrdqZ4',
+	},
 };
 
 export const viewport: Viewport = {
