@@ -114,7 +114,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error(error);
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',
@@ -237,7 +236,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			financesAmount,
 		});
 	} catch (error) {
-		console.error(error);
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',

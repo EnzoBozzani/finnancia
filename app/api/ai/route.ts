@@ -41,8 +41,6 @@ export async function POST(req: NextRequest) {
 
 		const numberOfUserMessages = oldMessages.filter((message) => message.role === 'USER').length;
 
-		console.log(numberOfUserMessages);
-
 		if (numberOfUserMessages >= MAX_PROMPTS_FOR_FREE && !userSubscription?.isActive) {
 			return NextResponse.json({
 				maxPromptsReached: true,

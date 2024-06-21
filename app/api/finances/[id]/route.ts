@@ -102,7 +102,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 	const result = EditFinanceSchema.safeParse(body);
 
 	if (!result.success) {
-		console.log(result.error);
 		return NextResponse.json(
 			{
 				error: 'Campo(s) inválidos(s)!',

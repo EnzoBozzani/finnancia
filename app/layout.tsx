@@ -28,9 +28,6 @@ export default async function RootLayout({
 				lang='pt'
 				suppressHydrationWarning
 			>
-				{/* <body className={cn('flex flex-col', montserrat.className)}>
-					<ThemeProvider enableSystem>{children}</ThemeProvider>
-				</body> */}
 				<ThemeProvider fontClassName={montserrat.className}>{children}</ThemeProvider>
 			</html>
 		</SessionProvider>
