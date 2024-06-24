@@ -68,10 +68,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
 		const userTotalAmount = await getUserTotalAmount(user.id);
 
-		if (!userTotalAmount) {
+		if (!userTotalAmount?.isInitialAmountSet) {
 			return NextResponse.json(
 				{
-					error: 'Usuário não encontrado!',
+					error: 'Não autorizado!',
 				},
 				{ status: 404 }
 			);
@@ -100,7 +100,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 		await db.user.update({
 			where: { id: user.id },
 			data: {
-				totalAmount: type === 'PROFIT' ? userTotalAmount + amount : userTotalAmount - amount,
+				totalAmount:
+					type === 'PROFIT' ? userTotalAmount.totalAmount + amount : userTotalAmount.totalAmount - amount,
 			},
 		});
 

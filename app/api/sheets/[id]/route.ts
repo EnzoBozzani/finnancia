@@ -24,7 +24,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 		const userTotalAmount = await getUserTotalAmount(user.id);
 
-		if (!userTotalAmount) {
+		if (!userTotalAmount?.isInitialAmountSet) {
 			return NextResponse.json(
 				{
 					error: 'Não autorizado!',
@@ -36,7 +36,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 		await db.user.update({
 			where: { id: user.id },
 			data: {
-				totalAmount: userTotalAmount - sheet.totalAmount,
+				totalAmount: userTotalAmount.totalAmount - sheet.totalAmount,
 			},
 		});
 

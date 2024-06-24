@@ -26,12 +26,12 @@ export async function getUserTotalAmount(id: string) {
 	try {
 		const dbUser = await db.user.findUnique({
 			where: { id },
-			select: { totalAmount: true },
+			select: { isInitialAmountSet: true, totalAmount: true },
 		});
 
 		if (!dbUser) return null;
 
-		return dbUser.totalAmount;
+		return dbUser;
 	} catch (error) {
 		return null;
 	}

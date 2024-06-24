@@ -49,10 +49,10 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
 		const userTotalAmount = await getUserTotalAmount(user.id);
 
-		if (!userTotalAmount) {
+		if (!userTotalAmount?.isInitialAmountSet) {
 			return NextResponse.json(
 				{
-					error: 'Usuário não encontrado!',
+					error: 'Não autorizado!',
 				},
 				{ status: 404 }
 			);
@@ -78,8 +78,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			data: {
 				totalAmount:
 					financeToBeDeleted.type === 'PROFIT'
-						? userTotalAmount - financeToBeDeleted.amount
-						: userTotalAmount + financeToBeDeleted.amount,
+						? userTotalAmount.totalAmount - financeToBeDeleted.amount
+						: userTotalAmount.totalAmount + financeToBeDeleted.amount,
 			},
 		});
 
@@ -182,7 +182,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 		const userTotalAmount = await getUserTotalAmount(user.id);
 
-		if (!userTotalAmount) {
+		if (!userTotalAmount?.isInitialAmountSet) {
 			return NextResponse.json(
 				{
 					error: 'Usuário não encontrado!',
@@ -227,8 +227,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 				data: {
 					totalAmount:
 						type === 'PROFIT'
-							? userTotalAmount + 2 * financeToBeEdited.amount
-							: userTotalAmount - 2 * financeToBeEdited.amount,
+							? userTotalAmount.totalAmount + 2 * financeToBeEdited.amount
+							: userTotalAmount.totalAmount - 2 * financeToBeEdited.amount,
 				},
 			});
 		}
@@ -250,8 +250,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 					data: {
 						totalAmount:
 							type === 'PROFIT'
-								? userTotalAmount + financeToBeEdited.amount + amount
-								: userTotalAmount - financeToBeEdited.amount - amount,
+								? userTotalAmount.totalAmount + financeToBeEdited.amount + amount
+								: userTotalAmount.totalAmount - financeToBeEdited.amount - amount,
 					},
 				});
 			} else {
@@ -270,8 +270,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 					data: {
 						totalAmount:
 							financeToBeEdited.type === 'PROFIT'
-								? userTotalAmount - financeToBeEdited.amount + amount
-								: userTotalAmount + financeToBeEdited.amount - amount,
+								? userTotalAmount.totalAmount - financeToBeEdited.amount + amount
+								: userTotalAmount.totalAmount + financeToBeEdited.amount - amount,
 					},
 				});
 			}
