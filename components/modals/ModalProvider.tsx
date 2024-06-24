@@ -9,6 +9,7 @@ import { DeleteFinanceModal } from './DeleteFinanceModal';
 import { DeleteSheetModal } from './DeleteSheetModal';
 import { SetInitialAmountModal } from './SetInitialAmountModal';
 import { ProModal } from './ProModal';
+import { ChangeAmountModal } from './ChangeAmountModal';
 
 export const ModalProvider = () => {
 	const [isMounted, setIsMounted] = useState(false);
@@ -28,6 +29,7 @@ export const ModalProvider = () => {
 			<DeleteSheetModal />
 			<SetInitialAmountModal />
 			<ProModal />
+			<ChangeAmountModal />
 		</>
 	);
 };

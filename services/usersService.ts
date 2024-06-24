@@ -24,4 +24,17 @@ export const usersService = {
 
 		return res.json();
 	},
+
+	async changeAmount(amount: number) {
+		const res = await fetch('/api/user/amount', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ amount }),
+		});
+
+		return res.json();
+	},
 };

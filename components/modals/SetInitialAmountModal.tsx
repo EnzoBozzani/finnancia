@@ -68,9 +68,8 @@ export const SetInitialAmountModal = () => {
 				>
 					<h3 className='text-center text-xl font-semibold'>Definir saldo</h3>
 					<p className='my-6 text-neutral-500 text-center'>
-						Antes de continuar, defina o saldo inicial de sua conta, ou seja, a soma de seu saldo em todas
-						suas contas bancárias. Feito isso, você poderá visualizar sempre o saldo total de suas finanças.
-						Não é possível alterar o saldo inicial depois!
+						Antes de continuar, defina o saldo inicial de sua conta. Feito isso, você poderá visualizar
+						sempre o saldo total de suas finanças <strong>(pode ser negativo, positivo ou 0)</strong>.
 					</p>
 					<FormGroup
 						id='amount'
