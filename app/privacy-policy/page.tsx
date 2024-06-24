@@ -2,6 +2,7 @@ import rehypeRaw from 'rehype-raw';
 import Markdown from 'react-markdown';
 
 import { Logo } from '@/components/Logo';
+import { privacyPolicy } from '@/constants/privacy-policy';
 
 const PrivacyPolicyPage = () => {
 	return (
@@ -15,7 +16,7 @@ const PrivacyPolicyPage = () => {
 				className='w-[90%] mx-auto p-4 max-w-screen-xl'
 				rehypePlugins={[rehypeRaw]}
 			>
-				Oops... Algo deu errado
+				{privacyPolicy}
 			</Markdown>
 		</div>
 	);
