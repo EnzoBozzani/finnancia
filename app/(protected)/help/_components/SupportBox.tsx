@@ -55,12 +55,7 @@ export const SupportBox = () => {
 			<h1 className={cn('uppercase text-2xl md:text-5xl text-center font-black', isDark && 'text-white')}>
 				Suporte
 			</h1>
-			<p
-				className={cn(
-					'text-justify text-sm text-neutral-300 w-[90%] lg:w-[75%] mx-auto',
-					isDark && 'text-neutral-700'
-				)}
-			>
+			<p className={cn('text-justify text-sm text-neutral-500 w-[90%] lg:w-[75%] mx-auto')}>
 				Se você tiver alguma dúvida, sugestão ou problema, fique à vontade para nos enviar uma mensagem! A
 				partir do momento que recerbermos seu feedback, nosso contato será pelo e-mail da conta Google usada
 				para cadastrar-se no Finnancia. Desde já, agradecemos por nos ajudar a melhorar!

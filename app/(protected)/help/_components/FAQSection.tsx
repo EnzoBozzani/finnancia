@@ -1,8 +1,9 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { FAQAccordion, FAQAccordionContent, FAQAccordionItem, FAQAccordionTrigger } from './FAQAccordion';
 import { useIsDarkTheme } from '@/hooks/useDarkTheme';
+
+import { FAQAccordion, FAQAccordionContent, FAQAccordionItem, FAQAccordionTrigger } from './FAQAccordion';
 
 export const FAQSection = () => {
 	const isDark = useIsDarkTheme();

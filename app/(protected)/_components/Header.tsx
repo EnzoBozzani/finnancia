@@ -25,9 +25,9 @@ export const Header = async ({ user, isActive }: HeaderProps) => {
 					<Sidebar />
 				</div>
 				<Logo
-					hideFully
+					url='/dashboard'
 					className='w-fit'
-					isNotLink
+					hideFully
 				/>
 			</div>
 			<UserButton

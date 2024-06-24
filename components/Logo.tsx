@@ -9,13 +9,14 @@ interface LogoProps {
 	hideFully?: boolean;
 	isNotLink?: boolean;
 	logoColor?: string;
+	url?: string;
 }
 
-export const Logo = ({ className, hide, hideFully, isNotLink, logoColor }: LogoProps) => {
+export const Logo = ({ className, hide, hideFully, isNotLink, logoColor, url }: LogoProps) => {
 	if (!isNotLink) {
 		return (
 			<Link
-				href={'/'}
+				href={url || '/'}
 				className={cn('flex items-center justify-center gap-x-1', className)}
 			>
 				<BiSolidPyramid className={cn('w-12 h-12', logoColor || 'text-green-700')} />
