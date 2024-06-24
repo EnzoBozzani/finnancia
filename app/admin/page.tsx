@@ -11,15 +11,30 @@ const AdminPage = async () => {
 		redirect('/auth');
 	}
 
-	const totalUsers = await db.user.count();
+	const users = await db.user.findMany();
 
 	const totalSubscriptions = await db.userSubscription.count();
 
+	const messages = await db.helpMessage.findMany();
+
 	return (
 		<main className='w-full min-h-screen bg-white'>
-			Total Users: {totalUsers}
+			Total Users: {users.length}
 			<br />
 			Total Subscriptions: {totalSubscriptions}
+			<br />
+			Users:
+			<br />
+			{users.map((user) => `${user.email} `)}
+			<br />
+			Messages:
+			<br />
+			{messages.map((message) => (
+				<>
+					{message.body} {message.userEmail} {message.createdAt.toString()}
+					<br />
+				</>
+			))}
 		</main>
 	);
 };
