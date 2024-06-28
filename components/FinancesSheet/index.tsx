@@ -255,7 +255,7 @@ export const FinancesSheet = ({ sheetData }: FinancesSheetProps) => {
 									<TableCell
 										colSpan={5}
 										className={cn(
-											'text-center font-semibold h-[520px]',
+											'text-center font-semibold h-[130px]',
 											isDark ? 'bg-neutral-950 text-white' : 'bg-white'
 										)}
 									>

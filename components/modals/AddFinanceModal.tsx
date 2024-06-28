@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { Category } from '@prisma/client';
 
 import { useAddFinanceModal } from '@/hooks/useAddFinanceModal';
@@ -23,8 +23,6 @@ import { SelectCategory } from '../SelectCategory';
 
 export const AddFinanceModal = () => {
 	const currentDate = new Date();
-
-	const router = useRouter();
 
 	const isOpen = useAddFinanceModal((state) => state.isOpen);
 	const onClose = useAddFinanceModal((state) => state.onClose);
@@ -133,8 +131,8 @@ export const AddFinanceModal = () => {
 
 		if (res.success) {
 			onClose();
-			router.refresh();
 			toast.success(`Finança "${title}" criada com sucesso!`);
+			setTimeout(() => location.reload(), 1500);
 		}
 
 		if (res.error) {

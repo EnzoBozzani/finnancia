@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Category } from '@prisma/client';
 
@@ -22,8 +21,6 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { SelectCategory } from '../SelectCategory';
 
 export const EditFinanceModal = () => {
-	const router = useRouter();
-
 	const isDark = useIsDarkTheme();
 
 	const isOpen = useEditFinanceModal((state) => state.isOpen);
@@ -144,8 +141,8 @@ export const EditFinanceModal = () => {
 
 		if (res.success) {
 			onClose();
-			router.refresh();
 			toast.success('Finança editada com sucesso!');
+			setTimeout(() => location.reload(), 1500);
 		}
 
 		if (res.error) {

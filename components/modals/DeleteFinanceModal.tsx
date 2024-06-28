@@ -33,8 +33,8 @@ export const DeleteFinanceModal = () => {
 
 		if (res.success) {
 			onClose();
-			router.refresh();
 			toast.success(`"${finance.title}" deletado com sucesso!`);
+			setTimeout(() => location.reload(), 1500);
 		}
 	};
 
