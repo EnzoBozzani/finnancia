@@ -82,6 +82,7 @@ export const ChangeAmountModal = () => {
 						label='Novo saldo:'
 						mask='R$ #.##0,00'
 						placeholder='R$ XXX,XX'
+						inputMode='decimal'
 					/>
 					<FormMessage
 						message={message}

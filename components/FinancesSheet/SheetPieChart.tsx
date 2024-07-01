@@ -44,7 +44,7 @@ export const SheetPieChart = ({ sheetId }: { sheetId: string }) => {
 		fetchData();
 	}, []);
 
-	if (!pending) {
+	if (pending) {
 		return (
 			<div className='flex flex-col sm:flex-row items-center justify-evenly gap-2 mb-12'>
 				<Skeleton className='w-[95%] sm:w-[45%] aspect-square rounded-xl' />

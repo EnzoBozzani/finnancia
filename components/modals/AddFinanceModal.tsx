@@ -169,6 +169,7 @@ export const AddFinanceModal = () => {
 									label='Quantia:'
 									mask='R$ #.##0,00'
 									placeholder='R$ XXX,XX'
+									inputMode='decimal'
 								/>
 								<div className='flex items-center gap-x-2'>
 									<Label
@@ -233,6 +234,7 @@ export const AddFinanceModal = () => {
 									}`}
 									mask={'dd'}
 									className='flex items-center justify-center gap-x-4 space-y-0 odd:w-[95px] even:flex even:items-center'
+									inputMode='numeric'
 								/>
 							</div>
 						) : (

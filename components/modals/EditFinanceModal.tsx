@@ -182,6 +182,7 @@ export const EditFinanceModal = () => {
 										label='Quantia'
 										mask='R$ #.##0,00'
 										initialValue={currencyFormat(finance.amount)}
+										inputMode='decimal'
 									/>
 									<div className='flex items-center gap-x-2'>
 										<Label
@@ -296,6 +297,7 @@ export const EditFinanceModal = () => {
 									label='Quantia'
 									mask='R$ #.##0,00'
 									initialValue={currencyFormat(finance.amount)}
+									inputMode='decimal'
 								/>
 								<div className='flex items-center gap-x-2'>
 									<Label
@@ -363,6 +365,7 @@ export const EditFinanceModal = () => {
 										minimumIntegerDigits: 2,
 									})}
 									className='flex items-center justify-center gap-x-4 space-y-0 even:w-[95px] even:flex even:items-center odd:w-[95px] odd:flex odd:items-center'
+									inputMode='numeric'
 								/>
 							</div>
 						)}

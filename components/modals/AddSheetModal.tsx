@@ -90,6 +90,7 @@ export const AddSheetModal = () => {
 								minimumIntegerDigits: 2,
 							})}/${currentDate.getFullYear()}`}
 							mask='mm/yyyy'
+							inputMode='numeric'
 						/>
 						<FormMessage
 							message={message}

@@ -12,6 +12,7 @@ interface FormGroupProps {
 	mask?: string;
 	initialValue?: string;
 	disabled?: boolean;
+	inputMode?: 'email' | 'search' | 'tel' | 'text' | 'url' | 'decimal' | 'none' | 'numeric';
 }
 
 export const FormGroup = ({
@@ -23,6 +24,7 @@ export const FormGroup = ({
 	mask,
 	initialValue,
 	disabled,
+	inputMode,
 }: FormGroupProps) => {
 	return (
 		<div className={cn('space-y-3', className)}>
@@ -46,6 +48,7 @@ export const FormGroup = ({
 				maxLength={id === 'amount' ? 25 : 50}
 				defaultValue={initialValue}
 				disabled={disabled}
+				inputMode={inputMode || 'text'}
 			/>
 		</div>
 	);
