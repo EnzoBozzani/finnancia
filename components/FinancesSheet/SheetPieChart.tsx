@@ -44,11 +44,13 @@ export const SheetPieChart = ({ sheetId }: { sheetId: string }) => {
 		fetchData();
 	}, []);
 
-	if (pending) {
-		<div className='w-[95%] mx-auto flex items-center justify-evenly gap-x-2 mb-12'>
-			<Skeleton className='w-[400px] h-[400px] rounded-xl' />
-			<Skeleton className='w-[400px] h-[400px] rounded-xl' />
-		</div>;
+	if (!pending) {
+		return (
+			<div className='flex flex-col sm:flex-row items-center justify-evenly gap-2 mb-12'>
+				<Skeleton className='w-[95%] sm:w-[45%] aspect-square rounded-xl' />
+				<Skeleton className='w-[95%] sm:w-[45%] aspect-square rounded-xl' />
+			</div>
+		);
 	}
 
 	return (
@@ -68,9 +70,12 @@ export const SheetPieChart = ({ sheetId }: { sheetId: string }) => {
 					Gastos por Categoria
 				</h1>
 				{namesExpense.length === 0 ? (
-					<p className={cn('text-center mt-12', isDark ? 'text-white' : 'text-black')}>
-						Parece que não há gastos nessa planilha! :)
-					</p>
+					<>
+						<div className='w-full h-[1px] bg-neutral-500 mt-4' />
+						<p className={cn('text-center mt-8', isDark ? 'text-white' : 'text-black')}>
+							Parece que não há gastos nessa planilha! :)
+						</p>
+					</>
 				) : (
 					<Pie
 						data={dataExpense}
@@ -93,9 +98,12 @@ export const SheetPieChart = ({ sheetId }: { sheetId: string }) => {
 					Ganhos por Categoria
 				</h1>
 				{namesProfit.length === 0 ? (
-					<p className={cn('text-center mt-12', isDark ? 'text-white' : 'text-black')}>
-						Parece que não há ganhos nessa planilha! :(
-					</p>
+					<>
+						<div className='w-full h-[1px] bg-neutral-500 mt-4' />
+						<p className={cn('text-center mt-8', isDark ? 'text-white' : 'text-black')}>
+							Parece que não há ganhos nessa planilha! :(
+						</p>
+					</>
 				) : (
 					<Pie
 						data={dataProfit}
