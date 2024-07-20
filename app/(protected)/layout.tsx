@@ -1,7 +1,6 @@
 import Script from 'next/script';
 
 import { currentUser } from '@/lib/auth';
-import { ToasterProvider } from '@/components/ToasterProvider';
 import { ModalProvider } from '@/components/modals/ModalProvider';
 import { getUserSubscription } from '@/lib/stripe';
 
@@ -29,7 +28,6 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 					{children}
 				</div>
 				<ModalProvider />
-				<ToasterProvider />
 			</div>
 			<Script src='https://jsuites.net/v4/jsuites.js'></Script>
 		</>

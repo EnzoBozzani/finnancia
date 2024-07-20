@@ -4,6 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { montserrat } from '@/constants/font';
+import { ToasterProvider } from '@/components/ToasterProvider';
 
 import './globals.css';
 
@@ -29,6 +30,7 @@ export default async function RootLayout({
 				suppressHydrationWarning
 			>
 				<ThemeProvider fontClassName={montserrat.className}>{children}</ThemeProvider>
+				<ToasterProvider />
 			</html>
 		</SessionProvider>
 	);

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { DAY_IN_MS } from '@/constants/subscription';
 
 import { AdminBox } from './_components/AdminBox';
 import { UserRow } from './_components/UserRow';
@@ -18,7 +19,16 @@ const AdminPage = async () => {
 
 	const users = await db.user.findMany();
 
-	const totalSubscriptions = await db.userSubscription.count();
+	const totalSubscriptions = await db.userSubscription.count({
+		where: {
+			stripePriceId: {
+				not: undefined,
+			},
+			stripeCurrentPeriodEnd: {
+				gt: new Date(Date.now() + DAY_IN_MS),
+			},
+		},
+	});
 
 	const messages = await db.helpMessage.findMany();
 
