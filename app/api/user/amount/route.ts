@@ -40,6 +40,12 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json({ success: 'Saldo alterado com sucesso!' }, { status: 200 });
 	} catch (error) {
+		await db.error.create({
+			data: {
+				userId: user.id,
+				message: error?.toString() || 'Nao foi possivel converter o tipo do erro pra string',
+			},
+		});
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',

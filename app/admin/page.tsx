@@ -7,6 +7,7 @@ import { DAY_IN_MS } from '@/constants/subscription';
 import { AdminBox } from './_components/AdminBox';
 import { UserRow } from './_components/UserRow';
 import { MessageRow } from './_components/MessageRow';
+import { ErrorRow } from './_components/ErrorRow';
 
 const adminEmail = process.env.ADMIN_EMAIL;
 
@@ -31,6 +32,8 @@ const AdminPage = async () => {
 	});
 
 	const messages = await db.helpMessage.findMany();
+
+	const errors = await db.error.findMany();
 
 	return (
 		<main className='bg-white w-full min-h-screen mx-auto'>
@@ -76,6 +79,22 @@ const AdminPage = async () => {
 						<UserRow
 							user={user}
 							key={user.id}
+						/>
+					))}
+				</div>
+				<div className='w-full mb-2'>
+					<h1 className='text-xl text-center font-bold uppercase'>Errors</h1>
+				</div>
+				<div className='flex flex-col mb-16'>
+					<div className='w-full flex justify-between items-center border-b p-6 bg-neutral-100'>
+						<div className='w-1/3 text-center'>UserId</div>
+						<div className='w-1/3 text-center'>Mensagem</div>
+						<div className='w-1/3 text-center'>Data</div>
+					</div>
+					{errors.map((error) => (
+						<ErrorRow
+							error={error}
+							key={error.id}
 						/>
 					))}
 				</div>

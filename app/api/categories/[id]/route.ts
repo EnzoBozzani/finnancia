@@ -74,6 +74,12 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 			{ status: 200 }
 		);
 	} catch (error) {
+		await db.error.create({
+			data: {
+				userId: user.id,
+				message: error?.toString() || 'Nao foi possivel converter o tipo do erro pra string',
+			},
+		});
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',
@@ -118,6 +124,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 			{ status: 200 }
 		);
 	} catch (error) {
+		await db.error.create({
+			data: {
+				userId: user.id,
+				message: error?.toString() || 'Nao foi possivel converter o tipo do erro pra string',
+			},
+		});
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',

@@ -32,6 +32,15 @@ model User {
   messages      Message[]
   categories    Category[]
   helpMessages  HelpMessage[]
+  errors        Error[]
+}
+
+model Error {
+  id        String @id @default(cuid())
+  message   String @db.Text
+  userId    String
+  createdAt DateTime @default(now()) 
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Category {

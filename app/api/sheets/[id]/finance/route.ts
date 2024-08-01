@@ -115,6 +115,12 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 			{ status: 200 }
 		);
 	} catch (error) {
+		await db.error.create({
+			data: {
+				userId: user.id,
+				message: error?.toString() || 'Nao foi possivel converter o tipo do erro pra string',
+			},
+		});
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',
@@ -237,6 +243,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 			financesAmount,
 		});
 	} catch (error) {
+		await db.error.create({
+			data: {
+				userId: user.id,
+				message: error?.toString() || 'Nao foi possivel converter o tipo do erro pra string',
+			},
+		});
 		return NextResponse.json(
 			{
 				error: 'Algo deu errado!',
