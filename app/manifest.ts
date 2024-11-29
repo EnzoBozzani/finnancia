@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
 		start_url: '/dashboard',
 		display: 'standalone',
 		background_color: '#000',
-		theme_color: '#22c55e',
+		theme_color: '#ffffff',
 		icons: [72, 96, 128, 144, 152, 192, 384, 512].map((n) => ({
 			src: `/icons/icon-${n}x${n}.png`,
 			sizes: `${n}x${n}`,
